@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · Riwayat Retribusi</title>
+<title>APIMA · Riwayat</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,142 +23,63 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2 items-center">
-      <h1 class="sr-only">Riwayat Retribusi APIMA</h1>
-      <span class="brand-wordmark">
-        <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
-        <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
-      </span>
+  <header class="v5-app-header ag-header">
+    <span class="v5-app-logo" aria-hidden="true">
+      <img src="brand/apima-wordmark-light.webp" width="240" height="85" alt="" class="wm-light">
+      <img src="brand/apima-wordmark-dark.webp" width="240" height="85" alt="" class="wm-dark">
+    </span>
+    <div class="ag-header-text">
+      <h1 class="sr-only">Riwayat retribusi</h1>
+      <p class="v5-app-title" data-ag-name>Budi Santoso</p>
+      <span class="v5-app-meta" data-ag-meta>Blok C-14 · ID 0123 · Sab, 14 Nov</span>
     </div>
-    <div class="row gap-2 items-center shrink-0">
-      <span class="text-sm fw-700 text-main tnum" id="ag-date">Sab, 14 Nov</span>
-      <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
-        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <div class="v5-app-actions">
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
+      <a href="MasukId.dc.html" class="v5-icon-btn" aria-label="Keluar akun">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
     </div>
   </header>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main">
 
-    <section class="hero-card" aria-label="Ringkasan retribusi Anda">
-      <div class="row between items-center gap-2">
-        <span class="text-sm text-secondary fw-700">Total dibayar</span>
-        <span class="pill pill-success" id="ag-paid-pill">
-          <span class="status-dot dot-success" aria-hidden="true"></span>
-          <span id="ag-paid-nights-pill">4 malam terbayar</span>
-        </span>
-      </div>
-      <div class="stack gap-1">
-        <span class="text-xl tnum" id="ag-total-paid">Rp30.000</span>
-        <p class="text-sm text-secondary m-0" id="ag-summary-desc">Sudah dibayar untuk 4 malam lagi. Total di atas hanya menjumlahkan baris pembayaran QRIS.</p>
-      </div>
-      <a href="AnggotaPilihHari.dc.html" class="btn btn-primary no-underline" id="ag-primary-cta">Tambah Malam Terbayar</a>
-    </section>
-
-    <div class="seg" role="group" aria-label="Filter jenis riwayat">
-      <button type="button" class="seg-btn active" data-ag-filter="semua" aria-pressed="true">Semua</button>
-      <button type="button" class="seg-btn" data-ag-filter="lapor" aria-pressed="false">Lapor</button>
-      <button type="button" class="seg-btn" data-ag-filter="bayar" aria-pressed="false">Bayar QRIS</button>
+    <div class="v5-seg ag-seg" role="group" aria-label="Saring riwayat">
+      <button type="button" data-ag-filter="semua" aria-pressed="true">Semua</button>
+      <button type="button" data-ag-filter="aktif" aria-pressed="false">Aktif</button>
+      <button type="button" data-ag-filter="tidak_lapor" aria-pressed="false">Tidak Lapor</button>
     </div>
 
-    <section class="open-section" aria-label="Daftar riwayat lengkap">
-      <div class="open-section-head">
-        <h2 class="text-base fw-700 m-0" id="ag-list-title">Semua catatan retribusi</h2>
-        <span class="text-xs text-secondary tnum" id="ag-list-count">8 catatan</span>
-      </div>
-      <ul class="open-list" id="ag-riwayat-list"></ul>
-      <div id="ag-empty" class="empty-state" hidden style="padding:24px 12px">
-        <span class="text-sm fw-700 text-main">Belum ada catatan</span>
-        <span class="text-xs text-secondary">Pembayaran dan laporan jualan Anda akan tampil di sini.</span>
-      </div>
-    </section>
+    <ul class="v5-list ag-list" id="ag-riwayat-list" aria-live="polite"></ul>
+    <div id="ag-empty" class="v5-card ag-card ag-empty" hidden>
+      <img src="illustrations/data-kosong.webp" width="360" height="332" alt="" loading="lazy">
+      <span class="ag-empty-title" id="ag-empty-title">Belum ada catatan</span>
+      <p class="ag-small" id="ag-empty-desc">Pembayaran QRIS dan laporan jualan Anda tercatat di sini setelah malam pertama.</p>
+      <a href="AnggotaPilihHari.dc.html" class="btn btn-primary" id="ag-empty-cta" hidden>Bayar Retribusi</a>
+    </div>
 
   </main>
 
-  <nav class="bottom-nav" aria-label="Navigasi utama">
-    <a href="Main.dc.html" class="nav-item" data-nav="Main.dc.html">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4.5v-6h3v6H18a1 1 0 0 0 1-1V9.5"/></svg>
-      <span>Beranda</span>
-    </a>
-    <a href="AnggotaRiwayat.dc.html" class="nav-item active" data-nav="AnggotaRiwayat.dc.html" aria-current="page">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      <span>Riwayat</span>
-    </a>
-    <a href="AnggotaQrIdentitas.dc.html" class="nav-item" data-nav="AnggotaQrIdentitas.dc.html">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 20h3"/></svg>
-      <span>QR saya</span>
-    </a>
-    <button type="button" class="nav-item" data-sheet-open="sheet-akun">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span>Akun</span>
-    </button>
-  </nav>
+  <nav class="v5-nav" data-v5-nav="anggota" data-active="riwayat"></nav>
 
   <div id="sheet-bukti-ag" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="ag-sheet-title">
     <div class="sheet">
-      <div class="row between">
-        <div class="stack">
-          <span class="text-xs text-secondary tnum" id="ag-trx-ref">REF QRIS-1011-0412</span>
-          <h2 id="ag-sheet-title" class="text-md m-0 fw-700">Bukti pembayaran retribusi</h2>
-        </div>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup bukti pembayaran">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <div class="ag-sheet-head">
+        <h2 id="ag-sheet-title">Bukti pembayaran</h2>
+        <button type="button" class="v5-icon-btn" data-sheet-close aria-label="Tutup bukti pembayaran">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <ul class="open-list">
-        <li class="open-row">
-          <span class="text-sm text-secondary">Tanggal</span>
-          <span class="text-sm fw-700 tnum" id="ag-trx-date">Sel, 10 Nov</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Keterangan</span>
-          <span class="text-sm fw-700" id="ag-trx-desc">Bayar 7 malam</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Nominal</span>
-          <span class="text-md fw-700 tnum" id="ag-trx-amt">Rp21.000</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Status</span>
-          <span class="badge badge-success">Lunas via QRIS</span>
-        </li>
-      </ul>
+      <div class="ag-rows">
+        <div class="v5-row"><span class="v5-row-label">Referensi</span><span class="v5-row-value mono" id="ag-trx-ref">QRIS</span></div>
+        <div class="v5-row"><span class="v5-row-label">Tanggal</span><span class="v5-row-value" id="ag-trx-date">Sel, 10 Nov</span></div>
+        <div class="v5-row"><span class="v5-row-label">Keterangan</span><span class="v5-row-value" id="ag-trx-desc">Bayar 7 malam</span></div>
+        <div class="v5-row"><span class="v5-row-label">Nominal</span><span class="v5-row-value mono" id="ag-trx-amt">Rp21.000</span></div>
+        <div class="v5-row"><span class="v5-row-label">Status</span><span class="v5-row-value st-success">Lunas via QRIS</span></div>
+      </div>
       <button type="button" class="btn btn-secondary" data-sheet-close>Tutup</button>
-    </div>
-  </div>
-
-  <div id="sheet-akun" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-akun-title">
-    <div class="sheet">
-      <div class="row between">
-        <h2 id="sheet-akun-title" class="text-md m-0 fw-700">Akun anggota</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup informasi akun">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <ul class="open-list">
-        <li class="open-row">
-          <span class="text-sm text-secondary">Nama</span>
-          <span class="text-sm fw-700">Budi Santoso</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Nomor anggota</span>
-          <span class="text-sm fw-700 tnum">0123</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Lapak</span>
-          <span class="text-sm fw-700">Blok C-14</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Penjaga lapak</span>
-          <span class="text-sm fw-700">Rahmat</span>
-        </li>
-      </ul>
-      <div class="stack gap-2">
-        <a href="AnggotaPilihHari.dc.html" class="btn btn-primary no-underline">Bayar Retribusi</a>
-        <a href="MasukId.dc.html" class="btn btn-secondary no-underline">Keluar Akun</a>
-      </div>
     </div>
   </div>
 
@@ -163,116 +87,103 @@
 </x-dc>
 <script>
 (function () {
+  'use strict';
   var currentFilter = 'semua';
-  var TITLES = {
-    semua: 'Semua catatan retribusi',
-    lapor: 'Riwayat lapor jualan',
-    bayar: 'Riwayat pembayaran QRIS'
+  var lastTrigger = null;
+  var EMPTY = {
+    semua: ['Belum ada catatan', 'Pembayaran QRIS dan laporan jualan Anda tercatat di sini setelah malam pertama.', true],
+    aktif: ['Belum ada malam aktif', 'Malam saat Anda lapor jualan atau bayar retribusi akan tampil di sini.', true],
+    tidak_lapor: ['Tidak ada malam tanpa laporan', 'Bagus, setiap malam jualan Anda sudah tercatat.', false]
   };
 
-  function openReceipt(item) {
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function openReceipt(item, trigger) {
     var store = window.APIMA_STORE;
-    document.getElementById('ag-trx-ref').textContent = 'REF ' + (item.ref || 'QRIS-APIMA');
+    document.getElementById('ag-trx-ref').textContent = item.ref || 'QRIS';
     document.getElementById('ag-trx-date').textContent = item.date + (item.time ? ' · ' + item.time : '');
     document.getElementById('ag-trx-desc').textContent = item.title + (item.sub ? ' · ' + item.sub : '');
-    document.getElementById('ag-trx-amt').textContent = store ? store.formatRupiah(item.amount) : ('Rp' + (item.amount || 0).toLocaleString('id-ID'));
+    document.getElementById('ag-trx-amt').textContent = store.formatRupiah(item.amount);
     var sheet = document.getElementById('sheet-bukti-ag');
+    lastTrigger = trigger;
     sheet.hidden = false;
     var closeBtn = sheet.querySelector('[data-sheet-close]');
     if (closeBtn) closeBtn.focus();
   }
 
-  function render(filter) {
-    currentFilter = filter || currentFilter || 'semua';
+  function render() {
     var store = window.APIMA_STORE;
     if (!store) return;
     var st = store.getState();
     var m = store.getActiveMember();
+    var todayShort = store.formatDateInfo(st.dayOffset).short;
     var items = Array.isArray(m.history) ? m.history : [];
-    var totalPaid = store.getHistoryTotal(m);
-    var paid = Math.max(0, parseInt(m.paidNights, 10) || 0);
-
-    var dateEl = document.getElementById('ag-date');
-    if (dateEl) dateEl.textContent = store.formatDateInfo(st.dayOffset).short;
-
-    var totalEl = document.getElementById('ag-total-paid');
-    if (totalEl) totalEl.textContent = store.formatRupiah(totalPaid);
-
-    var pillEl = document.getElementById('ag-paid-nights-pill');
-    if (pillEl) pillEl.textContent = paid + ' malam terbayar';
-
-    var descEl = document.getElementById('ag-summary-desc');
-    if (descEl) {
-      descEl.textContent = 'Sudah dibayar untuk ' + paid + ' malam lagi. Total di atas hanya menjumlahkan baris pembayaran QRIS.';
-    }
-
-    var ctaEl = document.getElementById('ag-primary-cta');
-    if (ctaEl) {
-      ctaEl.textContent = paid > 0 ? 'Tambah Malam Terbayar' : 'Bayar Retribusi';
-    }
-
     var list = items.filter(function (x) {
-      if (currentFilter === 'semua') return true;
-      if (currentFilter === 'bayar') return x.type === 'bayar';
-      if (currentFilter === 'lapor') return x.type === 'lapor' || x.type === 'tidak_lapor';
+      if (currentFilter === 'aktif') return x.type === 'lapor' || x.type === 'bayar';
+      if (currentFilter === 'tidak_lapor') return x.type === 'tidak_lapor';
       return true;
     });
 
-    document.getElementById('ag-list-title').textContent = TITLES[currentFilter] || TITLES.semua;
-    document.getElementById('ag-list-count').textContent = list.length + ' catatan';
     var host = document.getElementById('ag-riwayat-list');
     var emptyEl = document.getElementById('ag-empty');
-
     if (!list.length) {
       host.innerHTML = '';
-      if (emptyEl) emptyEl.hidden = false;
+      host.hidden = true;
+      var e = EMPTY[currentFilter] || EMPTY.semua;
+      document.getElementById('ag-empty-title').textContent = e[0];
+      document.getElementById('ag-empty-desc').textContent = e[1];
+      document.getElementById('ag-empty-cta').hidden = !e[2];
+      emptyEl.hidden = false;
       return;
     }
-    if (emptyEl) emptyEl.hidden = true;
+    emptyEl.hidden = true;
+    host.hidden = false;
 
-    host.innerHTML = list.map(function (it) {
-      var detail = it.title + (it.sub ? ' · ' + it.sub : '');
-      var detailTone = it.type === 'bayar'
-        ? 'text-primary-color fw-500'
-        : (it.type === 'lapor' ? 'text-success fw-500' : 'text-secondary');
-      var right = (it.type === 'bayar' && typeof it.amount === 'number' && it.amount > 0)
-        ? '<button type="button" class="btn-chip" data-ag-ref="' + it.id + '">' + store.formatRupiah(it.amount) + '</button>'
-        : '<span class="text-sm text-secondary tnum">\u2013</span>';
-      return '<li class="open-row">' +
-        '<div class="stack gap-1">' +
-          '<span class="text-sm fw-700 text-main">' + it.date + '</span>' +
-          '<span class="text-xs ' + detailTone + '">' + detail + '</span>' +
-        '</div>' +
-        right +
-      '</li>';
+    host.innerHTML = list.map(function (h) {
+      var date = esc(h.date) + (h.date === todayShort ? ' (Malam ini)' : '');
+      var label = esc(h.title) + (h.sub ? ' · ' + esc(h.sub) : '');
+      var sub = h.type === 'tidak_lapor'
+        ? label
+        : '<span class="tone">' + label + '</span>' + (h.type === 'bayar' ? ' · QRIS' : '');
+      var right = (h.type === 'bayar' && typeof h.amount === 'number' && h.amount > 0)
+        ? '<button type="button" class="ag-list-amt mono" data-ag-ref="' + esc(h.id) + '" aria-label="Lihat bukti pembayaran ' + store.formatRupiah(h.amount) + ', ' + esc(h.date) + '">' + store.formatRupiah(h.amount) + '</button>'
+        : '<span class="ag-list-dash" aria-label="Tanpa pembayaran">–</span>';
+      return '<li><div class="ag-list-main"><span class="ag-list-date">' + date + '</span><span class="ag-list-sub">' + sub + '</span></div>' + right + '</li>';
     }).join('');
 
     host.querySelectorAll('[data-ag-ref]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var found = items.find(function (x) { return x.id === btn.dataset.agRef; });
-        if (found) openReceipt(found);
+        if (found) openReceipt(found, btn);
       });
     });
   }
 
+  var booted = false;
   function boot() {
+    if (booted) return;
+    booted = true;
     var btns = document.querySelectorAll('[data-ag-filter]');
     btns.forEach(function (btn) {
       btn.addEventListener('click', function () {
-        btns.forEach(function (b) {
-          b.classList.remove('active');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-pressed', 'true');
-        render(btn.dataset.agFilter);
+        btns.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+        currentFilter = btn.dataset.agFilter;
+        render();
       });
     });
-    render('semua');
+    var sheet = document.getElementById('sheet-bukti-ag');
+    sheet.querySelectorAll('[data-sheet-close]').forEach(function (b) {
+      b.addEventListener('click', function () { if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; } });
+    });
+    render();
+    window.addEventListener('apima:state-change', render);
   }
 
   window.addEventListener('apima:ready', boot);
-  window.addEventListener('apima:state-change', function () { render(currentFilter); });
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 40); });
   } else {

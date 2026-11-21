@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>APIMA · Pemakaian data</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
@@ -19,70 +21,62 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-primary-tall">
-    <div class="row gap-2">
-      <a href="AktivasiOtp.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke masukkan kode">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </a>
-      <div class="stack gap-1 flex-1">
-        <span class="row gap-2 items-center"><span class="brand-wordmark brand-wordmark-sm"><img src="brand/apima-wordmark-light.webp" width="62" height="22" alt="APIMA" class="wm-light"><img src="brand/apima-wordmark-dark.webp" width="62" height="22" alt="" aria-hidden="true" class="wm-dark"></span><span class="header-eyebrow">Aktifkan akun</span></span>
-        <h1 class="text-md m-0 fw-700">Pemakaian data</h1>
-      </div>
-    </div>
-    <div class="progress-bar" aria-label="Langkah 3 dari 4">
-      <div class="progress-seg done"></div>
-      <div class="progress-seg done"></div>
-      <div class="progress-seg active"></div>
-      <div class="progress-seg"></div>
-      <span class="progress-label tnum">3 / 4</span>
+  <header class="ag-topbar">
+    <a href="AktivasiOtp.dc.html" class="ag-back-link">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Kembali
+    </a>
+    <div class="ag-topbar-right">
+      <span class="ag-step-count mono" aria-hidden="true">3 / 4</span>
+      <button type="button" class="v5-icon-btn boxed theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
     </div>
   </header>
+  <div class="ag-progress" role="progressbar" aria-label="Langkah aktivasi" aria-valuemin="1" aria-valuemax="4" aria-valuenow="3" aria-valuetext="Langkah 3 dari 4"><span style="width:75%"></span></div>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main ag-wide">
 
-    <img src="illustrations/syarat-ketentuan.webp" alt="Ilustrasi pemakaian data dan persetujuan APIMA" class="illus-md">
+    <div class="ag-step-head">
+      <span class="ag-eyebrow">Aktifkan akun</span>
+      <h1 class="ag-step-title">Pemakaian data</h1>
+      <p class="ag-step-desc">Supaya sistem retribusi berjalan, APIMA mencatat data berikut secara aman:</p>
+    </div>
 
-    <section class="open-section" aria-label="Data yang dicatat APIMA">
-      <span class="text-bold">Supaya sistem retribusi berjalan, APIMA mencatat:</span>
-      <ul class="stack gap-2 text-sm text-secondary m-0" style="padding-left:20px">
-        <li>Nama, ID anggota, dan nomor WhatsApp aktif.</li>
-        <li>Foto diri Anda serta foto penjaga lapak.</li>
-        <li>Riwayat malam jualan, pembayaran QRIS, dan hasil cek satgas.</li>
+    <section class="v5-card ag-card" aria-label="Data yang dicatat APIMA">
+      <ul class="ag-checklist">
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Nama, ID anggota, dan nomor WhatsApp aktif.</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Foto diri Anda serta foto penjaga lapak.</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Riwayat malam jualan, pembayaran QRIS, dan hasil cek satgas.</li>
       </ul>
+      <div class="stack" style="gap:8px;padding-top:16px;border-top:1px solid var(--apima-line)">
+        <h2 class="ag-label" style="margin:0;font-family:var(--apima-font);letter-spacing:0">Yang perlu Anda ketahui</h2>
+        <p class="ag-small" style="font-size:14px;line-height:1.65">Data Anda hanya dipakai APIMA untuk pencatatan retribusi dan laporan anggota. Riwayat jualan hanya dibagikan ke koperasi jika diminta sendiri oleh Anda (UU No. 27/2022).</p>
+        <button type="button" class="v5-link" style="align-self:flex-start;min-height:44px;font-size:15px" data-sheet-open="sheet-aturan" aria-haspopup="dialog">Baca Aturan Lengkap</button>
+      </div>
+      <label class="ag-consent">
+        <input type="checkbox" data-consent>
+        <span>Saya menyetujui pencatatan data di atas untuk keperluan retribusi resmi APIMA.</span>
+      </label>
     </section>
-
-    <section class="hero-card" aria-label="Ringkasan kebijakan data">
-      <span class="text-bold">Yang perlu Anda ketahui</span>
-      <p class="text-sm text-secondary m-0">Data Anda hanya dipakai APIMA untuk pencatatan retribusi dan laporan anggota. Riwayat jualan hanya dibagikan ke koperasi jika diminta sendiri oleh Anda.</p>
-      <p class="text-sm text-secondary m-0">Data Anda dijaga keamanannya sesuai aturan perlindungan data.</p>
-      <button type="button" class="btn-chip" data-sheet-open="sheet-aturan">Baca Aturan Lengkap</button>
-    </section>
-
-    <label class="consent-box">
-      <input type="checkbox" data-consent checked>
-      <span class="text-sm">Saya telah membaca dan menyetujui penggunaan data oleh APIMA sesuai penjelasan di atas.</span>
-    </label>
 
   </main>
 
-  <div class="screen-footer">
-    <a href="AktivasiFoto.dc.html" class="btn btn-primary no-underline" data-consent-btn>Setuju dan Lanjut</a>
+  <div class="screen-footer ag-footer">
+    <a href="AktivasiFoto.dc.html" class="btn ag-btn-tonal" data-consent-btn aria-disabled="true">Setuju &amp; Lanjut Foto Diri</a>
   </div>
 
   <div id="sheet-aturan" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-aturan-title">
     <div class="sheet">
-      <div class="row between">
-        <h2 id="sheet-aturan-title" class="text-md m-0 fw-700">Ringkasan aturan data APIMA</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup aturan data">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <div class="ag-sheet-head">
+        <h2 id="sheet-aturan-title">Aturan Perlindungan Data APIMA</h2>
+        <button type="button" class="v5-icon-btn" data-sheet-close aria-label="Tutup aturan data">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <ol class="step-list">
-        <li class="step-item"><span class="step-num">1</span><span>Data tidak dijual atau dibagikan ke pihak luar tanpa persetujuan tertulis Anda.</span></li>
-        <li class="step-item"><span class="step-num">2</span><span>Anda berhak meminta koreksi data atau penonaktifan akun lewat sekretariat APIMA.</span></li>
-        <li class="step-item"><span class="step-num">3</span><span>Catatan pembayaran disimpan minimal 3 tahun untuk keperluan audit koperasi dan asosiasi.</span></li>
-      </ol>
-      <button type="button" class="btn btn-secondary" data-sheet-close>Oke, Mengerti</button>
+      <p class="ag-sheet-text">Seluruh data anggota dikelola sesuai UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi. Data tidak diperjualbelikan dan hanya digunakan untuk administrasi retribusi, verifikasi satgas, serta riwayat koperasi atas persetujuan anggota.</p>
+      <button type="button" class="btn btn-primary" data-sheet-close>Oke, Mengerti</button>
     </div>
   </div>
 

@@ -3,10 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · Pembayaran belum berhasil</title>
+<title>APIMA · Pembayaran Belum Berhasil</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,63 +23,73 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2">
-      <a href="AnggotaQris.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke layar QRIS">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+  <header class="v5-app-header ag-header ag-subheader">
+    <a href="AnggotaQris.dc.html" class="v5-icon-btn ag-back" id="gagal-back" aria-label="Kembali ke layar QRIS">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </a>
+    <h1 class="ag-sub-title">Pembayaran Belum Berhasil</h1>
+    <div class="v5-app-actions">
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a href="MasukId.dc.html" class="v5-icon-btn" aria-label="Keluar akun">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </a>
-      <h1 class="text-md m-0 fw-700">Bayar QRIS</h1>
     </div>
   </header>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main">
 
-    <section class="hero-card tone-danger" aria-label="Pembayaran kedaluwarsa">
-      <div class="row between">
-        <span class="text-sm text-secondary">Status pembayaran</span>
-        <span class="pill pill-danger">
-          <span class="status-dot dot-danger" aria-hidden="true"></span>
-          Belum Berhasil
-        </span>
+    <section class="v5-card ag-card" aria-label="Kode QR pembayaran kedaluwarsa">
+      <div class="ag-row-between" style="padding-bottom:16px;border-bottom:1px solid var(--apima-line)">
+        <span class="ag-muted" style="font-size:15px">Status pembayaran</span>
+        <span class="ag-status st-danger">Belum Berhasil</span>
       </div>
-      <img src="illustrations/error-gagal.webp" alt="Ilustrasi kode QR kedaluwarsa" class="illus-md">
-      <div class="stack gap-1">
-        <span class="text-lg">Kode QR sudah kedaluwarsa</span>
-        <span class="text-sm text-secondary">Tenang, saldo Anda tidak terpotong. Buat kode QR baru untuk lanjut bayar, ya.</span>
+      <span class="ag-icon-tile danger" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <h2 class="ag-state-title">Kode QR sudah kedaluwarsa</h2>
+      <p class="ag-state-desc">Tenang, saldo Anda tidak terpotong. Buat kode QR baru untuk lanjut bayar, ya.</p>
+      <div class="ag-rows ag-rows-top ag-rows-last-line">
+        <div class="v5-row"><span class="v5-row-label">Nominal</span><span class="v5-row-value mono" id="gagal-nominal">Rp3.000 · 1 malam</span></div>
+        <div class="v5-row"><span class="v5-row-label">Status malam ini</span><span class="v5-row-value st-warning">Menunggu Pembayaran</span></div>
+        <div class="v5-row"><span class="v5-row-label">Batas bayar</span><span class="v5-row-value mono">03:00 WIB</span></div>
       </div>
-      <a href="AnggotaQris.dc.html" class="btn btn-primary no-underline">Buat QR Baru</a>
+      <p class="ag-small">Status jualan Anda tetap aman. Selama dibayar sebelum 03:00 WIB, tidak dianggap menunggak.</p>
+      <div class="ag-btn-stack">
+        <a href="AnggotaQris.dc.html" class="btn btn-primary" id="gagal-new-qr">Buat QR Baru</a>
+        <a href="Main.dc.html" class="btn btn-secondary">Bayar Nanti</a>
+      </div>
     </section>
-
-    <section class="open-section" aria-label="Rincian tagihan malam ini">
-      <ul class="open-list">
-        <li class="open-row">
-          <span class="text-sm text-secondary">Nominal</span>
-          <span class="text-sm fw-700 tnum">Rp21.000 · 7 malam</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Status malam ini</span>
-          <span class="badge badge-warning">Menunggu Pembayaran</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Batas bayar</span>
-          <span class="text-sm fw-700 tnum">03:00 WIB</span>
-        </li>
-      </ul>
-    </section>
-
-    <div class="banner banner-neutral">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--apima-text-secondary)" stroke-width="2" class="banner-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      <span class="text-sm text-secondary">Status jualan Anda tetap aman. Selama dibayar sebelum 03:00 WIB, tidak dianggap menunggak.</span>
-    </div>
 
   </main>
 
-  <div class="screen-footer">
-    <a href="Main.dc.html" class="btn btn-ghost no-underline">Bayar Nanti</a>
-  </div>
+  <nav class="v5-nav" data-v5-nav="anggota" data-active="bayar"></nav>
 
 </div>
 </x-dc>
+<script>
+(function () {
+  'use strict';
+  function boot() {
+    var store = window.APIMA_STORE;
+    var params = new URLSearchParams(window.location.search || '');
+    var q = parseInt(params.get('nights'), 10);
+    var nights = (q >= 1 && q <= 30) ? q : (store ? store.getPendingOrder().nights : 1);
+    var price = store ? store.formatRupiah(nights * 3000) : ('Rp' + (nights * 3000).toLocaleString('id-ID'));
+    document.getElementById('gagal-nominal').textContent = price + ' · ' + nights + ' malam';
+    var href = 'AnggotaQris.dc.html?nights=' + nights;
+    document.getElementById('gagal-new-qr').setAttribute('href', href);
+    document.getElementById('gagal-back').setAttribute('href', href);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 40); });
+  } else {
+    setTimeout(boot, 40);
+  }
+})();
+</script>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>

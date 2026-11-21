@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Satgas · Scan QR Anggota</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-satgas.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
 <script src="./lib/jsQR.js"></script>
 <script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,149 +24,177 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2">
-      <a href="SatgasDaftar.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke daftar lapak">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </a>
-      <h1 id="scan-header-title" class="text-md m-0 fw-700">Scan QR Anggota</h1>
+  <header class="v5-app-header sg-header">
+    <a href="SatgasDaftar.dc.html" class="v5-icon-btn sg-back" aria-label="Kembali ke daftar lapak">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 6 4 12 10 18"/></svg>
+    </a>
+    <div class="sg-header-text">
+      <h1 id="scan-header-title" class="v5-app-title">Scan QR Anggota</h1>
+      <span class="v5-app-meta"><span id="scan-today-date">Sab, 14 Nov</span> · Shift Malam</span>
     </div>
-    <span id="scan-today-date" class="text-sm text-secondary tnum">Sab, 14 Nov</span>
+    <div class="v5-app-actions">
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a href="MasukId.dc.html" class="v5-icon-btn" aria-label="Keluar akun petugas" title="Keluar ke halaman masuk">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
+    </div>
   </header>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px 16px 24px">
+  <main class="screen-scroll sg-main">
 
     <!-- 1. KAMERA -->
-    <section id="scan-camera-view" class="stack gap-3" hidden aria-label="Pemindai kamera QR satgas">
-      <div class="scanner-stage" id="scanner-stage">
-        <video id="scanner-video" class="scanner-video" playsinline muted autoplay></video>
-        <canvas id="scanner-canvas" hidden></canvas>
-        <div class="scanner-reticle" aria-hidden="true">
-          <div class="scanner-box"></div>
+    <section id="scan-camera-view" class="sg-main" style="padding:0" hidden aria-label="Pemindai kamera QR satgas">
+      <div id="scan-camera-card" class="v5-card sg-cam-card">
+        <div class="sg-stage" id="scanner-stage">
+          <video id="scanner-video" class="scanner-video" playsinline muted autoplay></video>
+          <canvas id="scanner-canvas" hidden></canvas>
+          <div class="sg-reticle" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h2M20 14h1"/></svg>
+          </div>
+          <span id="scanner-engine-caption" class="sg-stage-caption" aria-live="polite">Arahkan kamera ke QR identitas anggota</span>
+          <button id="btn-torch" type="button" class="sg-torch" hidden aria-pressed="false" aria-label="Nyalakan senter">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10v4l-2 3v10a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V10L7 7z"/><line x1="7" y1="7" x2="17" y2="7"/><line x1="12" y1="12" x2="12" y2="14"/></svg>
+            <span>Senter</span>
+          </button>
         </div>
-        <button id="btn-torch" type="button" class="scanner-torch" hidden aria-pressed="false" aria-label="Nyalakan senter">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12l-2 7H8L6 2z"/><path d="M8 9h8v2a4 4 0 0 1-8 0V9z"/><path d="M12 15v7"/></svg>
-          <span>Senter</span>
-        </button>
-        <span id="scanner-engine-caption" class="scanner-caption">Arahkan kamera ke QR identitas anggota</span>
+
+        <!-- HAPUS SEBELUM PRODUKSI: tombol simulasi scan untuk uji lintas HP -->
+        <div class="sg-demo" id="scan-demo">
+          <p class="sg-demo-label">Simulasi hasil scan otomatis (lintas HP)</p>
+          <div class="sg-demo-grid">
+            <button type="button" class="sg-demo-btn primary" data-demo-scan="budi">Scan Budi (0123)</button>
+            <button type="button" class="sg-demo-btn success" data-demo-scan="dewi">Scan Dewi (Lunas)</button>
+            <button type="button" class="sg-demo-btn danger" data-demo-scan="siti">Scan Siti (Belum)</button>
+            <button type="button" class="sg-demo-btn" data-demo-scan="expired">QR Kedaluwarsa</button>
+          </div>
+          <button type="button" class="sg-text-btn" data-demo-scan="denied">Simulasi kamera ditolak izin</button>
+        </div>
+        <!-- /HAPUS SEBELUM PRODUKSI -->
       </div>
 
-      <div id="scan-camera-denied" class="card card-pad stack gap-3" hidden>
-        <div class="row gap-3 items-start">
-          <span class="icon-tile icon-tile-warning" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+      <div id="scan-camera-denied" class="v5-card sg-denied-card" hidden>
+        <div class="sg-head-row">
+          <span class="sg-tile-icon sm warning" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="3.5"/></svg>
           </span>
-          <div class="stack gap-1">
-            <span class="text-base fw-700 text-main">Kamera belum dapat digunakan</span>
-            <p id="scan-camera-reason" class="text-sm text-secondary m-0">Izin kamera belum diberikan atau perangkat tidak memiliki kamera belakang.</p>
+          <div>
+            <h2 class="sg-card-title">Kamera belum dapat digunakan</h2>
+            <p id="scan-camera-reason" class="sg-card-text">Izin kamera belum diberikan atau perangkat tidak memiliki kamera belakang.</p>
           </div>
         </div>
-        <div class="stack gap-1 text-sm text-secondary" style="padding:10px 12px;border-radius:var(--apima-radius-sm);background:var(--apima-bg-page);border:1px solid var(--apima-line-soft)">
-          <span class="fw-700 text-main">Cara mengizinkan kamera:</span>
-          <span>1. Pastikan halaman dibuka lewat alamat https atau localhost.</span>
-          <span>2. Ketuk ikon gembok atau pengaturan situs di bilah alamat browser.</span>
-          <span>3. Ubah izin Kamera menjadi Izinkan, lalu ketuk Coba Buka Kamera Lagi.</span>
+        <div class="sg-steps">
+          <strong>Cara mengizinkan kamera:</strong>
+          <ol>
+            <li>Pastikan halaman dibuka lewat alamat https atau localhost.</li>
+            <li>Ketuk ikon gembok atau pengaturan situs di bilah alamat browser.</li>
+            <li>Ubah izin Kamera menjadi Izinkan, lalu ketuk Coba Buka Kamera Lagi.</li>
+          </ol>
         </div>
-        <button id="btn-retry-camera" type="button" class="btn btn-secondary">Coba Buka Kamera Lagi</button>
+        <button id="btn-retry-camera" type="button" class="btn btn-primary sg-btn">Coba Buka Kamera Lagi</button>
       </div>
 
-      <div class="card card-pad stack gap-2" aria-label="Input manual nomor anggota">
-        <label for="manual-member-id" class="text-sm fw-700 text-main">Atau masukkan nomor anggota secara manual</label>
-        <div class="row gap-2">
-          <input id="manual-member-id" type="text" inputmode="numeric" maxlength="6" placeholder="Contoh: 0123" class="input flex-1">
-          <button id="btn-manual-lookup" type="button" class="btn btn-primary" style="width:auto;padding:0 18px;white-space:nowrap">Cek ID</button>
+      <div class="v5-card sg-manual-card" aria-label="Input manual nomor anggota">
+        <label for="manual-member-id" class="sg-manual-label">Atau masukkan nomor anggota secara manual</label>
+        <div class="sg-manual-row">
+          <input id="manual-member-id" type="text" inputmode="numeric" maxlength="6" placeholder="Contoh: 0123" class="v5-input" autocomplete="off" aria-describedby="manual-help">
+          <button id="btn-manual-lookup" type="button" class="btn btn-primary">Cek ID</button>
         </div>
-        <span class="text-xs text-secondary">Contoh ID uji: 0123 (Budi), 0456 (Siti), 0311 (Dewi), 0592 (Agus).</span>
+        <p id="manual-help" class="sg-help">Contoh ID uji: <span class="mono">0123</span> (Budi), <span class="mono">0456</span> (Siti), <span class="mono">0311</span> (Dewi), <span class="mono">0592</span> (Agus)</p>
       </div>
     </section>
 
     <!-- 2. QR KEDALUWARSA / TIDAK DIKENALI -->
-    <section id="scan-error-view" class="card stack gap-3 items-center text-center" style="padding:24px 16px" hidden aria-live="polite">
-      <img src="illustrations/tidak-ditemukan.webp" alt="Ilustrasi QR tidak valid" class="illus-md">
-      <h2 id="scan-error-title" class="text-lg m-0 text-main">QR tidak dikenali</h2>
-      <p id="scan-error-msg" class="text-sm text-secondary m-0">QR tidak dikenali.</p>
-      <div class="stack gap-2" style="width:100%">
-        <button id="btn-scan-again-err" type="button" class="btn btn-primary">Scan Ulang QR</button>
-        <button id="btn-manual-from-err" type="button" class="btn btn-secondary">Input Manual Nomor Anggota</button>
+    <section id="scan-error-view" class="v5-card sg-center-card" hidden aria-live="polite">
+      <span class="v5-illus sg-illus-lg"><img src="illustrations/tidak-ditemukan.webp" width="128" height="112" alt=""></span>
+      <h2 id="scan-error-title" class="sg-card-title lg">QR tidak dikenali</h2>
+      <p id="scan-error-msg" class="sg-card-text lg">QR tidak dikenali.</p>
+      <div class="sg-actions">
+        <button id="btn-scan-again-err" type="button" class="btn btn-primary sg-btn">Scan Ulang QR</button>
+        <button id="btn-manual-from-err" type="button" class="btn v5-btn-outline sg-btn">Input Manual Nomor Anggota</button>
       </div>
     </section>
 
     <!-- 3. HASIL OTOMATIS (tanpa pilihan satgas) -->
-    <section id="scan-result-view" class="stack gap-3" hidden aria-label="Hasil pemeriksaan otomatis">
-      <section id="scan-result-hero" class="scan-result-hero tone-success" role="status" aria-live="assertive">
-        <img id="scan-result-illus" src="illustrations/cek-satgas.webp" alt="" class="scan-result-illus">
-        <span id="scan-result-icon" class="scan-result-icon" hidden aria-hidden="true">
-          <svg id="scan-result-icon-unpaid" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          <svg id="scan-result-icon-noreport" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    <section id="scan-result-view" class="sg-main" style="padding:0" hidden aria-label="Hasil pemeriksaan otomatis">
+      <section id="scan-result-hero" class="sg-result tone-success" role="status" aria-live="assertive">
+        <span id="scan-result-illus" class="v5-illus sg-result-illus"><img src="illustrations/cek-satgas.webp" width="96" height="80" alt=""></span>
+        <span id="scan-result-icon" class="sg-tile-icon danger" hidden aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </span>
-        <span class="scan-result-kicker">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-          QR berhasil dibaca
+        <span class="sg-result-kicker">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg>
+          QR berhasil dibaca otomatis
         </span>
-        <h2 id="scan-result-title" class="scan-result-title m-0">Sudah bayar</h2>
-        <span id="scan-result-name" class="scan-result-name">Budi Santoso</span>
-        <span id="scan-result-meta" class="scan-result-meta tnum">ID 0123 · Blok C-14</span>
-        <span id="scan-result-time" class="scan-result-time tnum">Tercatat 22:45 WIB · Sesuai</span>
+        <h2 id="scan-result-title" class="sg-result-title">Sudah bayar</h2>
+        <span id="scan-result-name" class="sg-result-name">Budi Santoso</span>
+        <span id="scan-result-meta" class="sg-result-meta mono">ID 0123 · Blok C-14</span>
+        <span id="scan-result-time" class="sg-result-time">Tercatat 22:45 WIB · Sesuai</span>
       </section>
 
-      <div id="scan-offline-note" role="status" class="banner banner-warning" hidden>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--apima-warning)" stroke-width="2" class="banner-icon" aria-hidden="true"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
-        <span class="text-sm fw-700 text-warning">Tersimpan di HP. Terkirim otomatis saat sinyal kembali.</span>
+      <div id="scan-offline-note" role="status" class="sg-offline-note" hidden>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" y1="2" x2="22" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.17-2.39M19 13a10 10 0 0 0-2.17-1.4M2 8.82a15 15 0 0 1 4.17-2.65M10.66 5c4.01-.36 8.14.9 11.34 3.76M12 20h.01"/></svg>
+        <span class="sg-offline-text"><strong class="sg-offline-title">Tersimpan di HP.</strong> Terkirim otomatis saat sinyal kembali.</span>
       </div>
 
-      <button id="btn-recheck-payment" type="button" class="btn btn-secondary" hidden>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      <button id="btn-recheck-payment" type="button" class="btn v5-btn-outline sg-btn sg-btn-recheck" hidden>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         Cek Ulang Pembayaran
       </button>
 
-      <div class="card card-pad row between items-center gap-2">
-        <span class="text-sm text-secondary">Penjaga terdaftar</span>
-        <span id="scan-penjaga" class="text-sm fw-700 text-main">Jaga sendiri</span>
+      <div class="v5-card sg-kv">
+        <span class="sg-kv-label">Penjaga terdaftar</span>
+        <span id="scan-penjaga" class="sg-kv-value">Jaga sendiri</span>
       </div>
 
-      <p class="m-0 text-center" style="min-height:44px;display:flex;align-items:center;justify-content:center">
-        <button id="btn-report-issue" type="button" class="link-inline" data-sheet-open="sheet-lapor-masalah">Laporkan masalah</button>
+      <p class="sg-link-center m-0">
+        <button id="btn-report-issue" type="button" class="v5-link" data-sheet-open="sheet-lapor-masalah">Laporkan masalah</button>
       </p>
+
+      <div id="scan-result-footer" class="sg-actions" hidden>
+        <button id="btn-scan-next" type="button" class="btn btn-primary sg-btn">Scan Lapak Berikutnya</button>
+        <a href="SatgasDaftar.dc.html" class="btn v5-btn-outline sg-btn">Kembali ke Daftar Lapak</a>
+      </div>
     </section>
 
   </main>
 
-  <div id="scan-result-footer" class="screen-footer" hidden>
-    <button id="btn-scan-next" type="button" class="btn btn-primary">Scan Lapak Berikutnya</button>
-    <a href="SatgasDaftar.dc.html" class="btn btn-secondary no-underline">Kembali ke Daftar Lapak</a>
-  </div>
+  <nav class="v5-nav" data-v5-nav="satgas" data-active="scan"></nav>
 
   <!-- Pengecualian manual: tidak pernah mengubah status menjadi lunas -->
   <div id="sheet-lapor-masalah" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-lapor-title">
-    <div class="sheet">
-      <div class="row between">
-        <h2 id="sheet-lapor-title" class="text-md m-0 fw-700">Laporkan masalah</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup laporan masalah">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <div class="sheet sg-sheet">
+      <div class="sg-sheet-head">
+        <h2 id="sheet-lapor-title">Laporkan masalah</h2>
+        <button type="button" class="v5-icon-btn" data-sheet-close aria-label="Tutup laporan masalah">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <p id="sheet-lapor-member" class="text-sm text-secondary m-0">Budi Santoso · ID 0123 · Blok C-14</p>
-      <fieldset class="m-0 stack gap-2" style="border:none;padding:0">
-        <legend class="text-sm fw-700 text-main" style="padding:0;margin-bottom:8px">Apa masalahnya?</legend>
-        <label class="radio-card" data-issue-option>
+      <p id="sheet-lapor-member" class="sg-help member">Budi Santoso · ID 0123 · Blok C-14</p>
+      <fieldset class="sg-fieldset">
+        <legend class="sg-legend">Apa masalahnya?</legend>
+        <label class="v5-choice sg-choice">
           <input type="radio" name="masalah" value="penjaga_tidak_dikenal" data-label="Penjaga tidak dikenal">
           <span>Penjaga tidak dikenal</span>
+          <span class="v5-choice-check" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg></span>
         </label>
-        <label class="radio-card" data-issue-option>
+        <label class="v5-choice sg-choice">
           <input type="radio" name="masalah" value="bayar_di_tempat" data-label="Bayar di tempat, menunggu konfirmasi">
           <span>Bayar di tempat, menunggu konfirmasi</span>
+          <span class="v5-choice-check" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg></span>
         </label>
       </fieldset>
-      <div class="stack gap-1">
-        <label for="issue-photo" class="btn btn-secondary" style="cursor:pointer">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      <div>
+        <label for="issue-photo" id="issue-photo-btn" class="sg-photo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="3.5"/></svg>
           <span id="issue-photo-label">Ambil Foto Bukti</span>
         </label>
-        <input id="issue-photo" type="file" accept="image/*" capture="environment" hidden>
-        <span id="issue-photo-name" class="text-xs text-secondary text-center">Belum ada foto</span>
+        <input id="issue-photo" type="file" accept="image/*" capture="environment" class="sg-file">
       </div>
-      <p class="text-xs text-secondary m-0">Laporan ini masuk ke daftar tinjauan pengurus dan tidak mengubah status bayar menjadi lunas.</p>
-      <button id="btn-send-issue" type="button" class="btn btn-primary">Kirim Laporan</button>
+      <p class="sg-help">Laporan ini masuk ke daftar tinjauan pengurus dan tidak mengubah status bayar menjadi lunas.</p>
+      <button id="btn-send-issue" type="button" class="btn btn-primary sg-btn">Kirim Laporan</button>
     </div>
   </div>
 
@@ -180,6 +211,7 @@
   var scanTimer = null;
   var hintTimer = null;
   var isScanning = false;
+  var camSession = 0;
   var SCAN_INTERVAL_MS = 150;
   var SCAN_HINT_MS = 10000;
   var SCAN_MIN_SHORT_SIDE = 640;
@@ -191,6 +223,7 @@
   }
 
   function stopCamera() {
+    camSession++;
     isScanning = false;
     if (scanTimer) { clearTimeout(scanTimer); scanTimer = null; }
     if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; }
@@ -200,7 +233,7 @@
     torchOn = false;
     activeTrack = null;
     var torchBtn = document.getElementById('btn-torch');
-    if (torchBtn) { torchBtn.hidden = true; torchBtn.setAttribute('aria-pressed', 'false'); }
+    if (torchBtn) { torchBtn.hidden = true; torchBtn.setAttribute('aria-pressed', 'false'); torchBtn.classList.remove('is-on'); }
     if (activeStream) {
       activeStream.getTracks().forEach(function (t) {
         try { t.stop(); } catch (e) {}
@@ -211,6 +244,8 @@
     if (video) {
       try { video.srcObject = null; } catch (e) {}
     }
+    var stage = document.getElementById('scanner-stage');
+    if (stage) stage.classList.remove('is-live');
   }
 
   function showView(viewName) {
@@ -227,13 +262,8 @@
     if (titleEl) {
       titleEl.textContent = viewName === 'camera' ? 'Scan QR Anggota' : (viewName === 'result' ? 'Hasil pemeriksaan' : 'QR tidak valid');
     }
-  }
-
-  function syncIssueCards() {
-    document.querySelectorAll('input[name="masalah"]').forEach(function (r) {
-      var card = r.closest('.radio-card');
-      if (card) card.classList.toggle('selected', r.checked);
-    });
+    var scroller = document.querySelector('.screen-scroll');
+    if (scroller) scroller.scrollTop = 0;
   }
 
   /* Tampilkan hasil otomatis. opts.record = catat pemeriksaan baru; opts.recheck = perbarui catatan terakhir */
@@ -258,15 +288,26 @@
         resultLabel: result.label,
         metode: scanMethod
       });
+      /* Jualan tanpa bayar juga masuk "Temuan saya" */
+      if (currentCheck && currentCheck.findingId && store.addSatgasOwnFinding) {
+        store.addSatgasOwnFinding({
+          memberId: m.id,
+          temuan: result.label,
+          tone: 'danger',
+          jam: currentCheck.jam,
+          findingId: currentCheck.findingId,
+          sent: !currentCheck.offline
+        });
+      }
     } else if (opts.recheck && currentCheck && currentCheck.resultKey !== result.key) {
+      var oldFindingId = currentCheck.findingId;
       currentCheck = store.updateLastInspection(m.id, result.key, result.label) || currentCheck;
+      if (oldFindingId && store.removeSatgasOwnFinding) store.removeSatgasOwnFinding(oldFindingId);
     }
 
     var hero = document.getElementById('scan-result-hero');
     var illus = document.getElementById('scan-result-illus');
     var iconWrap = document.getElementById('scan-result-icon');
-    var iconUnpaid = document.getElementById('scan-result-icon-unpaid');
-    var iconNoreport = document.getElementById('scan-result-icon-noreport');
     var titleEl = document.getElementById('scan-result-title');
     var nameEl = document.getElementById('scan-result-name');
     var metaEl = document.getElementById('scan-result-meta');
@@ -279,7 +320,7 @@
     var tone = 'tone-success';
     var title = 'Sudah bayar';
     if (m.tonightStatus === 'belum_bayar') { tone = 'tone-danger'; title = 'Belum bayar'; }
-    else if (m.tonightStatus === 'belum_lapor') { tone = 'tone-warning'; title = 'Belum lapor jualan malam ini'; }
+    else if (m.tonightStatus === 'belum_lapor') { tone = 'tone-warning'; title = 'Belum lapor jualan'; }
 
     if (hero) {
       hero.classList.remove('tone-success', 'tone-warning', 'tone-danger');
@@ -287,10 +328,11 @@
     }
     var isPaid = tone === 'tone-success';
     if (illus) illus.hidden = !isPaid;
-    if (iconWrap) iconWrap.hidden = isPaid;
-    /* Elemen SVG tidak punya properti .hidden, jadi pakai atribut */
-    if (iconUnpaid) iconUnpaid.toggleAttribute('hidden', tone !== 'tone-danger');
-    if (iconNoreport) iconNoreport.toggleAttribute('hidden', tone !== 'tone-warning');
+    if (iconWrap) {
+      iconWrap.hidden = isPaid;
+      iconWrap.classList.toggle('danger', tone === 'tone-danger');
+      iconWrap.classList.toggle('warning', tone === 'tone-warning');
+    }
     if (titleEl) titleEl.textContent = title;
     if (nameEl) nameEl.textContent = m.name;
     if (metaEl) metaEl.textContent = 'ID ' + m.id + ' · ' + m.blok;
@@ -345,10 +387,12 @@
   window.apimaProcessScannedQr = processScannedQr;
 
   function showCameraDenied(reasonText) {
-    var stage = document.getElementById('scanner-stage');
+    stopCamera();
+    showView('camera');
+    var card = document.getElementById('scan-camera-card');
     var denied = document.getElementById('scan-camera-denied');
     var reasonEl = document.getElementById('scan-camera-reason');
-    if (stage) stage.hidden = true;
+    if (card) card.hidden = true;
     if (denied) denied.hidden = false;
     if (reasonEl && reasonText) reasonEl.textContent = reasonText;
   }
@@ -379,13 +423,14 @@
     stopCamera();
     showView('camera');
 
-    var stage = document.getElementById('scanner-stage');
+    var card = document.getElementById('scan-camera-card');
     var denied = document.getElementById('scan-camera-denied');
+    var stage = document.getElementById('scanner-stage');
     var video = document.getElementById('scanner-video');
     var canvas = document.getElementById('scanner-canvas');
     var caption = document.getElementById('scanner-engine-caption');
 
-    if (stage) stage.hidden = false;
+    if (card) card.hidden = false;
     if (denied) denied.hidden = true;
     if (caption) caption.textContent = 'Arahkan kamera ke QR identitas anggota';
 
@@ -394,6 +439,7 @@
       return;
     }
 
+    var session = camSession;
     navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: { ideal: 'environment' },
@@ -402,12 +448,19 @@
       },
       audio: false
     }).then(function (stream) {
+      /* Hasil sudah tampil sebelum kamera siap: matikan kamera ini */
+      if (session !== camSession) {
+        stream.getTracks().forEach(function (t) { try { t.stop(); } catch (e) {} });
+        throw { name: 'Stale' };
+      }
       activeStream = stream;
       video.srcObject = stream;
       setupTorch(stream);
       return video.play();
     }).then(function () {
+      if (session !== camSession) return;
       isScanning = true;
+      if (stage) stage.classList.add('is-live');
       var detector = null;
       if (typeof window.BarcodeDetector === 'function') {
         try { detector = new window.BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { detector = null; }
@@ -457,34 +510,58 @@
 
       scanFrame();
     }).catch(function (err) {
+      if (session !== camSession || (err && err.name === 'Stale')) return;
       var msg = 'Izin kamera ditolak atau kamera belakang tidak ditemukan. Izinkan kamera di browser lalu coba lagi, atau masukkan nomor anggota di bawah.';
       if (err && err.name === 'NotAllowedError') {
         msg = 'Izin kamera ditolak. Aktifkan izin kamera untuk situs ini atau masukkan nomor anggota secara manual di bawah.';
       } else if (err && err.name === 'NotFoundError') {
         msg = 'Kamera tidak ditemukan di perangkat ini. Gunakan input manual nomor anggota di bawah.';
       }
+      /* Jangan timpa hasil yang sudah tampil (mis. tombol simulasi ditekan sebelum kamera siap) */
+      var camView = document.getElementById('scan-camera-view');
+      if (camView && camView.hidden) return;
       showCameraDenied(msg);
     });
   }
 
+  /* HAPUS SEBELUM PRODUKSI: simulasi payload QR dari HP anggota */
+  function runDemoScan(kind) {
+    var store = window.APIMA_STORE;
+    if (!store) return;
+    var period = store.getQrPeriod();
+    if (kind === 'denied') {
+      showCameraDenied('Izin kamera belum diberikan atau perangkat tidak memiliki kamera belakang.');
+      return;
+    }
+    var payload;
+    if (kind === 'budi') payload = store.buildIdentityQrPayload('0123');
+    else if (kind === 'dewi') payload = 'APIMA:0311:' + period + ':PAID';
+    else if (kind === 'siti') payload = 'APIMA:0456:' + period + ':UNPAID';
+    else payload = 'APIMA:0123:' + (period - 5);
+    processScannedQr(payload, false);
+  }
+
   function initSatgasScan() {
     var params = new URLSearchParams(window.location.search || '');
-    var openCam = params.get('scan') === '1';
     var requestedId = params.get('id');
     var rawQrParam = params.get('qr');
+
+    var dateStore = window.APIMA_STORE;
+    if (dateStore) {
+      document.getElementById('scan-today-date').textContent = dateStore.formatDateInfo(dateStore.reload().dayOffset).short;
+    }
 
     document.getElementById('btn-retry-camera').addEventListener('click', startCameraScanner);
     document.getElementById('btn-scan-again-err').addEventListener('click', startCameraScanner);
     document.getElementById('btn-scan-next').addEventListener('click', startCameraScanner);
     document.getElementById('btn-manual-from-err').addEventListener('click', function () {
-      stopCamera();
-      showView('camera');
-      var stage = document.getElementById('scanner-stage');
-      var denied = document.getElementById('scan-camera-denied');
-      if (stage) stage.hidden = true;
-      if (denied) denied.hidden = false;
+      showCameraDenied();
       var inp = document.getElementById('manual-member-id');
       if (inp) inp.focus();
+    });
+
+    document.querySelectorAll('[data-demo-scan]').forEach(function (btn) {
+      btn.addEventListener('click', function () { runDemoScan(btn.dataset.demoScan); });
     });
 
     function runManualLookup() {
@@ -492,6 +569,7 @@
       var raw = (inp ? inp.value : '').trim().replace(/[^0-9]/g, '');
       if (!raw) {
         if (window.apimaToast) window.apimaToast('Masukkan 4 digit nomor anggota terlebih dulu.');
+        if (inp) inp.focus();
         return;
       }
       var padded = raw.padStart(4, '0');
@@ -524,15 +602,19 @@
     });
 
     /* Laporan masalah manual (pengecualian, bukan langkah wajib) */
-    document.querySelectorAll('input[name="masalah"]').forEach(function (r) {
-      r.addEventListener('change', syncIssueCards);
-    });
     var photoInput = document.getElementById('issue-photo');
-    var photoName = document.getElementById('issue-photo-name');
+    var photoBtn = document.getElementById('issue-photo-btn');
+    var photoLabel = document.getElementById('issue-photo-label');
+    function resetPhoto() {
+      if (photoInput) photoInput.value = '';
+      if (photoBtn) photoBtn.classList.remove('is-done');
+      if (photoLabel) photoLabel.textContent = 'Ambil Foto Bukti';
+    }
     if (photoInput) {
       photoInput.addEventListener('change', function () {
-        var f = photoInput.files && photoInput.files[0];
-        if (photoName) photoName.textContent = f ? ('Foto: ' + f.name) : 'Belum ada foto';
+        var has = !!(photoInput.files && photoInput.files.length);
+        if (photoBtn) photoBtn.classList.toggle('is-done', has);
+        if (photoLabel) photoLabel.textContent = has ? 'Foto Bukti Terambil (Ketuk untuk ulang)' : 'Ambil Foto Bukti';
       });
     }
     document.getElementById('btn-send-issue').addEventListener('click', function () {
@@ -543,21 +625,23 @@
         return;
       }
       if (store) {
-        store.addFinding({
+        var label = checked.dataset.label || checked.value;
+        var finding = store.addFinding({
           memberId: currentMemberId,
-          temuan: checked.dataset.label || checked.value,
+          temuan: label,
           tone: 'warning',
           metode: scanMethod + (photoInput && photoInput.files && photoInput.files.length ? ' + foto' : '')
         });
+        if (store.addSatgasOwnFinding) {
+          store.addSatgasOwnFinding({ memberId: currentMemberId, temuan: label, tone: 'warning', jam: finding.jam, findingId: finding.id, sent: true });
+        }
       }
       var sheet = document.getElementById('sheet-lapor-masalah');
       if (sheet) sheet.hidden = true;
       var reportBtn = document.getElementById('btn-report-issue');
       if (reportBtn) { reportBtn.textContent = 'Masalah sudah dilaporkan'; reportBtn.disabled = true; }
       checked.checked = false;
-      syncIssueCards();
-      if (photoInput) photoInput.value = '';
-      if (photoName) photoName.textContent = 'Belum ada foto';
+      resetPhoto();
       if (window.apimaToast) window.apimaToast('Laporan terkirim ke pengurus. Status bayar tidak berubah.');
     });
 
@@ -569,7 +653,6 @@
     } else {
       startCameraScanner();
     }
-    void openCam;
 
     window.addEventListener('beforeunload', stopCamera);
   }

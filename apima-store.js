@@ -960,6 +960,176 @@
     updateLastInspection: updateLastInspection
   };
 
+  /* =====================================================================
+     Temuan milik satgas yang sedang masuk (S-01), untuk halaman "Temuan saya".
+     Ditambahkan 22 Nov 2026. Fungsi lama di atas tidak diubah.
+     Tiap catatan: { id, dayOffset, memberId, name, blok, temuan, tone,
+                    jam, sent, findingId, nonMember }
+     sent = false berarti masih "Tersimpan di HP" (belum sampai ke pengurus).
+     Catatan non-"Sesuai" yang belum terkirim baru masuk daftar tinjauan
+     pengurus (st.findings) saat dikirim.
+     PENTING: tidak satu pun fungsi ini mengubah status bayar anggota.
+     ===================================================================== */
+  function seedSatgasOwnFindings() {
+    /* Data uji awal malam pertama: dua sudah terkirim (sama dengan f-1 dan f-3
+       di daftar pengurus), satu masih tersimpan di HP. */
+    return [
+      { id: 'own-seed-1', dayOffset: 0, memberId: '0456', name: 'Siti Aminah', blok: 'Blok B-09', temuan: 'Jualan tanpa bayar', tone: 'danger', jam: '23:41 WIB', sent: true, findingId: 'f-1', nonMember: false },
+      { id: 'own-seed-2', dayOffset: 0, memberId: '0078', name: 'Rahmat Hidayat', blok: 'Blok B-03', temuan: 'Penjaga tidak dikenal', tone: 'warning', jam: '23:05 WIB', sent: false, findingId: null, nonMember: false },
+      { id: 'own-seed-3', dayOffset: 0, memberId: '', name: 'Pedagang bukan anggota', blok: 'Lorong Utara Blok D', temuan: 'Pedagang bukan anggota', tone: 'neutral', jam: '22:55 WIB', sent: true, findingId: 'f-3', nonMember: true }
+    ];
+  }
+
+  function ensureSatgasOwn(st) {
+    if (!Array.isArray(st.satgasOwnFindings)) st.satgasOwnFindings = seedSatgasOwnFindings();
+    return st.satgasOwnFindings;
+  }
+
+  /* Daftar temuan saya untuk malam yang sedang aktif (terbaru di atas) */
+  function getSatgasOwnFindings() {
+    var st = safeRead();
+    if (!Array.isArray(st.satgasOwnFindings)) {
+      var next = cloneState(st);
+      ensureSatgasOwn(next);
+      safeWrite(next);
+      st = next;
+    }
+    var day = parseInt(st.dayOffset, 10) || 0;
+    return st.satgasOwnFindings.filter(function (f) { return (parseInt(f.dayOffset, 10) || 0) === day; });
+  }
+
+  function countPendingSatgasFindings() {
+    return getSatgasOwnFindings().filter(function (f) { return !f.sent; }).length;
+  }
+
+  function toneForTemuan(label) {
+    var t = String(label || '').toLowerCase();
+    if (t === 'sesuai') return 'success';
+    if (t.indexOf('tanpa bayar') !== -1) return 'danger';
+    return 'warning';
+  }
+
+  /* Tambahkan catatan ke "Temuan saya" saja (temuan pengurus sudah dibuat di tempat lain) */
+  function addSatgasOwnFinding(opts) {
+    opts = opts || {};
+    var st = cloneState(safeRead());
+    var list = ensureSatgasOwn(st);
+    var m = opts.memberId ? st.members.find(function (x) { return x.id === String(opts.memberId); }) : null;
+    var entry = {
+      id: 'own-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      dayOffset: parseInt(st.dayOffset, 10) || 0,
+      memberId: m ? m.id : '',
+      name: opts.name || (m ? m.name : 'Pedagang'),
+      blok: opts.blok || (m ? m.blok : 'Pasar Ikan Muara Angke'),
+      temuan: opts.temuan || 'Catatan lapangan',
+      tone: opts.tone || toneForTemuan(opts.temuan),
+      jam: opts.jam || nowTimeWib(),
+      sent: opts.sent !== false,
+      findingId: opts.findingId || null,
+      nonMember: !!opts.nonMember
+    };
+    list.unshift(entry);
+    safeWrite(st);
+    return entry;
+  }
+
+  /* Hapus catatan saya yang terkait temuan pengurus (mis. setelah Cek Ulang menjadi lunas) */
+  function removeSatgasOwnFinding(findingId) {
+    if (!findingId) return false;
+    var st = cloneState(safeRead());
+    var list = ensureSatgasOwn(st);
+    var before = list.length;
+    st.satgasOwnFindings = list.filter(function (f) { return f.findingId !== findingId && f.id !== findingId; });
+    safeWrite(st);
+    return st.satgasOwnFindings.length !== before;
+  }
+
+  function pushOwnToReview(st, entry) {
+    if (entry.findingId || entry.tone === 'success') return;
+    var findingId = 'f-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    st.findings = st.findings || [];
+    st.findings.unshift({
+      id: findingId,
+      temuan: entry.temuan,
+      anggota: entry.nonMember ? 'Tidak terdaftar' : (entry.memberId ? (entry.name + ' (' + entry.memberId + ')') : entry.name),
+      memberId: entry.memberId || '',
+      satgas: 'Satgas A',
+      satgasCode: 'S-01',
+      jam: entry.jam,
+      lokasi: entry.blok + ', Pasar Ikan Muara Angke',
+      tone: entry.tone === 'danger' ? 'danger' : (entry.nonMember ? 'neutral' : 'warning'),
+      reviewed: false
+    });
+    entry.findingId = findingId;
+  }
+
+  /* Catat Temuan manual. opts: { memberId, name, blok, temuan, nonMember, offline, metode }
+     Online: catatan non-"Sesuai" langsung masuk daftar tinjauan pengurus.
+     Offline: disimpan di HP dulu (sent = false) sampai dikirim. */
+  function recordSatgasFinding(opts) {
+    opts = opts || {};
+    var st = cloneState(safeRead());
+    var list = ensureSatgasOwn(st);
+    var m = (!opts.nonMember && opts.memberId) ? st.members.find(function (x) { return x.id === String(opts.memberId); }) : null;
+    var offline = opts.offline != null ? !!opts.offline : (typeof navigator !== 'undefined' && navigator.onLine === false);
+    var timeWib = nowTimeWib();
+    var entry = {
+      id: 'own-' + Date.now(),
+      dayOffset: parseInt(st.dayOffset, 10) || 0,
+      memberId: m ? m.id : '',
+      name: opts.name || (m ? m.name : (opts.nonMember ? 'Pedagang bukan anggota' : 'Pedagang')),
+      blok: opts.blok || (m ? m.blok : 'Pasar Ikan Muara Angke'),
+      temuan: opts.temuan || 'Catatan lapangan',
+      tone: toneForTemuan(opts.temuan),
+      jam: timeWib,
+      sent: !offline,
+      findingId: null,
+      nonMember: !!opts.nonMember
+    };
+    if (!offline) pushOwnToReview(st, entry);
+
+    st.satgasLogs = st.satgasLogs || [];
+    st.satgasLogs.unshift({
+      id: 'log-' + Date.now(),
+      jam: timeWib.replace(' WIB', ''),
+      satgas: 'Ahmad Fauzi (S-01)',
+      satgasCode: 'S-01',
+      anggota: entry.nonMember ? ('Bukan anggota: ' + entry.name) : (entry.memberId ? (entry.name + ' (' + entry.memberId + ')') : entry.name),
+      metode: opts.metode || 'Catat manual + foto',
+      zona: entry.blok + ' · 6.1071 S, 106.7742 E',
+      hasil: entry.temuan,
+      badge: entry.tone === 'danger' ? 'badge-danger' : (entry.tone === 'success' ? 'badge-success' : 'badge-warning')
+    });
+
+    list.unshift(entry);
+    /* PENTING: catatan satgas TIDAK PERNAH mengubah status pembayaran menjadi lunas */
+    safeWrite(st);
+    return entry;
+  }
+
+  /* Kirim semua catatan yang masih tersimpan di HP. Mengembalikan jumlah yang terkirim. */
+  function sendPendingSatgasFindings() {
+    var st = cloneState(safeRead());
+    var list = ensureSatgasOwn(st);
+    var day = parseInt(st.dayOffset, 10) || 0;
+    var count = 0;
+    list.forEach(function (entry) {
+      if ((parseInt(entry.dayOffset, 10) || 0) !== day || entry.sent) return;
+      pushOwnToReview(st, entry);
+      entry.sent = true;
+      count++;
+    });
+    safeWrite(st);
+    return count;
+  }
+
+  window.APIMA_STORE.getSatgasOwnFindings = getSatgasOwnFindings;
+  window.APIMA_STORE.countPendingSatgasFindings = countPendingSatgasFindings;
+  window.APIMA_STORE.addSatgasOwnFinding = addSatgasOwnFinding;
+  window.APIMA_STORE.removeSatgasOwnFinding = removeSatgasOwnFinding;
+  window.APIMA_STORE.recordSatgasFinding = recordSatgasFinding;
+  window.APIMA_STORE.sendPendingSatgasFindings = sendPendingSatgasFindings;
+
   function bootTestUi() {
     safeRead();
     mountTestPanel();

@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>APIMA · Masukkan PIN</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
@@ -19,49 +21,52 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2">
-      <a href="MasukKode.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke masukkan kode">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </a>
-      <div class="stack">
-        <span class="header-eyebrow tnum">ID A-01</span>
-        <h1 class="text-md m-0 fw-700">Masukkan PIN</h1>
-      </div>
-    </div>
+  <header class="ag-topbar">
+    <a href="MasukKode.dc.html" class="ag-back-link">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Kembali
+    </a>
+    <button type="button" class="v5-icon-btn boxed theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+      <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
   </header>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main ag-wide">
 
-    <section class="hero-card" aria-label="Isian PIN pengurus">
-      <img src="illustrations/konfirmasi-pin.webp" alt="Ilustrasi konfirmasi PIN pengurus" class="illus-md">
-      <div class="stack gap-2">
-        <label for="pin" class="text-bold">PIN pengurus 6 angka</label>
-        <input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="······" class="input-otp">
-        <span class="text-sm text-secondary">Pengaman tambahan sebelum Anda membuka data setoran dan dashboard pengurus.</span>
+    <div class="ag-step-head">
+      <span class="ag-eyebrow mono">ID A-01</span>
+      <h1 class="ag-step-title">Masukkan PIN</h1>
+      <p class="ag-step-desc">Pengaman tambahan sebelum Anda membuka data setoran dan dashboard pengurus.</p>
+    </div>
+
+    <section class="v5-card ag-card" aria-label="Isian PIN pengurus">
+      <div class="ag-field">
+        <label for="pin" class="ag-label" style="font-size:14px">PIN pengurus 6 angka</label>
+        <input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="······" class="ag-otp" autocomplete="current-password">
+      </div>
+      <div class="ag-resend">
+        <span>Lupa PIN?</span>
+        <button type="button" class="v5-link" data-sheet-open="sheet-bantuan-pin" aria-haspopup="dialog">Hubungi Pengurus</button>
       </div>
     </section>
 
   </main>
 
-  <div class="screen-footer">
-    <a href="AdminRingkasan.dc.html" class="btn btn-primary no-underline">Buka Dashboard</a>
-    <p class="login-help-row m-0 text-sm text-secondary text-center">
-      <span>Lupa PIN?</span>
-      <button type="button" class="link-inline" data-sheet-open="sheet-bantuan-pin">Hubungi Pengurus</button>
-    </p>
+  <div class="screen-footer ag-footer">
+    <a href="AdminRingkasan.dc.html" class="btn btn-primary">Buka Dashboard</a>
   </div>
 
   <div id="sheet-bantuan-pin" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-pin-title">
     <div class="sheet">
-      <div class="row between">
-        <h2 id="sheet-pin-title" class="text-md m-0 fw-700">Atur ulang PIN pengurus</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup bantuan PIN">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <div class="ag-sheet-head">
+        <h2 id="sheet-pin-title">Atur ulang PIN pengurus</h2>
+        <button type="button" class="v5-icon-btn" data-sheet-close aria-label="Tutup bantuan PIN">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <p class="text-sm text-secondary m-0">Demi keamanan kas retribusi, pengaturan ulang PIN hanya dilakukan oleh pengurus utama APIMA setelah verifikasi langsung.</p>
-      <button type="button" class="btn btn-secondary" data-sheet-close>Oke, Mengerti</button>
+      <p class="ag-sheet-text">Demi keamanan kas retribusi, pengaturan ulang PIN hanya dilakukan oleh pengurus utama APIMA setelah verifikasi langsung.</p>
+      <button type="button" class="btn btn-primary" data-sheet-close>Oke, Mengerti</button>
     </div>
   </div>
 

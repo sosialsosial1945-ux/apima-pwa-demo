@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Profil Pengurus</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./admin.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-admin.css">
+<script src="./support.js"></script>
+<script src="./apima-store.js"></script>
+<script src="./admin-charts.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" href="./icons/icon-192.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body class="adm-body">
+<x-dc>
+<div class="adm admin-shell">
+  <aside class="adm-side" id="adm-side" aria-label="Menu pengurus"></aside>
+  <div class="adm-main">
+    <header class="adm-top" id="adm-top"></header>
+
+    <main class="adm-content" id="main">
+
+      <section class="adm-card pf-head" aria-label="Identitas pengurus">
+        <div class="pf-id">
+          <span class="pf-avatar" aria-hidden="true">HD</span>
+          <div>
+            <h2 class="pf-name">H. Darmawan</h2>
+            <p class="pf-mail">pengurus@apima.id · Ketua Operasional</p>
+          </div>
+        </div>
+        <div class="adm-pills" role="tablist" aria-label="Bagian profil">
+          <button type="button" class="adm-pill is-active" role="tab" id="pf-tab-ringkasan" aria-selected="true" aria-controls="pf-panel-ringkasan" data-pf-tab="ringkasan">Ringkasan</button>
+          <button type="button" class="adm-pill" role="tab" id="pf-tab-tim" aria-selected="false" aria-controls="pf-panel-tim" data-pf-tab="tim" tabindex="-1">Tim Satgas</button>
+          <button type="button" class="adm-pill" role="tab" id="pf-tab-atur" aria-selected="false" aria-controls="pf-panel-atur" data-pf-tab="atur" tabindex="-1">Pengaturan</button>
+        </div>
+      </section>
+
+      <section class="pf-row1" aria-label="Status pengurus">
+        <article class="pf-welcome">
+          <h2>Selamat datang kembali!</h2>
+          <p>Shift malam Pasar Muara Angke berjalan tertib, H. Darmawan.</p>
+          <a class="rk-hero-link" href="AdminRingkasan.dc.html">Lihat Ringkasan Pasar <span data-icon="arrow" data-icon-size="16"></span></a>
+        </article>
+
+        <article class="adm-card" aria-labelledby="pf-status-title">
+          <div>
+            <h2 class="adm-card-title" id="pf-status-title">Status Operasional Pasar</h2>
+            <p class="adm-card-sub">Pemantauan kepatuhan dan patroli shift malam secara langsung.</p>
+          </div>
+          <div class="pf-status">
+            <div class="pf-ring-col">
+              <div class="adm-ring" id="pf-ring"></div>
+              <div class="pf-clock"><span class="mono" id="pf-countdown">03 jam 18 mnt</span><span id="pf-countdown-cap">Menuju tutup shift 03:00 WIB</span></div>
+            </div>
+            <div class="pf-minis">
+              <div class="pf-mini"><div class="pf-mini-top"><span class="pf-mini-label">Lapak Dicek</span><span class="adm-ico-tile" data-icon="store" data-icon-size="18"></span></div><span class="pf-mini-val mono" id="pf-checked">212</span></div>
+              <div class="pf-mini"><div class="pf-mini-top"><span class="pf-mini-label">Efisiensi QRIS</span><span class="is-plain-ico" data-icon="trend" data-icon-size="22"></span></div><span class="pf-mini-val is-success mono">+20%</span></div>
+              <div class="pf-mini"><div class="pf-mini-top"><span class="pf-mini-label">Kecepatan Cek</span><span class="adm-ico-tile" data-icon="zap" data-icon-size="18"></span></div><span class="pf-mini-val mono">57/jam</span></div>
+              <div class="pf-mini"><div class="pf-mini-top"><span class="pf-mini-label">Malam Pekan Ini</span><span class="is-blue-ico" data-icon="pulse" data-icon-size="22"></span></div><span class="pf-mini-val mono">3.780</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="adm-card" aria-labelledby="pf-info-title">
+          <h2 class="adm-card-title" id="pf-info-title">Informasi Pengurus</h2>
+          <p class="pf-info-text">Mengelola operasional retribusi harian, penjadwalan patroli satgas, serta transparansi laporan keuangan Asosiasi Pedagang Ikan Muara Angke.</p>
+          <dl class="pf-info">
+            <div><dt>Nama Lengkap:</dt><dd>H. Darmawan</dd></div>
+            <div><dt>WhatsApp:</dt><dd class="mono">+62 812-8840-1945</dd></div>
+            <div><dt>Email:</dt><dd>pengurus@apima.id</dd></div>
+            <div><dt>Lokasi:</dt><dd>Muara Angke, Jakarta Utara</dd></div>
+          </dl>
+        </article>
+      </section>
+
+      <section class="pf-row2" id="pf-panel-ringkasan" role="tabpanel" aria-labelledby="pf-tab-ringkasan">
+        <article class="adm-card" aria-labelledby="pf-set-title-1">
+          <h2 class="adm-card-title" id="pf-set-title-1">Pengaturan Sistem</h2>
+          <div data-settings="ringkas"></div>
+        </article>
+        <article class="adm-card" aria-labelledby="pf-zone-title-1">
+          <div>
+            <h2 class="adm-card-title" id="pf-zone-title-1">Zona Patroli Prioritas</h2>
+            <p class="adm-card-sub">Pembagian pengawasan lapangan oleh tim Satgas APIMA</p>
+          </div>
+          <div class="pf-zones" data-zones></div>
+        </article>
+      </section>
+
+      <section class="pf-row2 is-team" id="pf-panel-tim" role="tabpanel" aria-labelledby="pf-tab-tim" hidden>
+        <article class="adm-card" aria-labelledby="pf-team-title">
+          <div>
+            <h2 class="adm-card-title" id="pf-team-title">Tim Satgas Malam Ini</h2>
+            <p class="adm-card-sub">Dua petugas lapangan aktif pada shift 20:00 – 03:00 WIB</p>
+          </div>
+          <div class="pf-team" id="pf-team"></div>
+        </article>
+        <article class="adm-card" aria-labelledby="pf-zone-title-2">
+          <div>
+            <h2 class="adm-card-title" id="pf-zone-title-2">Zona Patroli Prioritas</h2>
+            <p class="adm-card-sub">Pembagian pengawasan lapangan oleh tim Satgas APIMA</p>
+          </div>
+          <div class="pf-zones" data-zones></div>
+        </article>
+      </section>
+
+      <section class="pf-row2" id="pf-panel-atur" role="tabpanel" aria-labelledby="pf-tab-atur" hidden>
+        <article class="adm-card" aria-labelledby="pf-set-title-2">
+          <h2 class="adm-card-title" id="pf-set-title-2">Pengaturan Sistem</h2>
+          <div data-settings="lengkap"></div>
+        </article>
+        <article class="adm-card" aria-labelledby="pf-acc-title">
+          <div>
+            <h2 class="adm-card-title" id="pf-acc-title">Akun dan Keamanan</h2>
+            <p class="adm-card-sub">Pengaturan tersimpan di perangkat ini untuk demo prototipe.</p>
+          </div>
+          <div class="adm-kv">
+            <div class="adm-kv-row"><span>Peran</span><span>Ketua Operasional</span></div>
+            <div class="adm-kv-row"><span>Akses</span><span>Ringkasan, Laporan, Riwayat, Anggota, Satgas</span></div>
+            <div class="adm-kv-row"><span>Masuk terakhir</span><span class="mono" id="pf-last-login">Sab, 14 Nov 2026 · 19:58 WIB</span></div>
+            <div class="adm-kv-row"><span>Perangkat</span><span>Laptop sekretariat APIMA</span></div>
+          </div>
+          <div class="adm-hero-actions">
+            <a class="adm-btn adm-btn-ghost" href="MasukId.dc.html"><span data-icon="logout" data-icon-size="16"></span>Keluar Akun</a>
+          </div>
+        </article>
+      </section>
+
+    </main>
+
+    <footer class="adm-foot" id="adm-foot"></footer>
+  </div>
+</div>
+<script>APIMA_ADMIN.mountShell({ page: 'profil', title: 'Profil Pengurus', sample: true });</script>
+</x-dc>
+<script>
+(function () {
+  var A = window.APIMA_ADMIN;
+  var KEY = 'apima-admin-settings';
+  var GROUPS = [
+    { label: 'Operasional shift', items: [
+      { k: 'notifTelat', t: 'Notifikasi saat pedagang telat bayar', on: true },
+      { k: 'notifTemuan', t: 'Peringatan temuan baru dari satgas', on: true },
+      { k: 'ringkasPagi', t: 'Ringkasan otomatis pukul 04:00 WIB', on: true }
+    ] },
+    { label: 'Aplikasi dan laporan', items: [
+      { k: 'rekonQris', t: 'Rekonsiliasi QRIS otomatis harian', on: true },
+      { k: 'csvEmail', t: 'Kirim rekap CSV mingguan ke email', on: false },
+      { k: 'gelapMalam', t: 'Aktifkan mode gelap saat shift malam', on: true }
+    ] },
+    { label: 'Keamanan akun', full: true, items: [
+      { k: 'otpBaru', t: 'Minta kode OTP saat masuk dari perangkat baru', on: true },
+      { k: 'autoKeluar', t: 'Keluar otomatis setelah 30 menit tidak aktif', on: true }
+    ] }
+  ];
+  var ZONES = [
+    { no: 1, cls: 'z1', name: 'Blok A – B', tag: 'Satgas A · 92%', text: 'Area pelelangan ikan segar dan transaksi grosir awal malam.' },
+    { no: 2, cls: 'z2', name: 'Blok C – D', tag: 'Satgas A + B · 81%', text: 'Koridor utama pedagang harian dengan volume QRIS tertinggi.' },
+    { no: 3, cls: 'z3', name: 'Blok E – F', tag: 'Satgas B · 68%', text: 'Area distribusi pendingin, udang, dan bongkar muat subuh.' }
+  ];
+
+  function load() {
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
+    return saved;
+  }
+  function save(obj) { try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch (e) {} }
+
+  function renderSettings() {
+    var saved = load();
+    document.querySelectorAll('[data-settings]').forEach(function (host) {
+      var full = host.getAttribute('data-settings') === 'lengkap';
+      var pre = 'set-' + host.getAttribute('data-settings') + '-';
+      host.innerHTML = GROUPS.filter(function (g) { return full || !g.full; }).map(function (g) {
+        return '<div class="pf-set-group" role="group" aria-label="' + A.esc(g.label) + '"><span class="pf-set-label">' + A.esc(g.label) + '</span>' +
+          g.items.map(function (it) {
+            var on = saved[it.k] != null ? !!saved[it.k] : it.on;
+            return '<label class="adm-switch" for="' + pre + it.k + '"><input type="checkbox" role="switch" id="' + pre + it.k + '" data-set="' + it.k + '"' + (on ? ' checked' : '') + '><span class="adm-switch-ui" aria-hidden="true"></span><span>' + A.esc(it.t) + '</span></label>';
+          }).join('') + '</div>';
+      }).join('');
+    });
+    document.querySelectorAll('[data-set]').forEach(function (inp) {
+      inp.addEventListener('change', function () {
+        var s = load();
+        s[inp.getAttribute('data-set')] = inp.checked;
+        save(s);
+        document.querySelectorAll('[data-set="' + inp.getAttribute('data-set') + '"]').forEach(function (o) { o.checked = inp.checked; });
+        A.toast((inp.checked ? 'Diaktifkan: ' : 'Dimatikan: ') + inp.parentNode.textContent.trim());
+      });
+    });
+  }
+
+  function renderZones() {
+    document.querySelectorAll('[data-zones]').forEach(function (host) {
+      host.innerHTML = ZONES.map(function (z) {
+        return '<div class="pf-zone">' +
+          '<div class="pf-zone-art ' + z.cls + '">' + A.icon('shield', 26) + '<span class="mono">' + A.esc(z.tag) + '</span></div>' +
+          '<span class="pf-zone-no">Zona ' + z.no + '</span>' +
+          '<h3 class="pf-zone-name">' + A.esc(z.name) + '</h3>' +
+          '<p>' + A.esc(z.text) + '</p>' +
+          '<a class="adm-btn adm-btn-ghost" href="AdminSatgas.dc.html" aria-label="Lihat detail ' + A.esc(z.name) + '">Lihat Detail</a>' +
+        '</div>';
+      }).join('');
+    });
+  }
+
+  function renderLive() {
+    var st = A.state();
+    var logs = st && Array.isArray(st.satgasLogs) ? st.satgasLogs : [];
+    var s1 = 118 + logs.filter(function (l) { return (l.satgasCode || 'S-01') === 'S-01'; }).length;
+    var s2 = 94 + logs.filter(function (l) { return l.satgasCode === 'S-02'; }).length;
+    var open = A.openFindings();
+    document.getElementById('pf-checked').textContent = s1 + s2;
+    A.charts.ring(document.getElementById('pf-ring'), 94.6,
+      '<span class="adm-ico-inline st-ok">' + A.icon('zap', 18) + '</span><span class="ring-num">94,6%</span><span class="ring-cap">Kepatuhan</span>',
+      'Kepatuhan bayar 94,6 persen', 148);
+    var team = [
+      { code: 'S-01', init: 'AF', name: 'Ahmad Fauzi', area: 'Blok A, B, C', phone: '+62 812-3301-4471', checked: s1, status: 'Aktif · 23:41 WIB', cls: 'st-ok' },
+      { code: 'S-02', init: 'DK', name: 'Dedi Kurniawan', area: 'Blok D, E, F', phone: '+62 813-1790-2265', checked: s2, status: '3 Belum Terkirim', cls: 'st-warn' }
+    ];
+    document.getElementById('pf-team').innerHTML = team.map(function (t) {
+      var f = open.filter(function (x) { return (x.satgasCode || 'S-01') === t.code; }).length;
+      return '<div class="adm-find">' +
+        '<div class="sg-head"><span class="sg-avatar" aria-hidden="true">' + t.init + '</span><div><span class="sg-id">ID ' + t.code + ' · ' + A.esc(t.area) + '</span><h3 class="sg-name">' + A.esc(t.name) + '</h3></div></div>' +
+        '<span class="adm-find-meta mono">' + A.esc(t.phone) + '</span>' +
+        '<span class="adm-find-type ' + t.cls + '">' + A.esc(t.status) + '</span>' +
+        '<div class="sg-tiles"><div class="adm-tile"><span class="adm-tile-label">Lapak dicek</span><span class="adm-tile-val">' + t.checked + '</span></div>' +
+        '<div class="adm-tile"><span class="adm-tile-label">Temuan terbuka</span><span class="adm-tile-val is-warning">' + f + '</span></div></div>' +
+        '<a class="adm-btn adm-btn-ghost" href="AdminSatgas.dc.html">Lihat Kinerja</a>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderClock() {
+    var now = new Date();
+    var h = now.getHours(), m = now.getMinutes();
+    var el = document.getElementById('pf-countdown');
+    var cap = document.getElementById('pf-countdown-cap');
+    if (h >= 20 || h < 3) {
+      var mins = ((3 - h + 24) % 24) * 60 - m;
+      el.textContent = String(Math.floor(mins / 60)).padStart(2, '0') + ' jam ' + String(mins % 60).padStart(2, '0') + ' mnt';
+      cap.textContent = 'Menuju tutup shift 03:00 WIB';
+    } else {
+      var toStart = (20 - h) * 60 - m;
+      el.textContent = String(Math.floor(toStart / 60)).padStart(2, '0') + ' jam ' + String(toStart % 60).padStart(2, '0') + ' mnt';
+      cap.textContent = 'Menuju buka shift 20:00 WIB';
+    }
+  }
+
+  function selectTab(key, focus) {
+    document.querySelectorAll('[data-pf-tab]').forEach(function (b) {
+      var on = b.getAttribute('data-pf-tab') === key;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+      if (on && focus) b.focus();
+    });
+    ['ringkasan', 'tim', 'atur'].forEach(function (k) {
+      document.getElementById('pf-panel-' + k).hidden = k !== key;
+    });
+  }
+
+  A.onReady(function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-pf-tab]'));
+    tabs.forEach(function (b, i) {
+      b.addEventListener('click', function () { selectTab(b.getAttribute('data-pf-tab')); });
+      b.addEventListener('keydown', function (e) {
+        var j = e.key === 'ArrowRight' ? (i + 1) % tabs.length : e.key === 'ArrowLeft' ? (i - 1 + tabs.length) % tabs.length : -1;
+        if (j !== -1) { e.preventDefault(); selectTab(tabs[j].getAttribute('data-pf-tab'), true); }
+      });
+    });
+    renderSettings();
+    renderZones();
+    renderLive();
+    renderClock();
+    setInterval(renderClock, 30000);
+    A.setCsv(function () {
+      var rows = [['Bagian', 'Nama', 'Keterangan']];
+      ZONES.forEach(function (z) { rows.push(['Zona patroli ' + z.no, z.name, z.tag]); });
+      var s = load();
+      GROUPS.forEach(function (g) { g.items.forEach(function (it) { rows.push(['Pengaturan', it.t, (s[it.k] != null ? s[it.k] : it.on) ? 'Aktif' : 'Nonaktif']); }); });
+      A.downloadCsv('profil-pengurus-apima.csv', rows, 'Data profil dan pengaturan (.csv) berhasil diunduh.');
+    });
+    A.onStore(renderLive);
+  });
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

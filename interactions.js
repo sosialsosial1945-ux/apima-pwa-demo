@@ -310,13 +310,23 @@
       var initialResend = parseInt(resendAfter.dataset.resendAfter || '45', 10);
       var rsecs = initialResend;
       var resendTimer = null;
+      /* Opsional: [data-resend-label] (kalimat hitung mundur) dan [data-resend-ready] (kalimat saat siap) */
+      var resendLabel = document.querySelector('[data-resend-label]');
+      var resendReady = document.querySelector('[data-resend-ready]');
       function startResendTimer() {
         clearTimeout(resendTimer);
         resendBtn.disabled = true;
+        if (resendLabel) resendLabel.hidden = false;
+        if (resendReady) resendReady.hidden = true;
         function tickResend() {
           if (rsecs <= 0) {
             resendBtn.disabled = false;
-            resendAfter.textContent = 'siap dikirim';
+            if (resendLabel && resendReady) {
+              resendLabel.hidden = true;
+              resendReady.hidden = false;
+            } else {
+              resendAfter.textContent = 'siap dikirim';
+            }
             return;
           }
           var m = Math.floor(rsecs / 60);
@@ -400,6 +410,7 @@
           var revokeTrigger = document.querySelector('[data-sheet-open="sheet-cabut"]');
           if (revokeTrigger) {
             revokeTrigger.disabled = false;
+            revokeTrigger.hidden = false;
             revokeTrigger.textContent = 'Nonaktifkan Akses Penjaga';
           }
           var statusEl = document.getElementById('qr-penjaga-status');
@@ -432,14 +443,16 @@
         var sheet = revokeConfirm.closest('.sheet-backdrop');
         closeSheet(sheet);
         if (window.APIMA_STORE) window.APIMA_STORE.setPenjagaActive(false);
+        /* Tombol cabut disembunyikan; muncul lagi setelah QR dibagikan ulang */
         var trigger = document.querySelector('[data-sheet-open="sheet-cabut"]');
-        if (trigger) {
-          trigger.textContent = 'Akses Penjaga Dinonaktifkan';
-          trigger.disabled = true;
-        }
+        if (trigger) trigger.hidden = true;
         var statusEl = document.getElementById('qr-penjaga-status');
-        if (statusEl) statusEl.textContent = 'Rahmat · Nonaktif';
-        showToast('Akses QR penjaga lapak sudah dinonaktifkan.');
+        if (statusEl) {
+          var mem = window.APIMA_STORE ? window.APIMA_STORE.getActiveMember() : null;
+          var pName = (mem && mem.penjaga && mem.penjaga !== 'Jaga sendiri') ? mem.penjaga : 'Rahmat';
+          statusEl.textContent = pName + ' · Nonaktif';
+        }
+        showToast('Akses QR penjaga lapak dinonaktifkan.');
       });
     }
 
@@ -647,27 +660,46 @@
     var loginForm = document.querySelector('[data-login-form]');
     var loginIdInput = document.querySelector('[data-login-id]');
     var loginPwInput = document.querySelector('[data-login-password]');
+    var loginError = document.querySelector('[data-login-error]');
+    function setLoginError(msg) {
+      /* Pesan galat tampil di dalam kartu (bukan toast) bila elemennya ada */
+      if (loginError) {
+        loginError.textContent = msg || '';
+        loginError.hidden = !msg;
+      } else if (msg) {
+        showToast(msg);
+      }
+    }
     if (loginForm && loginIdInput) {
       [loginIdInput, loginPwInput].forEach(function (inp) {
         if (!inp) return;
-        inp.addEventListener('input', function () { inp.classList.remove('error'); });
+        inp.addEventListener('input', function () {
+          inp.classList.remove('error');
+          inp.removeAttribute('aria-invalid');
+          if (loginError && !loginError.hidden) setLoginError('');
+        });
       });
       loginForm.addEventListener('submit', function (e) {
         e.preventDefault();
         var idVal = normalizeLoginId(loginIdInput.value);
         var pwVal = loginPwInput ? loginPwInput.value.trim() : '';
-        if (!idVal) {
-          loginIdInput.classList.add('error');
-          loginIdInput.focus();
-          showToast('Masukkan ID Anda terlebih dulu.');
+        var idEmpty = !idVal;
+        var pwEmpty = !!loginPwInput && !pwVal;
+        if (idEmpty || pwEmpty) {
+          loginIdInput.toggleAttribute('aria-invalid', idEmpty);
+          loginIdInput.classList.toggle('error', idEmpty);
+          if (loginPwInput) {
+            loginPwInput.toggleAttribute('aria-invalid', pwEmpty);
+            loginPwInput.classList.toggle('error', pwEmpty);
+          }
+          var msg = (idEmpty && pwEmpty)
+            ? 'Masukkan ID dan password akun Anda terlebih dahulu.'
+            : (idEmpty ? 'Masukkan ID akun Anda terlebih dahulu.' : 'Masukkan password akun Anda terlebih dahulu.');
+          setLoginError(msg);
+          (idEmpty ? loginIdInput : loginPwInput).focus();
           return;
         }
-        if (loginPwInput && !pwVal) {
-          loginPwInput.classList.add('error');
-          loginPwInput.focus();
-          showToast('Masukkan password Anda terlebih dulu.');
-          return;
-        }
+        setLoginError('');
         try { sessionStorage.setItem('apima-login-id', idVal); } catch (err) {}
         location.href = resolveDirectDestinationById(idVal);
       });
@@ -764,6 +796,30 @@
     });
 
     initSlidingPills();
+
+    /* Header anggota v5: nama, blok, ID, tanggal malam ini dari APIMA_STORE */
+    function fillMemberHeader() {
+      var store = window.APIMA_STORE;
+      if (!store) return;
+      var m = store.getActiveMember();
+      var st = store.getState();
+      var dShort = store.formatDateInfo(st.dayOffset).short;
+      document.querySelectorAll('[data-ag-name]').forEach(function (el) { el.textContent = m.name; });
+      document.querySelectorAll('[data-ag-meta]').forEach(function (el) {
+        el.innerHTML = '';
+        el.appendChild(document.createTextNode(m.blok + ' · ID '));
+        var idEl = document.createElement('span');
+        idEl.className = 'mono';
+        idEl.textContent = m.id;
+        el.appendChild(idEl);
+        el.appendChild(document.createTextNode(' · ' + dShort));
+      });
+      document.querySelectorAll('[data-ag-date]').forEach(function (el) { el.textContent = dShort; });
+    }
+    if (document.querySelector('[data-ag-name], [data-ag-meta], [data-ag-date]')) {
+      fillMemberHeader();
+      window.addEventListener('apima:state-change', fillMemberHeader);
+    }
 
     window.apimaToast = showToast;
     window.__apimaInteractionsReady = true;

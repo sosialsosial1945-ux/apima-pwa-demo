@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>APIMA · Aktifkan akun</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
@@ -19,60 +21,46 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-primary-tall">
-    <div class="row between items-start gap-2">
-      <div class="stack gap-1">
-        <span class="row gap-2 items-center">
-          <span class="brand-wordmark brand-wordmark-sm">
-            <img src="brand/apima-wordmark-light.webp" width="62" height="22" alt="APIMA" class="wm-light">
-            <img src="brand/apima-wordmark-dark.webp" width="62" height="22" alt="" aria-hidden="true" class="wm-dark">
-          </span>
-          <span class="header-eyebrow">Aktifkan akun</span>
-        </span>
-        <h1 class="text-md m-0 fw-700">Isi data diri</h1>
-      </div>
-    </div>
-    <div class="progress-bar" aria-label="Langkah 1 dari 4">
-      <div class="progress-seg active"></div>
-      <div class="progress-seg"></div>
-      <div class="progress-seg"></div>
-      <div class="progress-seg"></div>
-      <span class="progress-label tnum">1 / 4</span>
+  <header class="ag-topbar">
+    <a href="MasukId.dc.html" class="ag-back-link">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Kembali
+    </a>
+    <div class="ag-topbar-right">
+      <span class="ag-step-count mono" aria-hidden="true">1 / 4</span>
+      <button type="button" class="v5-icon-btn boxed theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
     </div>
   </header>
+  <div class="ag-progress" role="progressbar" aria-label="Langkah aktivasi" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" aria-valuetext="Langkah 1 dari 4"><span style="width:25%"></span></div>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main ag-wide">
 
-    <div class="row gap-3 items-center">
-      <img src="illustrations/input-data.webp" alt="Ilustrasi pengisian data diri anggota APIMA" class="illus-side">
-      <p class="text-sm text-secondary m-0">Data Anda sudah terdaftar di APIMA. Cukup cocokkan ID dan nomor WhatsApp tanpa perlu daftar baru.</p>
+    <div class="ag-step-head">
+      <span class="ag-eyebrow">Aktifkan akun</span>
+      <h1 class="ag-step-title">Isi data diri</h1>
+      <p class="ag-step-desc">Data Anda sudah terdaftar di APIMA. Cukup cocokkan ID dan nomor WhatsApp tanpa perlu daftar baru.</p>
     </div>
 
-    <section class="hero-card" aria-label="Formulir cocokkan data anggota">
-      <div class="stack gap-2">
-        <label for="id-anggota" class="text-bold">ID anggota</label>
-        <input id="id-anggota" inputmode="numeric" placeholder="Contoh: 0123" class="input">
-        <span class="text-sm text-secondary">Tertera di kartu anggota APIMA Anda.</span>
+    <section class="v5-card ag-card" aria-label="Formulir cocokkan data anggota">
+      <div class="ag-field">
+        <label for="id-anggota" class="ag-label">ID anggota</label>
+        <input id="id-anggota" inputmode="numeric" autocomplete="username" placeholder="Contoh: 0123" class="v5-input ag-input ag-input-mono" aria-describedby="id-anggota-help">
+        <p class="ag-help" id="id-anggota-help">Tertera di kartu anggota APIMA Anda.</p>
       </div>
-
-      <div class="stack gap-2">
-        <label for="nomor-wa" class="text-bold">Nomor WhatsApp</label>
-        <input id="nomor-wa" type="tel" inputmode="tel" placeholder="Contoh: 081298765432" class="input">
+      <div class="ag-field">
+        <label for="nomor-wa" class="ag-label">Nomor WhatsApp</label>
+        <input id="nomor-wa" type="tel" inputmode="tel" autocomplete="tel" placeholder="Contoh: 0812-9044-4417" class="v5-input ag-input ag-input-mono">
       </div>
+      <p class="ag-note">Jika nomor WhatsApp sudah berganti atau data belum cocok, temui pengurus di sekretariat APIMA untuk pembaruan, ya.</p>
     </section>
-
-    <div class="banner banner-neutral">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--apima-text-secondary)" stroke-width="2" class="banner-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      <span class="text-sm text-secondary">Jika nomor WhatsApp sudah berganti atau data belum cocok, temui pengurus di sekretariat APIMA untuk pembaruan, ya.</span>
-    </div>
 
   </main>
 
-  <div class="screen-footer">
-    <a href="AktivasiOtp.dc.html" class="btn btn-primary no-underline">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l2-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>
-      Kirim Kode lewat WhatsApp
-    </a>
+  <div class="screen-footer ag-footer">
+    <a href="AktivasiOtp.dc.html" class="btn btn-primary">Kirim Kode lewat WhatsApp</a>
   </div>
 
 </div>

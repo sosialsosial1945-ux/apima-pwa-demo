@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · Pengurus · Laporan</title>
+<title>APIMA · Laporan Retribusi</title>
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./admin.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-admin.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
 <script src="./admin-charts.js"></script>
@@ -16,506 +18,253 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="APIMA">
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" href="./icons/icon-192.png">
 <script src="./pwa.js" defer></script>
 </head>
-<body>
+<body class="adm-body">
 <x-dc>
-<div class="admin-shell">
+<div class="adm admin-shell">
+  <aside class="adm-side" id="adm-side" aria-label="Menu pengurus"></aside>
+  <div class="adm-main">
+    <header class="adm-top" id="adm-top"></header>
 
-  <nav class="admin-nav" aria-label="Navigasi pengurus">
-    <div class="admin-nav-head">
-      <div class="row gap-2 items-center admin-brand-text">
-        <span class="brand-wordmark">
-          <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
-          <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
-        </span>
-      </div>
-      <button type="button" class="btn-icon" data-sidebar-toggle aria-expanded="true" aria-label="Ciutkan menu samping" title="Ciutkan atau perluas menu">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
-      </button>
-    </div>
+    <main class="adm-content" id="main">
 
-    <div class="admin-nav-body">
-      <div class="admin-nav-group">
-        <span class="admin-nav-group-label">Utama</span>
-        <a href="AdminRingkasan.dc.html" class="admin-nav-link" aria-label="Ringkasan" title="Ringkasan dan analisis AI">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          <span class="admin-nav-text">Ringkasan</span>
-        </a>
-        <a href="AdminLaporan.dc.html" class="admin-nav-link active" aria-current="page" aria-label="Laporan" title="Laporan mingguan, bulanan, tahunan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          <span class="admin-nav-text">Laporan</span>
-        </a>
-        <a href="AdminRiwayat.dc.html" class="admin-nav-link" aria-label="Riwayat setoran" title="Riwayat transaksi retribusi">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-          <span class="admin-nav-text">Riwayat setoran</span>
-        </a>
-      </div>
-
-      <div class="admin-nav-group">
-        <span class="admin-nav-group-label">Anggota dan Lapangan</span>
-        <a href="AdminPedagang.dc.html" class="admin-nav-link" aria-label="Keaktifan pedagang" title="Pedagang rajin dan jarang jualan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span class="admin-nav-text">Keaktifan pedagang</span>
-        </a>
-        <a href="AdminSatgas.dc.html" class="admin-nav-link" aria-label="Kinerja satgas" title="Kinerja satgas lapangan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span class="admin-nav-text">Kinerja satgas</span>
-        </a>
-      </div>
-
-      <div class="admin-nav-footer">
-        <button type="button" class="admin-nav-link admin-nav-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
-          <svg class="icon-moon shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-          <span class="admin-nav-text" data-theme-label>Mode gelap</span>
-        </button>
-        <div class="admin-user-pill">
-          <span class="avatar-initials" aria-hidden="true">HD</span>
-          <div class="stack admin-user-meta" style="min-width:0">
-            <span class="text-xs fw-700 text-main">H. Darmawan</span>
-            <span class="text-xs text-secondary">Pengurus APIMA</span>
-          </div>
+      <section class="adm-hero" aria-labelledby="lp-total">
+        <span class="adm-hero-eyebrow" id="lp-eyebrow">Laporan retribusi · 8 – 14 Nov 2026</span>
+        <div class="adm-hero-big">
+          <span class="adm-hero-num" id="lp-total">Rp11.340.000</span>
+          <span class="adm-hero-badge"><span data-icon="check" data-icon-size="16"></span>Rekonsiliasi Cocok 100%</span>
         </div>
-        <a href="MasukId.dc.html" class="admin-nav-link" aria-label="Keluar akun" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span class="admin-nav-text">Keluar akun</span>
-        </a>
-      </div>
-    </div>
-  </nav>
-
-  <div class="admin-content">
-
-    <div class="admin-mobile-bar">
-      <span class="brand-wordmark">
-        <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
-        <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
-      </span>
-      <div class="row gap-1">
-        <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
-          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        </button>
-        <button type="button" class="btn-chip" data-sheet-open="sheet-admin-menu" aria-label="Buka menu navigasi pengurus">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          Menu
-        </button>
-      </div>
-    </div>
-
-    <main class="admin-main">
-
-      <header class="admin-page-head">
-        <div class="stack gap-1">
-          <div class="row gap-2 items-center wrap">
-            <h1 class="text-lg m-0">Laporan retribusi</h1>
-            <span class="sample-data-badge">Data contoh</span>
+        <p class="adm-hero-text" id="lp-note">Naik 4,2% dibanding pekan sebelumnya. Seluruh mutasi QRIS sudah cocok dengan catatan retribusi malam.</p>
+        <div class="adm-hero-actions">
+          <div class="adm-pills on-hero" role="group" aria-label="Pilih periode laporan">
+            <button type="button" class="adm-pill is-active" data-lp-period="mingguan" aria-pressed="true">Mingguan</button>
+            <button type="button" class="adm-pill" data-lp-period="bulanan" aria-pressed="false">Bulanan</button>
+            <button type="button" class="adm-pill" data-lp-period="tahunan" aria-pressed="false">Tahunan</button>
           </div>
-          <span class="text-sm text-secondary" id="lap-subtitle">Rekap mingguan · 8 – 14 Nov 2026</span>
+          <button type="button" class="adm-btn adm-btn-onhero" id="lp-csv"><span data-icon="file" data-icon-size="16"></span>Unduh Excel (.csv)</button>
+          <button type="button" class="adm-btn adm-btn-primary" id="lp-pdf"><span data-icon="printer" data-icon-size="16"></span>Unduh PDF</button>
         </div>
-
-        <div class="admin-actions">
-          <button type="button" class="btn-chip" id="lap-export-csv">Unduh Excel (.csv)</button>
-          <button type="button" class="btn-chip" data-export-pdf="Rekap PDF laporan periodik">Unduh PDF</button>
-        </div>
-      </header>
-
-      <!-- Banner Eksekutif Biru Maritim + Switcher Mingguan / Bulanan / Tahunan -->
-      <section class="exec-banner" aria-label="Ringkasan setoran periode aktif">
-        <div class="exec-banner-top">
-          <div class="stack gap-2">
-            <span class="text-sm exec-banner-muted" id="lap-hero-label">Total setoran masuk (7 malam)</span>
-            <div class="row gap-3 items-center wrap">
-              <span class="exec-kpi-big" id="lap-hero-total">Rp11.340.000</span>
-              <span class="exec-delta" id="lap-badge">Rekonsiliasi Cocok 100%</span>
-            </div>
-            <p class="text-sm exec-banner-muted m-0" id="lap-hero-note">Naik 4,2% dibanding pekan sebelumnya. Seluruh mutasi QRIS sudah cocok dengan catatan retribusi malam.</p>
-          </div>
-
-          <div class="exec-seg" role="group" aria-label="Pilih rentang laporan">
-            <button type="button" class="exec-seg-btn active" data-lap-period="mingguan" aria-pressed="true">Mingguan</button>
-            <button type="button" class="exec-seg-btn" data-lap-period="bulanan" aria-pressed="false">Bulanan</button>
-            <button type="button" class="exec-seg-btn" data-lap-period="tahunan" aria-pressed="false">Tahunan</button>
-          </div>
-        </div>
-
-        <div class="exec-stats-row">
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Malam jualan terbayar</span>
-            <span class="exec-stat-val" id="lap-m-nights">3.780 malam</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Kepatuhan bayar</span>
-            <span class="exec-stat-val" id="lap-m-compliance">94,6%</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Pelanggaran tercatat</span>
-            <span class="exec-stat-val" id="lap-m-violations">14 kasus</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Rata-rata aktif</span>
-            <span class="exec-stat-val" id="lap-m-avg">540 / malam</span>
-          </div>
+        <div class="adm-hero-tiles">
+          <div class="adm-htile"><span class="adm-htile-label">Malam jualan terbayar</span><span class="adm-htile-val" id="lp-t1">3.780 malam</span></div>
+          <div class="adm-htile"><span class="adm-htile-label">Kepatuhan bayar</span><span class="adm-htile-val" id="lp-t2">94,6%</span></div>
+          <div class="adm-htile"><span class="adm-htile-label">Pelanggaran tercatat</span><span class="adm-htile-val" id="lp-t3">14 kasus</span></div>
+          <div class="adm-htile"><span class="adm-htile-label">Rata-rata aktif</span><span class="adm-htile-val" id="lp-t4">540 / malam</span></div>
         </div>
       </section>
 
-      <!-- Ringkasan AI Periodik -->
-      <section class="ai-panel" aria-label="Ringkasan otomatis AI untuk periode terpilih">
-        <div class="ai-panel-head">
-          <div class="row gap-2 items-center wrap">
-            <span class="ai-tag">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-              Ringkasan AI Periodik
-            </span>
-            <h2 class="text-md m-0 fw-700" id="lap-ai-title">Kesimpulan otomatis pekan ini (8 – 14 Nov 2026)</h2>
+      <section class="adm-card" aria-labelledby="lp-sum-title">
+        <div class="adm-card-head">
+          <div class="adm-head-group">
+            <span class="adm-head-ico" data-icon="sparkle" data-icon-size="18"></span>
+            <div>
+              <h2 class="adm-card-title" id="lp-sum-title">Ringkasan Periodik Pengurus</h2>
+              <p class="adm-card-sub" id="lp-sum-sub">Kesimpulan otomatis periode berjalan (8 – 14 Nov 2026)</p>
+            </div>
           </div>
-          <button type="button" class="btn-chip" id="lap-copy-wa">Salin Ringkasan ke WhatsApp</button>
+          <button type="button" class="adm-btn adm-btn-primary" id="lp-wa"><span data-icon="copy" data-icon-size="16"></span>Salin Ringkasan ke WhatsApp</button>
         </div>
-
-        <div class="ai-grid">
-          <div class="ai-point">
-            <span class="ai-point-kicker tone-success">Keuangan dan tren</span>
-            <p class="text-sm text-main m-0" id="lap-ai-1"></p>
-          </div>
-          <div class="ai-point">
-            <span class="ai-point-kicker">Keaktifan pedagang</span>
-            <p class="text-sm text-main m-0" id="lap-ai-2"></p>
-          </div>
-          <div class="ai-point">
-            <span class="ai-point-kicker tone-warning">Keputusan pengurus</span>
-            <p class="text-sm text-main m-0" id="lap-ai-3"></p>
-          </div>
+        <div class="adm-insights">
+          <div class="adm-insight"><span class="adm-insight-k">Keuangan dan tren</span><p id="lp-i1"></p></div>
+          <div class="adm-insight"><span class="adm-insight-k">Keaktifan pedagang</span><p id="lp-i2"></p></div>
+          <div class="adm-insight"><span class="adm-insight-k">Keputusan pengurus</span><p id="lp-i3"></p></div>
         </div>
-
-        <div class="ai-action-bar">
-          <span class="text-sm text-secondary" id="lap-decision-desc">Data siap diekspor untuk rapat pengurus atau pengecekan langsung di daftar keaktifan pedagang.</span>
-          <div class="row gap-2 wrap">
-            <a href="AdminPedagang.dc.html" class="btn-chip no-underline">Cek Keaktifan Pedagang</a>
-            <a href="AdminRiwayat.dc.html" class="btn-chip no-underline">Buka Riwayat Setoran</a>
-          </div>
+        <div class="adm-card-foot">
+          <span>Data siap diekspor untuk rapat pengurus atau pengecekan langsung di daftar keaktifan pedagang.</span>
+          <span class="adm-card-foot-links"><a class="adm-link" href="AdminPedagang.dc.html">Cek Keaktifan Pedagang</a><span aria-hidden="true">·</span><a class="adm-link" href="AdminRiwayat.dc.html">Buka Riwayat Setoran</a></span>
         </div>
       </section>
 
-      <section class="dash-split" aria-label="Grafik tren setoran dan komposisi paket retribusi">
-        <article class="admin-card">
-          <div class="row between items-start wrap gap-2">
-            <div class="stack gap-1">
-              <h2 class="text-md m-0 fw-700" id="lap-chart-title">Apakah setoran 7 malam terakhir stabil?</h2>
-              <span class="text-sm text-secondary" id="lap-chart-sub">Dalam jutaan rupiah · Garis biru menunjukkan tren dan rata-rata periode.</span>
+      <section class="lp-row" aria-label="Grafik dan komposisi paket">
+        <article class="adm-card" aria-labelledby="lp-chart-title">
+          <div class="adm-card-head">
+            <div>
+              <h2 class="adm-card-title" id="lp-chart-title">Apakah setoran periode ini stabil?</h2>
+              <p class="adm-card-sub">Dalam jutaan rupiah · Garis biru periode ini, garis toska periode sebelumnya.</p>
             </div>
-            <span class="badge badge-success tnum" id="lap-chart-peak">Puncak: Rp1,74 jt</span>
+            <span class="adm-peak" id="lp-peak">Puncak: Rp1,74 jt</span>
           </div>
-          <div id="lap-vision-chart"></div>
+          <div class="adm-legend" aria-hidden="true"><span><i></i><span id="lp-leg-1">Pekan ini</span></span><span><i class="is-2"></i><span id="lp-leg-2">Pekan lalu</span></span></div>
+          <div id="lp-chart"></div>
         </article>
-
-        <article class="admin-card" aria-label="Komposisi paket retribusi">
-          <div class="stack gap-1">
-            <h2 class="text-md m-0 fw-700">Komposisi paket retribusi</h2>
-            <span class="text-sm text-secondary" id="lap-donut-sub">Pilihan paket bayar anggota periode berjalan</span>
+        <article class="adm-card" aria-labelledby="lp-comp-title">
+          <div>
+            <h2 class="adm-card-title" id="lp-comp-title">Komposisi paket retribusi</h2>
+            <p class="adm-card-sub">Pilihan paket bayar anggota periode berjalan</p>
           </div>
-          <div id="lap-vision-donut"></div>
+          <ul class="adm-comp" id="lp-comp"></ul>
         </article>
       </section>
 
-      <section class="admin-card" aria-label="Tabel rincian periode">
-        <div class="row between wrap gap-2">
-          <h2 class="text-md m-0 fw-700" id="lap-table-title">Rincian harian (8 – 14 Nov 2026)</h2>
-          <span class="text-sm text-secondary">Semua nominal dalam rupiah, tarif retribusi Rp3.000/malam</span>
+      <section class="adm-card" aria-labelledby="lp-table-title">
+        <div class="adm-card-head">
+          <div>
+            <h2 class="adm-card-title" id="lp-table-title">Rincian periode (8 – 14 Nov 2026)</h2>
+            <p class="adm-card-sub">Semua nominal dalam rupiah, tarif retribusi Rp3.000/malam</p>
+          </div>
+          <button type="button" class="adm-link" id="lp-table-csv"><span data-icon="download" data-icon-size="16"></span>Ekspor Tabel CSV</button>
         </div>
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Periode</th>
-                <th class="num">Pedagang aktif</th>
-                <th class="num">Malam terbayar</th>
-                <th class="num">Setoran masuk</th>
-                <th class="num">Pelanggaran</th>
-                <th>Rekonsiliasi</th>
-              </tr>
-            </thead>
-            <tbody id="lap-tbody"></tbody>
+        <div class="adm-table-wrap" tabindex="0" role="region" aria-label="Tabel rincian periode, geser ke samping di layar kecil">
+          <table class="adm-table">
+            <thead><tr>
+              <th scope="col">Periode</th><th scope="col" class="num">Pedagang aktif</th><th scope="col" class="num">Malam terbayar</th>
+              <th scope="col" class="num">Setoran masuk</th><th scope="col" class="num">Pelanggaran</th><th scope="col" class="end">Rekonsiliasi</th>
+            </tr></thead>
+            <tbody id="lp-tbody"></tbody>
           </table>
         </div>
       </section>
 
     </main>
-  </div>
 
-  <!-- Sheet menu navigasi mobile -->
-  <div id="sheet-admin-menu" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
-    <div class="sheet">
-      <div class="row between">
-        <h2 id="mobile-menu-title" class="text-md m-0 fw-700">Menu Pengurus APIMA</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup menu pengurus">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="stack gap-1">
-        <a href="AdminRingkasan.dc.html" class="admin-nav-link">Ringkasan</a>
-        <a href="AdminLaporan.dc.html" class="admin-nav-link active" aria-current="page">Laporan</a>
-        <a href="AdminRiwayat.dc.html" class="admin-nav-link">Riwayat setoran</a>
-        <a href="AdminPedagang.dc.html" class="admin-nav-link">Keaktifan pedagang</a>
-        <a href="AdminSatgas.dc.html" class="admin-nav-link">Kinerja satgas</a>
-        <div style="height:1px;background:var(--apima-line);margin:6px 0"></div>
-        <a href="MasukId.dc.html" class="admin-nav-link" aria-label="Keluar akun">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span>Keluar akun</span>
-        </a>
-      </div>
-    </div>
+    <footer class="adm-foot" id="adm-foot"></footer>
   </div>
-
 </div>
+<script>APIMA_ADMIN.mountShell({ page: 'laporan', title: 'Laporan Retribusi' });</script>
 </x-dc>
 <script>
 (function () {
+  var A = window.APIMA_ADMIN;
+
+  function monthRow(name, setoran, viol) {
+    var nights = Math.round(setoran / 3000);
+    return [name, Math.round(nights / 30), nights, setoran, viol];
+  }
+
+  /* Data contoh per periode. Baris pertama tiap periode menerima pembayaran langsung malam ini. */
   var DATA = {
     mingguan: {
-      subtitle: 'Rekap mingguan · 8 – 14 Nov 2026',
-      badge: 'Rekonsiliasi Cocok 100%',
-      heroLabel: 'Total setoran masuk (7 malam)',
-      heroTotal: 'Rp11.340.000',
-      heroNote: 'Naik 4,2% dibanding pekan sebelumnya. Seluruh mutasi QRIS cocok tanpa selisih dengan catatan retribusi malam.',
-      nights: '3.780 malam',
-      compliance: '94,6%',
-      violations: '14 kasus',
-      avg: '540 / malam',
-      aiTitle: 'Kesimpulan otomatis pekan ini (8 – 14 Nov 2026)',
-      ai1: 'Setoran mingguan tumbuh 4,2% mencapai Rp11,34 jt dengan lonjakan tertinggi di malam Sabtu (Rp1,74 jt). Selisih mutasi QRIS Rp0.',
-      ai2: '412 pedagang rutin jualan di atas 5 malam pekan ini. Sebanyak 24 pedagang tercatat jarang jualan (kurang dari 2 malam).',
-      ai3: 'Tindak lanjuti 6 pelanggar berulang dengan surat teguran dan sisir sisi barat Blok F yang baru terverifikasi 24%.',
-      decisionDesc: 'Data pekan ini siap diekspor untuk rapat mingguan pengurus atau dicek langsung di daftar keaktifan pedagang.',
-      chartTitle: 'Apakah setoran 7 malam terakhir stabil?',
-      chartSub: 'Dalam jutaan rupiah · Batang biru menandai malam dengan setoran tertinggi.',
-      chartPeak: 'Puncak: Rp1,74 jt (Sabtu)',
-      bars: [
-        { label: 'Min', val: 1.48, text: '1,48' },
-        { label: 'Sen', val: 1.56, text: '1,56' },
-        { label: 'Sel', val: 1.61, text: '1,61' },
-        { label: 'Rab', val: 1.59, text: '1,59' },
-        { label: 'Kam', val: 1.65, text: '1,65' },
-        { label: 'Jum', val: 1.71, text: '1,71' },
-        { label: 'Sab', val: 1.74, text: '1,74', peak: true }
-      ],
-      tableTitle: 'Rincian harian (8 – 14 Nov 2026)',
+      label: 'mingguan', range: '8 – 14 Nov 2026', base: 11340000,
+      note: 'Naik 4,2% dibanding pekan sebelumnya. Seluruh mutasi QRIS sudah cocok dengan catatan retribusi malam.',
+      tiles: ['3.780 malam', '94,6%', '14 kasus', '540 / malam'],
+      i1: 'Setoran 7 malam mencapai Rp11,34 juta (+4,2%) dengan puncak pada Sabtu malam sebesar Rp1,74 juta dan selisih rekonsiliasi Rp0.',
+      i2: 'Rata-rata 540 pedagang aktif per malam. 412 pedagang jualan lebih dari 5 malam, sementara 24 pedagang jarang jualan (kurang dari 2 malam).',
+      i3: 'Arahkan Satgas S-02 menyisir sisi barat Blok F pukul 00:30 WIB dan kirim surat pengingat untuk 11 pedagang kategori perlu teguran.',
+      leg1: 'Pekan ini', leg2: 'Pekan lalu', peak: 'Puncak: Rp1,74 jt (Sab)',
+      labels: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+      cur: [1.479, 1.560, 1.620, 1.590, 1.662, 1.689, 1.740], prev: [1.41, 1.49, 1.56, 1.53, 1.60, 1.63, 1.67],
+      activeUnit: '',
       rows: [
-        ['Sabtu, 14 Nov', '580', '580 malam', 'Rp1.740.000', '3', 'Cocok'],
-        ['Jumat, 13 Nov', '570', '570 malam', 'Rp1.710.000', '2', 'Cocok'],
-        ['Kamis, 12 Nov', '550', '550 malam', 'Rp1.650.000', '1', 'Cocok'],
-        ['Rabu, 11 Nov', '530', '530 malam', 'Rp1.590.000', '2', 'Cocok'],
-        ['Selasa, 10 Nov', '537', '537 malam', 'Rp1.611.000', '2', 'Cocok'],
-        ['Senin, 9 Nov', '520', '520 malam', 'Rp1.560.000', '3', 'Cocok'],
-        ['Minggu, 8 Nov', '493', '493 malam', 'Rp1.479.000', '1', 'Cocok']
-      ]
+        ['Sab, 14 Nov', 580, 580, 1740000, 3], ['Jum, 13 Nov', 563, 563, 1689000, 2], ['Kam, 12 Nov', 554, 554, 1662000, 2],
+        ['Rab, 11 Nov', 530, 530, 1590000, 1], ['Sel, 10 Nov', 540, 540, 1620000, 2], ['Sen, 9 Nov', 520, 520, 1560000, 2],
+        ['Min, 8 Nov', 493, 493, 1479000, 2]
+      ],
+      comp: [['Paket 7 malam', 48, '278 anggota'], ['Paket 1 malam', 26, '151 anggota'], ['Paket 14 malam', 16, '93 anggota'], ['Paket 30 malam', 10, '58 anggota']]
     },
     bulanan: {
-      subtitle: 'Rekap bulanan · November 2026 (berjalan 4 pekan)',
-      badge: '4 dari 4 Pekan Cocok',
-      heroLabel: 'Total setoran masuk (November 2026)',
-      heroTotal: 'Rp45.840.000',
-      heroNote: 'Tercapai 96% dari target bulanan. Pembayaran retribusi paket 7 dan 14 malam naik signifikan di pekan ketiga.',
-      nights: '15.280 malam',
-      compliance: '93,8%',
-      violations: '49 kasus',
-      avg: '612 anggota aktif',
-      aiTitle: 'Kesimpulan otomatis bulanan (November 2026)',
-      ai1: 'Akumulasi setoran November mencapai Rp45,84 jt (96% dari proyeksi). Puncak terjadi pada Pekan 3 sebesar Rp11,88 jt.',
-      ai2: 'Sebanyak 612 dari 700 anggota aktif bulan ini. Terdeteksi 24 pedagang jarang jualan (kurang dari 6 malam) dan 18 anggota pasif >= 30 hari.',
-      ai3: 'Verifikasi 18 anggota pasif di lapangan untuk memastikan apakah berhenti berjualan sementara atau berpindah jam pasar siang.',
-      decisionDesc: 'Rekap bulanan ini cocok digunakan sebagai bahan laporan kas bulanan pengurus APIMA.',
-      chartTitle: 'Bagaimana tren setoran per pekan di November?',
-      chartSub: 'Dalam jutaan rupiah · Perbandingan empat pekan berjalan.',
-      chartPeak: 'Puncak: Rp11,88 jt (Pekan 3)',
-      bars: [
-        { label: 'Pekan 1', val: 11.12, text: '11,1' },
-        { label: 'Pekan 2', val: 11.50, text: '11,5' },
-        { label: 'Pekan 3', val: 11.88, text: '11,9', peak: true },
-        { label: 'Pekan 4', val: 11.34, text: '11,3' }
-      ],
-      tableTitle: 'Rincian per pekan (November 2026)',
+      label: 'bulanan', range: '18 Okt – 14 Nov 2026', base: 45840000,
+      note: 'Tercapai 96% dari target bulanan. Paket 7 dan 14 malam naik di pekan 1 – 7 Nov.',
+      tiles: ['15.280 malam', '93,8%', '49 kasus', '546 / malam'],
+      i1: 'Setoran 4 pekan terakhir mencapai Rp45,84 juta (96% dari target). Puncak pada pekan 1 – 7 Nov sebesar Rp11,88 juta.',
+      i2: '612 dari 700 anggota aktif. 24 pedagang jarang jualan (kurang dari 6 malam per bulan) dan 18 anggota pasif 30 hari atau lebih.',
+      i3: 'Verifikasi 18 anggota pasif di lapangan untuk memastikan apakah berhenti berjualan sementara atau pindah ke jam pasar siang.',
+      leg1: '4 pekan terakhir', leg2: '4 pekan sebelumnya', peak: 'Puncak: Rp11,88 jt (1 – 7 Nov)',
+      labels: ['18–24 Okt', '25–31 Okt', '1–7 Nov', '8–14 Nov'],
+      cur: [11.121, 11.499, 11.880, 11.340], prev: [10.94, 11.21, 11.58, 11.25],
+      activeUnit: ' / mlm',
       rows: [
-        ['Pekan 4 (8 – 14 Nov)', '540 / mlm', '3.780 malam', 'Rp11.340.000', '14', 'Cocok'],
-        ['Pekan 3 (1 – 7 Nov)', '565 / mlm', '3.960 malam', 'Rp11.880.000', '11', 'Cocok'],
-        ['Pekan 2 (25 – 31 Okt)', '547 / mlm', '3.833 malam', 'Rp11.499.000', '12', 'Cocok'],
-        ['Pekan 1 (18 – 24 Okt)', '529 / mlm', '3.707 malam', 'Rp11.121.000', '12', 'Cocok']
-      ]
+        ['Pekan 8 – 14 Nov', 540, 3780, 11340000, 14], ['Pekan 1 – 7 Nov', 566, 3960, 11880000, 11],
+        ['Pekan 25 – 31 Okt', 548, 3833, 11499000, 12], ['Pekan 18 – 24 Okt', 530, 3707, 11121000, 12]
+      ],
+      comp: [['Paket 7 malam', 46, '282 anggota'], ['Paket 1 malam', 24, '147 anggota'], ['Paket 14 malam', 18, '110 anggota'], ['Paket 30 malam', 12, '73 anggota']]
     },
     tahunan: {
-      subtitle: 'Rekap tahunan · Jan – Nov 2026',
-      badge: 'Siap Rapat Tahunan',
-      heroLabel: 'Akumulasi setoran retribusi (2026)',
-      heroTotal: 'Rp518.760.000',
-      heroNote: 'Data 11 bulan berjalan siap digunakan untuk evaluasi tahunan pengurus dan penetapan penerima bak ikan APIMA.',
-      nights: '172.920 malam',
-      compliance: '92,4%',
-      violations: '184 kasus',
-      avg: '664 anggota aktif',
-      aiTitle: 'Kesimpulan otomatis tahunan (Jan – Nov 2026)',
-      ai1: 'Total setoran 2026 menembus Rp518,76 jt dengan puncak di Agustus (Rp52,4 jt) saat musim panen ikan. Tren kepatuhan stabil di 92,4%.',
-      ai2: 'Sebanyak 412 pedagang memenuhi syarat penerima bak ikan (>= 200 malam dan 0 pelanggaran tertunda). Peringkat teratas: H. Slamet Raharjo (304 malam).',
-      ai3: 'Finalisasi daftar 412 penerima bak ikan sebelum tutup buku Desember dan evaluasi ulang 36 anggota dengan kehadiran sangat rendah.',
-      decisionDesc: 'Kriteria penerima bak ikan: minimal 200 malam jualan terbayar dan 0 pelanggaran belum selesai selama 2026.',
-      chartTitle: 'Bulan mana yang paling ramai sepanjang 2026?',
-      chartSub: 'Dalam jutaan rupiah · Puncak terjadi menjelang musim panen ikan dan hari besar.',
-      chartPeak: 'Puncak: Rp52,4 jt (Agustus)',
-      bars: [
-        { label: 'Jan', val: 43.2, text: '43' },
-        { label: 'Feb', val: 41.8, text: '42' },
-        { label: 'Mar', val: 46.5, text: '47' },
-        { label: 'Apr', val: 49.1, text: '49' },
-        { label: 'Mei', val: 47.4, text: '47' },
-        { label: 'Jun', val: 45.9, text: '46' },
-        { label: 'Jul', val: 48.8, text: '49' },
-        { label: 'Agu', val: 52.4, text: '52', peak: true },
-        { label: 'Sep', val: 49.0, text: '49' },
-        { label: 'Okt', val: 48.8, text: '49' },
-        { label: 'Nov', val: 45.8, text: '46' }
-      ],
-      tableTitle: 'Rincian per kuartal (Tahun 2026)',
+      label: 'tahunan', range: 'Jan – Nov 2026', base: 518760000,
+      note: 'Naik 11,4% dibanding periode yang sama tahun 2025. Seluruh setoran 2026 tercatat digital lewat QRIS.',
+      tiles: ['172.920 malam', '92,4%', '184 kasus', '544 / malam'],
+      i1: 'Akumulasi retribusi 2026 mencapai Rp518,76 juta, naik 11,4% dibanding 2025. Puncak di Agustus sebesar Rp52,4 juta saat musim panen ikan.',
+      i2: 'Rata-rata 544 pedagang aktif per malam dari 700 lapak terdaftar. 412 pedagang memenuhi syarat penerima bak ikan (minimal 200 malam).',
+      i3: 'Finalisasi daftar 412 penerima bak ikan sebelum tutup buku Desember dan tindak lanjuti 11 anggota yang perlu teguran.',
+      leg1: '2026', leg2: '2025', peak: 'Puncak: Rp52,4 jt (Agustus)',
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov'],
+      cur: [43.2, 41.8, 46.5, 49.1, 47.4, 45.9, 48.8, 52.4, 49.0, 48.82, 45.84],
+      prev: [38.9, 37.4, 41.6, 44.1, 42.6, 41.2, 43.9, 46.9, 43.9, 43.8, 41.4],
+      activeUnit: ' / mlm',
       rows: [
-        ['Kuartal 4 (Okt – Nov)', '554 / mlm', '31.533 malam', 'Rp94.600.000', '39', 'Cocok'],
-        ['Kuartal 3 (Jul – Sep)', '582 / mlm', '50.067 malam', 'Rp150.200.000', '44', 'Cocok'],
-        ['Kuartal 2 (Apr – Jun)', '561 / mlm', '47.467 malam', 'Rp142.400.000', '49', 'Cocok'],
-        ['Kuartal 1 (Jan – Mar)', '522 / mlm', '43.853 malam', 'Rp131.560.000', '52', 'Cocok']
-      ]
+        monthRow('November 2026', 45840000, 17), monthRow('Oktober 2026', 48820000, 15), monthRow('September 2026', 49000000, 16),
+        monthRow('Agustus 2026', 52400000, 18), monthRow('Juli 2026', 48800000, 16), monthRow('Juni 2026', 45900000, 15),
+        monthRow('Mei 2026', 47400000, 17), monthRow('April 2026', 49100000, 16), monthRow('Maret 2026', 46500000, 18),
+        monthRow('Februari 2026', 41800000, 17), monthRow('Januari 2026', 43200000, 19)
+      ],
+      comp: [['Paket 7 malam', 45, '12.400 transaksi'], ['Paket 1 malam', 22, '6.060 transaksi'], ['Paket 14 malam', 19, '5.230 transaksi'], ['Paket 30 malam', 14, '3.850 transaksi']]
     }
   };
 
-  var currentKey = 'mingguan';
+  var current = 'mingguan';
 
-  var BASE_LAP_TOTALS = {
-    mingguan: 11340000,
-    bulanan: 45840000,
-    tahunan: 518760000
-  };
+  function rowsWithLive(d) {
+    var delta = A.liveDelta();
+    return d.rows.map(function (r, i) {
+      var copy = r.slice();
+      if (i === 0 && delta) { copy[3] = r[3] + delta; }
+      return copy;
+    });
+  }
 
-  function renderPeriod(key) {
+  function render(key) {
     var d = DATA[key] || DATA.mingguan;
-    currentKey = key;
-    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
-    var delta = st ? (Number(st.budiPaidTonightDelta) || 0) : 0;
-    var heroTotal = (window.APIMA_STORE && BASE_LAP_TOTALS[key])
-      ? window.APIMA_STORE.formatRupiah(BASE_LAP_TOTALS[key] + delta)
-      : d.heroTotal;
-    document.getElementById('lap-subtitle').textContent = d.subtitle;
-    document.getElementById('lap-badge').textContent = d.badge;
-    document.getElementById('lap-hero-label').textContent = d.heroLabel;
-    document.getElementById('lap-hero-total').textContent = heroTotal;
-    document.getElementById('lap-hero-note').textContent = d.heroNote;
-    document.getElementById('lap-m-nights').textContent = d.nights;
-    document.getElementById('lap-m-compliance').textContent = d.compliance;
-    document.getElementById('lap-m-violations').textContent = d.violations;
-    document.getElementById('lap-m-avg').textContent = d.avg;
-    document.getElementById('lap-ai-title').textContent = d.aiTitle;
-    document.getElementById('lap-ai-1').textContent = d.ai1;
-    document.getElementById('lap-ai-2').textContent = d.ai2;
-    document.getElementById('lap-ai-3').textContent = d.ai3;
-    document.getElementById('lap-decision-desc').textContent = d.decisionDesc;
-    document.getElementById('lap-chart-title').textContent = d.chartTitle;
-    document.getElementById('lap-chart-sub').textContent = d.chartSub;
-    document.getElementById('lap-chart-peak').textContent = d.chartPeak;
-    document.getElementById('lap-table-title').textContent = d.tableTitle;
-
-    if (window.APIMA_CHARTS) {
-      window.APIMA_CHARTS.renderComboChart(document.getElementById('lap-vision-chart'), {
-        bars: d.bars,
-        unit: 'jt',
-        ariaLabel: d.chartTitle
-      });
-      var donutMap = {
-        mingguan: [
-          { label: 'Paket 7 malam',  sub: 'Rp21.000', pct: 52, color: '#0B4F8A' },
-          { label: 'Paket 30 malam', sub: 'Rp90.000', pct: 24, color: '#0284C7' },
-          { label: 'Paket 14 malam', sub: 'Rp42.000', pct: 16, color: '#10B981' },
-          { label: 'Paket 1 malam',  sub: 'Rp3.000',  pct: 8,  color: '#94A3B8' }
-        ],
-        bulanan: [
-          { label: 'Paket 7 malam',  sub: 'Rp21.000', pct: 48, color: '#0B4F8A' },
-          { label: 'Paket 30 malam', sub: 'Rp90.000', pct: 28, color: '#0284C7' },
-          { label: 'Paket 14 malam', sub: 'Rp42.000', pct: 17, color: '#10B981' },
-          { label: 'Paket 1 malam',  sub: 'Rp3.000',  pct: 7,  color: '#94A3B8' }
-        ],
-        tahunan: [
-          { label: 'Paket 7 malam',  sub: 'Rp21.000', pct: 46, color: '#0B4F8A' },
-          { label: 'Paket 30 malam', sub: 'Rp90.000', pct: 31, color: '#0284C7' },
-          { label: 'Paket 14 malam', sub: 'Rp42.000', pct: 16, color: '#10B981' },
-          { label: 'Paket 1 malam',  sub: 'Rp3.000',  pct: 7,  color: '#94A3B8' }
-        ]
-      };
-      window.APIMA_CHARTS.renderDonutChart(document.getElementById('lap-vision-donut'), {
-        centerVal: d.compliance,
-        centerLbl: 'Kepatuhan',
-        segments: donutMap[key] || donutMap.mingguan,
-        ariaLabel: 'Komposisi paket retribusi ' + key
-      });
-    }
-
-    var tbody = document.getElementById('lap-tbody');
-    tbody.innerHTML = d.rows.map(function (r) {
-      return '<tr><td class="fw-700">' + r[0] + '</td><td class="num">' + r[1] + '</td><td class="num">' + r[2] + '</td><td class="num fw-700">' + r[3] + '</td><td class="num">' + r[4] + '</td><td><span class="badge badge-success">' + r[5] + '</span></td></tr>';
+    current = key;
+    var delta = A.liveDelta();
+    document.getElementById('lp-eyebrow').textContent = 'Laporan retribusi · ' + d.range;
+    document.getElementById('lp-total').textContent = A.rp(d.base + delta);
+    document.getElementById('lp-note').textContent = d.note;
+    ['lp-t1', 'lp-t2', 'lp-t3', 'lp-t4'].forEach(function (id, i) { document.getElementById(id).textContent = d.tiles[i]; });
+    document.getElementById('lp-sum-sub').textContent = 'Kesimpulan otomatis periode berjalan (' + d.range + ')';
+    document.getElementById('lp-i1').textContent = d.i1;
+    document.getElementById('lp-i2').textContent = d.i2;
+    document.getElementById('lp-i3').textContent = d.i3;
+    document.getElementById('lp-peak').textContent = d.peak;
+    document.getElementById('lp-leg-1').textContent = d.leg1;
+    document.getElementById('lp-leg-2').textContent = d.leg2;
+    A.charts.area(document.getElementById('lp-chart'), {
+      labels: d.labels,
+      series: [{ name: d.leg1, vals: d.cur }, { name: d.leg2, vals: d.prev }],
+      tickFmt: function (v) { return A.num(v, v < 10 && v % 1 ? 1 : 0); },
+      valueFmt: function (v) { return 'Rp' + A.num(v, v < 10 ? 2 : 1) + ' jt'; },
+      ariaLabel: 'Tren setoran ' + d.label + ', ' + d.peak
+    });
+    document.getElementById('lp-comp').innerHTML = d.comp.map(function (c) {
+      return '<li><div class="adm-comp-row"><b>' + A.esc(c[0]) + '</b><span class="mono">' + c[1] + '% · ' + A.esc(c[2]) + '</span></div>' +
+        '<span class="adm-bar is-thick"><span style="width:' + c[1] + '%"></span></span></li>';
+    }).join('');
+    document.getElementById('lp-table-title').textContent = 'Rincian periode (' + d.range + ')';
+    document.getElementById('lp-tbody').innerHTML = rowsWithLive(d).map(function (r) {
+      return '<tr><td class="strong">' + A.esc(r[0]) + '</td>' +
+        '<td class="num">' + A.num(r[1]) + A.esc(d.activeUnit) + '</td>' +
+        '<td class="num">' + A.num(r[2]) + '</td>' +
+        '<td class="num strong">' + A.rp(r[3]) + '</td>' +
+        '<td class="num st-warn">' + r[4] + '</td>' +
+        '<td class="end st-ok">Cocok Rp0 selisih</td></tr>';
     }).join('');
   }
 
-  function boot() {
-    var btns = document.querySelectorAll('[data-lap-period]');
-    btns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        btns.forEach(function (b) {
-          b.classList.remove('active');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-pressed', 'true');
-        renderPeriod(btn.dataset.lapPeriod);
-      });
+  function exportCsv() {
+    var d = DATA[current];
+    var rows = [['Periode', 'Pedagang aktif', 'Malam terbayar', 'Setoran masuk', 'Pelanggaran', 'Rekonsiliasi']];
+    rowsWithLive(d).forEach(function (r) { rows.push([r[0], r[1], r[2], r[3], r[4], 'Cocok Rp0 selisih']); });
+    A.downloadCsv('laporan-' + current + '-apima.csv', rows, 'Rekap ' + d.label + ' (.csv) berhasil diunduh.');
+  }
+
+  A.onReady(function () {
+    A.bindPills('[data-lp-period]', 'data-lp-period', render);
+    document.getElementById('lp-csv').addEventListener('click', exportCsv);
+    document.getElementById('lp-table-csv').addEventListener('click', exportCsv);
+    document.getElementById('lp-pdf').addEventListener('click', A.printPage);
+    document.getElementById('lp-wa').addEventListener('click', function () {
+      var d = DATA[current];
+      var txt = 'Ringkasan Periodik Pengurus APIMA (' + d.range + ')\n' +
+        'Total setoran: ' + document.getElementById('lp-total').textContent + '\n' +
+        '1. ' + d.i1 + '\n2. ' + d.i2 + '\n3. ' + d.i3;
+      A.copyText(txt, 'Ringkasan ' + d.label + ' siap ditempel ke WhatsApp.');
     });
-
-    var copyBtn = document.getElementById('lap-copy-wa');
-    if (copyBtn) {
-      copyBtn.addEventListener('click', function () {
-        var d = DATA[currentKey];
-        var txt = 'Ringkasan AI APIMA (' + d.subtitle + ')\nTotal Setoran: ' + d.heroTotal + '\n1. ' + d.ai1 + '\n2. ' + d.ai2 + '\n3. ' + d.ai3;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(txt).catch(function () {});
-        }
-        if (window.apimaToast) window.apimaToast('Ringkasan AI ' + currentKey + ' siap ditempel ke WhatsApp.');
-      });
-    }
-
-    var exportBtn = document.getElementById('lap-export-csv');
-    if (exportBtn) {
-      exportBtn.addEventListener('click', function () {
-        var d = DATA[currentKey];
-        var lines = ['Periode,Pedagang Aktif,Malam Terbayar,Setoran Masuk,Pelanggaran,Rekonsiliasi'];
-        d.rows.forEach(function (r) {
-          lines.push(r.map(function (c) { return '"' + c + '"'; }).join(','));
-        });
-        var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'laporan-' + currentKey + '-apima.csv';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        if (window.apimaToast) window.apimaToast('Rekap ' + currentKey + ' (.csv) berhasil diunduh.');
-      });
-    }
-
-    renderPeriod('mingguan');
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 30); });
-  } else {
-    setTimeout(boot, 30);
-  }
+    A.setCsv(exportCsv);
+    render('mingguan');
+    A.onStore(function () { render(current); });
+  });
 })();
 </script>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>
 </body>

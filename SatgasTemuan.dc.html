@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Satgas · Catat temuan</title>
+<title>Satgas · Temuan saya</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-satgas.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,73 +23,145 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2">
-      <a href="SatgasDaftar.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke daftar satgas">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </a>
-      <h1 class="text-md m-0 fw-700">Catat temuan</h1>
-    </div>
-    <span class="pill pill-warning">
-      <span class="status-dot dot-warning" aria-hidden="true"></span>
-      Offline
+  <header class="v5-app-header sg-header">
+    <span class="v5-app-logo sg-logo" aria-hidden="true">
+      <span class="brand-wordmark">
+        <img src="brand/apima-wordmark-light.webp" width="51" height="18" alt="" class="wm-light">
+        <img src="brand/apima-wordmark-dark.webp" width="50" height="18" alt="" class="wm-dark">
+      </span>
     </span>
+    <div class="sg-header-text">
+      <p class="v5-app-title">APIMA · Satgas</p>
+      <span class="v5-app-meta"><span class="js-date">Sab, 14 Nov</span> · S-01 Ahmad Fauzi</span>
+    </div>
+    <div class="v5-app-actions">
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a href="MasukId.dc.html" class="v5-icon-btn" aria-label="Keluar akun petugas" title="Keluar ke halaman masuk">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
+    </div>
   </header>
 
-  <main class="screen-scroll stack gap-4" style="padding:16px 16px 24px">
-
-    <div role="status" class="banner banner-warning">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--apima-warning)" stroke-width="2" class="banner-icon" aria-hidden="true"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
-      <div class="stack gap-1">
-        <span class="text-bold text-warning">Sedang offline · Data disimpan di HP</span>
-        <span class="text-sm text-secondary">Catatan disimpan di HP Anda dan otomatis terkirim saat sinyal kembali.</span>
+  <main class="screen-scroll sg-main sg-temuan-main" style="padding-top:20px">
+    <div class="sg-title-row" style="align-items:flex-start">
+      <div>
+        <h1 class="sg-page-title">Temuan saya</h1>
+        <p class="sg-page-sub"><span class="js-date">Sab, 14 Nov</span> · <span id="tm-count">0 catatan</span> malam ini</p>
       </div>
-    </div>
-
-    <div class="stack gap-2">
-      <label for="anggota" class="text-bold">Anggota</label>
-      <input id="anggota" type="search" value="0456 · Siti Aminah" class="input">
-      <button type="button" class="btn-chip" data-non-member-toggle aria-pressed="false">Bukan Anggota APIMA</button>
-    </div>
-
-    <fieldset class="m-0 stack gap-2" style="border:none;padding:0">
-      <legend class="text-bold" style="padding:0;margin-bottom:8px">Hasil temuan</legend>
-      <label class="radio-card selected-danger" data-danger>
-        <input type="radio" name="hasil" value="jualan_tanpa_bayar" checked>
-        <span>Jualan tanpa bayar</span>
-      </label>
-      <label class="radio-card">
-        <input type="radio" name="hasil" value="penjaga_tidak_dikenal">
-        <span>Penjaga tidak dikenal</span>
-      </label>
-      <label class="radio-card">
-        <input type="radio" name="hasil" value="bayar_di_tempat">
-        <span>Bayar di tempat, menunggu konfirmasi</span>
-      </label>
-      <label class="radio-card">
-        <input type="radio" name="hasil" value="sesuai">
-        <span>Sesuai</span>
-      </label>
-    </fieldset>
-
-    <div class="stack gap-2">
-      <span class="text-bold">Bukti foto lapak</span>
-      <button type="button" class="photo-drop" data-photo-btn>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="4"/></svg>
-        <span>Ambil Foto Lapak</span>
+      <button id="tm-send" type="button" class="btn btn-primary sg-send-btn" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Kirim Semua
       </button>
-      <span class="text-sm text-secondary tnum">Lokasi dan jam tercatat otomatis · 23:41</span>
     </div>
 
+    <ul id="tm-list" class="sg-findings" aria-label="Temuan saya malam ini"></ul>
+
+    <section id="tm-empty" class="v5-card sg-center-card" style="padding-bottom:12px" hidden aria-labelledby="tm-empty-title">
+      <span class="v5-illus sg-illus-lg"><img src="illustrations/data-kosong.webp" width="128" height="112" alt=""></span>
+      <h2 id="tm-empty-title" class="sg-card-title lg">Belum ada temuan malam ini</h2>
+      <p class="sg-card-text lg" style="font-size:13px;line-height:20px">Catatan akan muncul di sini setelah Anda scan QR anggota atau mencatat lapak bermasalah.</p>
+      <a href="SatgasScan.dc.html?scan=1" class="btn btn-primary sg-btn" style="margin-top:4px">Scan QR Anggota</a>
+      <div class="sg-schedule" aria-label="Jadwal cek lapak">
+        <div class="v5-row"><span class="v5-row-label">Jadwal cek malam ini</span><span class="v5-row-value mono">Mulai 19:00 WIB</span></div>
+        <div class="v5-row"><span class="v5-row-label">Batas pembayaran anggota</span><span class="v5-row-value mono">03:00 WIB</span></div>
+      </div>
+    </section>
   </main>
 
-  <div class="screen-footer">
-    <button type="button" class="btn btn-primary" disabled data-photo-send>Simpan Temuan</button>
-    <p class="text-sm text-secondary m-0 text-center" data-photo-hint>Ambil foto dulu untuk menyimpan temuan ini.</p>
-  </div>
-
+  <nav class="v5-nav" data-v5-nav="satgas" data-active="temuan"></nav>
 </div>
 </x-dc>
+<script>
+(function () {
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  function toneClass(tone) {
+    if (tone === 'danger') return 'st-danger';
+    if (tone === 'success') return 'st-success';
+    if (tone === 'warning') return 'st-warning';
+    return 'st-muted';
+  }
+
+  function render() {
+    var store = window.APIMA_STORE;
+    if (!store || !store.getSatgasOwnFindings) return;
+    var st = store.reload();
+    var date = store.formatDateInfo(st.dayOffset).short;
+    document.querySelectorAll('.js-date').forEach(function (el) { el.textContent = date; });
+
+    var list = store.getSatgasOwnFindings();
+    document.getElementById('tm-count').textContent = list.length + ' catatan';
+    document.getElementById('tm-send').hidden = list.length === 0;
+    document.getElementById('tm-empty').hidden = list.length > 0;
+
+    document.getElementById('tm-list').innerHTML = list.map(function (f) {
+      var idPart = f.nonMember ? 'Bukan anggota' : (f.memberId ? ('ID <span class="mono">' + esc(f.memberId) + '</span>') : 'ID belum diketahui');
+      var stateText = f.sent ? 'Terkirim' : 'Tersimpan di HP';
+      var stateCls = f.sent ? 'st-success' : 'st-warning';
+      return '<li class="v5-card sg-finding">' +
+        '<div class="sg-finding-top">' +
+          '<h2 class="sg-finding-name">' + esc(f.name) + '</h2>' +
+          '<span class="sg-finding-state ' + stateCls + '">' + stateText + '</span>' +
+        '</div>' +
+        '<span class="sg-finding-meta">' + esc(f.blok) + ' · ' + idPart + ' · ' + esc(f.jam) + '</span>' +
+        '<span class="sg-finding-result ' + toneClass(f.tone) + '">' + esc(f.temuan) + '</span>' +
+      '</li>';
+    }).join('');
+  }
+
+  function init() {
+    document.getElementById('tm-send').addEventListener('click', function () {
+      var store = window.APIMA_STORE;
+      var pending = store.countPendingSatgasFindings();
+      if (pending > 0 && typeof navigator !== 'undefined' && navigator.onLine === false) {
+        if (window.apimaToast) window.apimaToast('Masih offline. Temuan terkirim otomatis saat sinyal kembali.');
+        return;
+      }
+      var sent = store.sendPendingSatgasFindings();
+      render();
+      if (window.apimaToast) {
+        window.apimaToast(sent > 0 ? 'Temuan berhasil dikirim ke pengurus.' : 'Seluruh temuan malam ini telah dikirim ke pengurus.');
+      }
+    });
+
+    /* Sinyal kembali: kirim catatan yang masih tersimpan di HP */
+    window.addEventListener('online', function () {
+      var store = window.APIMA_STORE;
+      if (store.countPendingSatgasFindings() > 0) {
+        store.sendPendingSatgasFindings();
+        render();
+        if (window.apimaToast) window.apimaToast('Sinyal kembali. Temuan berhasil dikirim ke pengurus.');
+      }
+    });
+
+    render();
+
+    var saved = new URLSearchParams(window.location.search || '').get('saved');
+    if (saved) {
+      var msg = saved === 'local'
+        ? 'Temuan tersimpan di HP. Terkirim otomatis saat sinyal kembali.'
+        : 'Temuan tersimpan dan terkirim ke pengurus.';
+      var show = function (n) {
+        if (window.apimaToast) window.apimaToast(msg);
+        else if (n < 30) setTimeout(function () { show(n + 1); }, 100);
+      };
+      show(0);
+      if (window.history && window.history.replaceState) window.history.replaceState(null, '', 'SatgasTemuan.dc.html');
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+  window.addEventListener('apima:state-change', render);
+})();
+</script>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Satgas · Catat Temuan</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-satgas.css">
+<script src="./support.js"></script>
+<script src="./apima-store.js"></script>
+<script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="v5-app-header sg-header sg-catat-header">
+    <a href="SatgasDaftar.dc.html" class="v5-icon-btn sg-back" aria-label="Kembali ke daftar lapak">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="20" y1="12" x2="4" y2="12"/><polyline points="10 6 4 12 10 18"/></svg>
+    </a>
+    <div class="sg-header-text">
+      <h1 class="v5-app-title">Catat Temuan</h1>
+      <span class="v5-app-meta"><span id="ct-date">Sab, 14 Nov</span> · Shift Malam</span>
+    </div>
+    <div class="v5-app-actions">
+      <!-- HAPUS SEBELUM PRODUKSI: ketuk penanda koneksi untuk simulasi offline -->
+      <button id="ct-net" type="button" class="sg-net online" aria-pressed="false" aria-label="Status koneksi: online. Ketuk untuk simulasi offline">
+        <svg class="ct-net-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        <svg class="ct-net-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><line x1="2" y1="2" x2="22" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.17-2.39M19 13a10 10 0 0 0-2.17-1.4M2 8.82a15 15 0 0 1 4.17-2.65M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        <span id="ct-net-label">Online</span>
+      </button>
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a href="MasukId.dc.html" class="v5-icon-btn" aria-label="Keluar akun petugas" title="Keluar ke halaman masuk">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="screen-scroll sg-main">
+
+    <div id="ct-offline" class="sg-offline-note" role="status" hidden>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" y1="2" x2="22" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.17-2.39M19 13a10 10 0 0 0-2.17-1.4M2 8.82a15 15 0 0 1 4.17-2.65M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      <div>
+        <div class="sg-offline-title">Sedang offline · Data disimpan di HP</div>
+        <div class="sg-offline-text">Catatan disimpan di HP Anda dan otomatis terkirim saat sinyal kembali.</div>
+      </div>
+    </div>
+
+    <form id="ct-form" class="v5-card sg-form" novalidate>
+      <div class="sg-field">
+        <span id="ct-subject-label" class="v5-label">Status Subjek</span>
+        <div class="sg-subject" role="group" aria-labelledby="ct-subject-label">
+          <button type="button" data-subject="anggota" aria-pressed="true">Anggota</button>
+          <button type="button" data-subject="bukan" aria-pressed="false">Bukan Anggota APIMA</button>
+        </div>
+      </div>
+
+      <div class="sg-grid-2">
+        <div class="sg-field">
+          <label for="ct-nama" class="v5-label">Nama Pedagang</label>
+          <input id="ct-nama" type="text" class="v5-input" placeholder="Nama pedagang" autocomplete="off" aria-describedby="ct-nama-error">
+        </div>
+        <div class="sg-field">
+          <label for="ct-blok" class="v5-label">Blok Lapak</label>
+          <input id="ct-blok" type="text" class="v5-input" placeholder="Blok B-09" autocomplete="off">
+        </div>
+      </div>
+      <p id="ct-nama-error" class="sg-field-error" hidden>Isi nama pedagang anggota terlebih dulu.</p>
+
+      <fieldset class="sg-fieldset">
+        <legend class="sg-legend">Hasil temuan</legend>
+        <label class="v5-choice sg-choice">
+          <input type="radio" name="ct-hasil" value="Jualan tanpa bayar" checked>
+          <span>Jualan tanpa bayar</span>
+          <span class="v5-choice-check" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg></span>
+        </label>
+        <label class="v5-choice sg-choice">
+          <input type="radio" name="ct-hasil" value="Penjaga tidak dikenal">
+          <span>Penjaga tidak dikenal</span>
+          <span class="v5-choice-check" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg></span>
+        </label>
+        <label class="v5-choice sg-choice">
+          <input type="radio" name="ct-hasil" value="Bayar di tempat, menunggu konfirmasi">
+          <span>Bayar di tempat, menunggu konfirmasi</span>
+          <span class="v5-choice-check" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg></span>
+        </label>
+        <label class="v5-choice sg-choice">
+          <input type="radio" name="ct-hasil" value="Sesuai">
+          <span>Sesuai</span>
+          <span class="v5-choice-check" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg></span>
+        </label>
+      </fieldset>
+
+      <div class="sg-field">
+        <span class="v5-label">Bukti foto lapak</span>
+        <label for="ct-foto" id="ct-foto-btn" class="sg-photo sg-photo-lg">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          <span id="ct-foto-label">Ambil Foto Lapak</span>
+        </label>
+        <input id="ct-foto" type="file" accept="image/*" capture="environment" class="sg-file">
+        <p class="sg-help">Lokasi dan jam tercatat otomatis · Catatan ini tidak mengubah status bayar menjadi lunas.</p>
+      </div>
+
+      <button id="ct-simpan" type="submit" class="btn btn-primary sg-btn" disabled aria-describedby="ct-hint">Simpan Temuan</button>
+      <p id="ct-hint" class="sg-hint-center">Ambil foto dulu untuk menyimpan temuan ini.</p>
+    </form>
+  </main>
+
+  <nav class="v5-nav" data-v5-nav="satgas" data-active="catat"></nav>
+</div>
+</x-dc>
+<script>
+(function () {
+  var subject = 'anggota';
+  var memberId = '';
+  var simulatedOffline = false; /* HAPUS SEBELUM PRODUKSI */
+
+  function isOffline() {
+    return simulatedOffline || (typeof navigator !== 'undefined' && navigator.onLine === false);
+  }
+
+  function renderNet() {
+    var off = isOffline();
+    var pill = document.getElementById('ct-net');
+    pill.classList.toggle('online', !off);
+    pill.classList.toggle('offline', off);
+    pill.setAttribute('aria-pressed', simulatedOffline ? 'true' : 'false');
+    pill.setAttribute('aria-label', off
+      ? 'Status koneksi: offline. Ketuk untuk kembali online (simulasi)'
+      : 'Status koneksi: online. Ketuk untuk simulasi offline');
+    document.getElementById('ct-net-label').textContent = off ? 'Offline' : 'Online';
+    pill.querySelector('.ct-net-on').toggleAttribute('hidden', off);
+    pill.querySelector('.ct-net-off').toggleAttribute('hidden', !off);
+    document.getElementById('ct-offline').hidden = !off;
+  }
+
+  function setSubject(next) {
+    subject = next;
+    document.querySelectorAll('[data-subject]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.subject === next ? 'true' : 'false');
+    });
+    document.getElementById('ct-nama-error').hidden = true;
+  }
+
+  function hasPhoto() {
+    var f = document.getElementById('ct-foto');
+    return !!(f.files && f.files.length) || f.dataset.demo === '1';
+  }
+
+  function renderPhoto() {
+    var done = hasPhoto();
+    document.getElementById('ct-foto-btn').classList.toggle('is-done', done);
+    document.getElementById('ct-foto-label').textContent = done ? 'Foto Lapak Terambil (Ketuk untuk ulang)' : 'Ambil Foto Lapak';
+    document.getElementById('ct-simpan').disabled = !done;
+    document.getElementById('ct-hint').hidden = done;
+  }
+
+  function findMemberByName(name) {
+    var st = window.APIMA_STORE.reload();
+    var n = name.trim().toLowerCase();
+    return st.members.find(function (m) { return m.name.toLowerCase() === n || m.id === n; }) || null;
+  }
+
+  function init() {
+    var store = window.APIMA_STORE;
+    if (!store) return;
+    var st = store.reload();
+    document.getElementById('ct-date').textContent = store.formatDateInfo(st.dayOffset).short;
+
+    var params = new URLSearchParams(window.location.search || '');
+    var reqId = params.get('id');
+    if (reqId) {
+      var m = st.members.find(function (x) { return x.id === reqId; });
+      if (m) {
+        memberId = m.id;
+        document.getElementById('ct-nama').value = m.name;
+        document.getElementById('ct-blok').value = m.blok;
+      }
+    }
+
+    document.querySelectorAll('[data-subject]').forEach(function (b) {
+      b.addEventListener('click', function () { setSubject(b.dataset.subject); });
+    });
+    document.getElementById('ct-nama').addEventListener('input', function () {
+      memberId = '';
+      document.getElementById('ct-nama-error').hidden = true;
+    });
+
+    document.getElementById('ct-net').addEventListener('click', function () {
+      simulatedOffline = !simulatedOffline;
+      renderNet();
+    });
+    window.addEventListener('online', renderNet);
+    window.addEventListener('offline', renderNet);
+
+    var foto = document.getElementById('ct-foto');
+    foto.addEventListener('change', renderPhoto);
+
+    document.getElementById('ct-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!hasPhoto()) return;
+      var nama = document.getElementById('ct-nama').value.trim();
+      var blok = document.getElementById('ct-blok').value.trim();
+      var hasil = (document.querySelector('input[name="ct-hasil"]:checked') || {}).value || 'Jualan tanpa bayar';
+      var nonMember = subject === 'bukan';
+      var errEl = document.getElementById('ct-nama-error');
+      if (!nonMember && !nama) {
+        errEl.hidden = false;
+        document.getElementById('ct-nama').focus();
+        return;
+      }
+      var id = memberId;
+      if (!nonMember && !id) {
+        var found = findMemberByName(nama);
+        if (found) id = found.id;
+      }
+      if (blok && !/^blok\b/i.test(blok) && !/lorong/i.test(blok)) blok = 'Blok ' + blok;
+      var entry = store.recordSatgasFinding({
+        memberId: nonMember ? '' : id,
+        name: nama || (nonMember ? 'Pedagang bukan anggota' : ''),
+        blok: blok,
+        temuan: hasil,
+        nonMember: nonMember,
+        offline: isOffline(),
+        metode: 'Catat manual + foto'
+      });
+      window.location.href = 'SatgasTemuan.dc.html?saved=' + (entry.sent ? 'sent' : 'local');
+    });
+
+    renderNet();
+    renderPhoto();
+  }
+
+  /* HAPUS SEBELUM PRODUKSI: penguji otomatis bisa menandai foto sudah diambil */
+  window.apimaSatgasDemoPhoto = function () {
+    var f = document.getElementById('ct-foto');
+    f.dataset.demo = '1';
+    renderPhoto();
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

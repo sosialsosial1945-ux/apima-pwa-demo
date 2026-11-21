@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · Pengurus · Keaktifan Pedagang</title>
+<title>APIMA · Keaktifan Pedagang</title>
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./admin.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-admin.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
+<script src="./admin-charts.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -15,414 +18,209 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="APIMA">
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" href="./icons/icon-192.png">
 <script src="./pwa.js" defer></script>
 </head>
-<body>
+<body class="adm-body">
 <x-dc>
-<div class="admin-shell">
+<div class="adm admin-shell">
+  <aside class="adm-side" id="adm-side" aria-label="Menu pengurus"></aside>
+  <div class="adm-main">
+    <header class="adm-top" id="adm-top"></header>
 
-  <nav class="admin-nav" aria-label="Navigasi pengurus">
-    <div class="admin-nav-head">
-      <div class="row gap-2 items-center admin-brand-text">
-        <span class="brand-wordmark">
-          <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
-          <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
-        </span>
-      </div>
-      <button type="button" class="btn-icon" data-sidebar-toggle aria-expanded="true" aria-label="Ciutkan menu samping" title="Ciutkan atau perluas menu">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
-      </button>
-    </div>
+    <main class="adm-content" id="main">
 
-    <div class="admin-nav-body">
-      <div class="admin-nav-group">
-        <span class="admin-nav-group-label">Utama</span>
-        <a href="AdminRingkasan.dc.html" class="admin-nav-link" aria-label="Ringkasan" title="Ringkasan dan analisis AI">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          <span class="admin-nav-text">Ringkasan</span>
-        </a>
-        <a href="AdminLaporan.dc.html" class="admin-nav-link" aria-label="Laporan" title="Laporan mingguan, bulanan, tahunan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          <span class="admin-nav-text">Laporan</span>
-        </a>
-        <a href="AdminRiwayat.dc.html" class="admin-nav-link" aria-label="Riwayat setoran" title="Riwayat transaksi retribusi">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-          <span class="admin-nav-text">Riwayat setoran</span>
-        </a>
-      </div>
-
-      <div class="admin-nav-group">
-        <span class="admin-nav-group-label">Anggota dan Lapangan</span>
-        <a href="AdminPedagang.dc.html" class="admin-nav-link active" aria-current="page" aria-label="Keaktifan pedagang" title="Pedagang rajin dan jarang jualan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span class="admin-nav-text">Keaktifan pedagang</span>
-        </a>
-        <a href="AdminSatgas.dc.html" class="admin-nav-link" aria-label="Kinerja satgas" title="Kinerja satgas lapangan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span class="admin-nav-text">Kinerja satgas</span>
-        </a>
-      </div>
-
-      <div class="admin-nav-footer">
-        <button type="button" class="admin-nav-link admin-nav-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
-          <svg class="icon-moon shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-          <span class="admin-nav-text" data-theme-label>Mode gelap</span>
-        </button>
-        <div class="admin-user-pill">
-          <span class="avatar-initials" aria-hidden="true">HD</span>
-          <div class="stack admin-user-meta" style="min-width:0">
-            <span class="text-xs fw-700 text-main">H. Darmawan</span>
-            <span class="text-xs text-secondary">Pengurus APIMA</span>
-          </div>
+      <section class="adm-hero" aria-labelledby="pd-hero-num">
+        <span class="adm-hero-eyebrow">Acuan pembagian bak ikan dan portofolio koperasi (2026)</span>
+        <div class="adm-hero-big">
+          <span class="adm-hero-num" id="pd-hero-num">412 layak bak ikan</span>
+          <span class="adm-hero-badge"><span data-icon="award" data-icon-size="16"></span>Peringkat 1: H. Slamet Raharjo (304 malam)</span>
         </div>
-        <a href="MasukId.dc.html" class="admin-nav-link" aria-label="Keluar akun" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span class="admin-nav-text">Keluar akun</span>
-        </a>
-      </div>
-    </div>
-  </nav>
-
-  <div class="admin-content">
-
-    <div class="admin-mobile-bar">
-      <span class="brand-wordmark">
-        <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
-        <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
-      </span>
-      <div class="row gap-1">
-        <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
-          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        </button>
-        <button type="button" class="btn-chip" data-sheet-open="sheet-admin-menu" aria-label="Buka menu navigasi pengurus">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          Menu
-        </button>
-      </div>
-    </div>
-
-    <main class="admin-main">
-
-      <header class="admin-page-head">
-        <div class="stack gap-1">
-          <div class="row gap-2 items-center wrap">
-            <h1 class="text-lg m-0">Keaktifan dan peringkat pedagang</h1>
-            <span class="sample-data-badge">Data contoh</span>
-          </div>
-          <span class="text-sm text-secondary">Pantau pedagang paling rajin, jarang jualan, pasif, hingga surat teguran pengurus.</span>
+        <p class="adm-hero-text">Pantau pedagang paling rajin, jarang jualan, pasif, hingga surat teguran pengurus secara objektif dari catatan QRIS.</p>
+        <div class="adm-hero-actions">
+          <button type="button" class="adm-btn adm-btn-primary" id="pd-top1">Lihat Riwayat Peringkat 1</button>
+          <button type="button" class="adm-btn adm-btn-onhero" id="pd-csv"><span data-icon="download" data-icon-size="16"></span>Unduh Excel (.csv)</button>
+          <button type="button" class="adm-btn adm-btn-onhero" id="pd-pdf"><span data-icon="printer" data-icon-size="16"></span>Unduh PDF</button>
         </div>
-
-        <div class="admin-actions">
-          <button type="button" class="btn-chip" id="ped-export-csv">Unduh Excel (.csv)</button>
-          <button type="button" class="btn-chip" data-export-pdf="Daftar peringkat pedagang PDF">Unduh PDF</button>
-        </div>
-      </header>
-
-      <!-- Banner Eksekutif Biru Maritim -->
-      <section class="exec-banner" aria-label="Ringkasan keaktifan anggota 2026">
-        <div class="exec-banner-top">
-          <div class="stack gap-2">
-            <span class="text-sm exec-banner-muted">Acuan pembagian bak ikan dan portofolio koperasi (2026)</span>
-            <div class="row gap-3 items-center wrap">
-              <span class="exec-kpi-big">412 layak bak ikan</span>
-              <span class="exec-delta">Peringkat #1: H. Slamet Raharjo (304 malam)</span>
-            </div>
-          </div>
-
-          <button type="button" class="exec-seg-btn active" style="padding:0 18px" data-member-open="0014">Lihat Riwayat #1</button>
-        </div>
-
-        <div class="exec-stats-row">
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Paling rajin (&gt;= 200 mlm)</span>
-            <span class="exec-stat-val">412 pedagang</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Jarang jualan (&lt; 6 mlm/bln)</span>
-            <span class="exec-stat-val">24 pedagang</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Pasif &gt;= 30 hari</span>
-            <span class="exec-stat-val">18 pedagang</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Perlu teguran (&gt;= 2x)</span>
-            <span class="exec-stat-val">11 pedagang</span>
-          </div>
+        <div class="adm-hero-tiles" role="group" aria-label="Pilih kategori pedagang">
+          <button type="button" class="adm-htile is-active" data-pd-tab="rajin" aria-pressed="true"><span class="adm-htile-label">Paling rajin (&gt;= 200 mlm)</span><span class="adm-htile-val">412 pedagang</span></button>
+          <button type="button" class="adm-htile" data-pd-tab="jarang" aria-pressed="false"><span class="adm-htile-label">Jarang jualan (&lt; 6 mlm/bln)</span><span class="adm-htile-val">24 pedagang</span></button>
+          <button type="button" class="adm-htile" data-pd-tab="pasif" aria-pressed="false"><span class="adm-htile-label">Pasif &gt;= 30 hari</span><span class="adm-htile-val">18 pedagang</span></button>
+          <button type="button" class="adm-htile" data-pd-tab="pelanggar" aria-pressed="false"><span class="adm-htile-label">Perlu teguran (&gt;= 2x)</span><span class="adm-htile-val">11 pedagang</span></button>
         </div>
       </section>
 
-      <!-- Toolbar kategori + pencarian -->
-      <section class="admin-card" aria-label="Daftar pedagang berdasarkan keaktifan">
-        <div class="admin-toolbar">
-          <div class="seg" role="group" aria-label="Filter kategori pedagang">
-            <button type="button" class="seg-btn active" data-ped-tab="rajin" aria-pressed="true">Paling Rajin</button>
-            <button type="button" class="seg-btn" data-ped-tab="jarang" aria-pressed="false">Jarang Jualan</button>
-            <button type="button" class="seg-btn" data-ped-tab="pasif" aria-pressed="false">Pasif &gt;= 30 Hari</button>
-            <button type="button" class="seg-btn" data-ped-tab="pelanggar" aria-pressed="false">Perlu Teguran</button>
+      <section class="adm-card" aria-labelledby="pd-title">
+        <div class="adm-toolbar">
+          <div class="adm-pills" role="group" aria-label="Kategori keaktifan">
+            <button type="button" class="adm-pill is-active" data-pd-tab="rajin" aria-pressed="true">Paling Rajin</button>
+            <button type="button" class="adm-pill" data-pd-tab="jarang" aria-pressed="false">Jarang Jualan</button>
+            <button type="button" class="adm-pill" data-pd-tab="pasif" aria-pressed="false">Pasif &gt;= 30 Hari</button>
+            <button type="button" class="adm-pill" data-pd-tab="pelanggar" aria-pressed="false">Perlu Teguran</button>
           </div>
-
-          <div class="admin-search-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <label for="ped-search" class="sr-only">Cari nama atau ID pedagang</label>
-            <input id="ped-search" type="search" placeholder="Cari nama, blok, atau ID (mis. 0123)" class="input">
-          </div>
+          <label class="adm-field">
+            <span data-icon="search" data-icon-size="16"></span>
+            <span class="sr-only">Cari pedagang</span>
+            <input type="search" id="pd-search" placeholder="Cari nama atau ID pedagang" autocomplete="off">
+          </label>
         </div>
-
-        <div class="row between wrap gap-2">
-          <h2 class="text-md m-0 fw-700" id="ped-list-title">Peringkat pedagang paling rajin jualan (2026)</h2>
-          <span class="text-sm text-secondary tnum" id="ped-count">6 pedagang ditampilkan</span>
+        <div class="adm-card-head">
+          <h2 class="adm-card-title" id="pd-title">Peringkat pedagang · Paling Rajin (2026)</h2>
+          <span class="adm-count" id="pd-count" aria-live="polite">0 pedagang ditampilkan</span>
         </div>
-
-        <div class="admin-table-wrap" id="ped-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Peringkat</th>
-                <th>Pedagang</th>
-                <th>Kehadiran (2026)</th>
-                <th class="num">Kepatuhan</th>
-                <th class="num">Pelanggaran</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="ped-tbody"></tbody>
+        <div class="adm-table-wrap" id="pd-wrap" tabindex="0" role="region" aria-label="Tabel keaktifan pedagang, geser ke samping di layar kecil">
+          <table class="adm-table">
+            <thead><tr>
+              <th scope="col">Peringkat</th><th scope="col">Pedagang</th><th scope="col" class="num">Kehadiran (2026)</th>
+              <th scope="col" class="num">Kepatuhan</th><th scope="col" class="num">Pelanggaran</th><th scope="col">Status</th><th scope="col" class="end">Aksi</th>
+            </tr></thead>
+            <tbody id="pd-tbody"></tbody>
           </table>
         </div>
-
-        <div id="ped-empty" class="empty-state" hidden>
-          <img src="illustrations/tidak-ditemukan.webp" alt="Ilustrasi pencarian tidak ditemukan" class="illus-sm">
-          <span class="text-bold">Pedagang tidak ditemukan</span>
-          <span class="text-sm text-secondary">Coba ubah kata pencarian atau pindah ke kategori lain.</span>
-          <button type="button" class="btn-chip" id="ped-reset">Reset Pencarian</button>
+        <div class="adm-empty" id="pd-empty" hidden>
+          <img src="illustrations/tidak-ditemukan.webp" width="96" height="96" alt="">
+          <strong>Pedagang tidak ditemukan</strong>
+          <span>Coba nama atau ID lain, atau pilih kategori lain.</span>
+          <button type="button" class="adm-btn adm-btn-ghost" id="pd-reset">Hapus Pencarian</button>
         </div>
       </section>
 
     </main>
+
+    <footer class="adm-foot" id="adm-foot"></footer>
   </div>
-
-  <!-- Modal riwayat anggota (Portofolio Koperasi dan Tindak Lanjut) -->
-  <div id="sheet-member" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="mem-title">
-    <div class="sheet">
-      <div class="row between">
-        <div class="stack">
-          <span class="text-sm text-secondary tnum" id="mem-id">ID 0014</span>
-          <h2 id="mem-title" class="text-md m-0 fw-700">H. Slamet Raharjo</h2>
-        </div>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup riwayat pedagang">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-
-      <div class="info-strip">
-        <div class="info-cell">
-          <span class="text-sm text-secondary">Total jualan 2026</span>
-          <span class="text-md fw-700 tnum" id="mem-nights">304 malam</span>
-        </div>
-        <div class="info-cell">
-          <span class="text-sm text-secondary">Kepatuhan bayar</span>
-          <span class="text-md fw-700 tnum" id="mem-rate">100%</span>
-        </div>
-      </div>
-
-      <div class="stack gap-1">
-        <span class="text-sm fw-700">Catatan keaktifan</span>
-        <p class="text-sm text-secondary m-0" id="mem-note"></p>
-      </div>
-
-      <div class="banner banner-neutral">
-        <span class="text-sm" id="mem-coop">Data riwayat hanya dibagikan ke koperasi atas permintaan anggota sendiri (UU 27/2022).</span>
-      </div>
-
-      <div class="stack gap-2">
-        <button type="button" class="btn btn-primary" data-export-pdf="PDF riwayat portofolio koperasi">Unduh PDF Riwayat Koperasi</button>
-        <button type="button" class="btn btn-secondary" data-sheet-close>Tutup</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Sheet menu navigasi mobile -->
-  <div id="sheet-admin-menu" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
-    <div class="sheet">
-      <div class="row between">
-        <h2 id="mobile-menu-title" class="text-md m-0 fw-700">Menu Pengurus APIMA</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup menu pengurus">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="stack gap-1">
-        <a href="AdminRingkasan.dc.html" class="admin-nav-link">Ringkasan</a>
-        <a href="AdminLaporan.dc.html" class="admin-nav-link">Laporan</a>
-        <a href="AdminRiwayat.dc.html" class="admin-nav-link">Riwayat setoran</a>
-        <a href="AdminPedagang.dc.html" class="admin-nav-link active" aria-current="page">Keaktifan pedagang</a>
-        <a href="AdminSatgas.dc.html" class="admin-nav-link">Kinerja satgas</a>
-        <div style="height:1px;background:var(--apima-line);margin:6px 0"></div>
-        <a href="MasukId.dc.html" class="admin-nav-link" aria-label="Keluar akun">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span>Keluar akun</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
 </div>
+
+<div class="adm-modal" id="pd-modal" hidden role="dialog" aria-modal="true" aria-labelledby="pd-m-name">
+  <div class="adm-modal-card">
+    <div class="adm-modal-head">
+      <div>
+        <span class="adm-modal-ref" id="pd-m-id">ID 0014 · Blok A-02</span>
+        <h2 class="adm-modal-title" id="pd-m-name">H. Slamet Raharjo</h2>
+      </div>
+      <button type="button" class="adm-icon-btn adm-modal-x" data-modal-close aria-label="Tutup riwayat pedagang"><span data-icon="x" data-icon-size="20"></span></button>
+    </div>
+    <div class="adm-modal-tiles">
+      <div class="adm-tile"><span class="adm-tile-label">Total jualan 2026</span><span class="adm-tile-val" id="pd-m-nights">304 malam</span></div>
+      <div class="adm-tile"><span class="adm-tile-label">Kepatuhan bayar</span><span class="adm-tile-val is-success" id="pd-m-rate">100%</span></div>
+    </div>
+    <div>
+      <span class="adm-note-title">Catatan keaktifan</span>
+      <p class="adm-note" id="pd-m-note"></p>
+    </div>
+    <p class="adm-fine">Data riwayat hanya dibagikan ke koperasi atas permintaan anggota sendiri (UU 27/2022).</p>
+    <div class="adm-modal-actions">
+      <button type="button" class="adm-btn adm-btn-primary" id="pd-m-print"><span data-icon="file" data-icon-size="18"></span>Unduh PDF Riwayat Koperasi</button>
+      <button type="button" class="adm-btn adm-btn-ghost" data-modal-close>Tutup</button>
+    </div>
+  </div>
+</div>
+<script>APIMA_ADMIN.mountShell({ page: 'pedagang', title: 'Keaktifan Pedagang' });</script>
 </x-dc>
 <script>
 (function () {
+  var A = window.APIMA_ADMIN;
+
+  /* Identitas anggota data uji (Slamet, Siti, Rahmat, Agus) mengikuti apima-store.js; lainnya pedagang contoh. */
   var MEMBERS = [
-    { id: '0014', init: 'SR', tone: 'tone-success', blok: 'Blok A-02', name: 'H. Slamet Raharjo', cat: 'rajin', rank: '#1', rankCls: 'top', nights: 304, pct: 98, rate: '100%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Aktif hampir setiap malam sepanjang 2026 dan rutin bayar retribusi 30 malam sekaligus. Memenuhi syarat utama penerima bak ikan dan surat pengantar koperasi.' },
-    { id: '0156', init: 'SH', tone: 'tone-success', blok: 'Blok A-07', name: 'Suherman', cat: 'rajin', rank: '#2', rankCls: 'top', nights: 296, pct: 95, rate: '100%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Berjualan rutin 6 – 7 malam per pekan dan selalu membayar sebelum buka lapak.' },
-    { id: '0089', init: 'RH', tone: 'tone-success', blok: 'Blok B-05', name: 'Hj. Rohimah', cat: 'rajin', rank: '#3', rankCls: 'top', nights: 289, pct: 93, rate: '99,3%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Konsisten membayar tepat waktu sebelum pukul 22:00 WIB. Riwayat siap dicetak untuk pengajuan pinjaman modal koperasi.' },
-    { id: '0241', init: 'DP', tone: 'tone-success', blok: 'Blok C-09', name: 'Darmawan Putra', cat: 'rajin', rank: '#4', rankCls: '', nights: 274, pct: 88, rate: '98,9%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Aktif di Blok C. Belum pernah tercatat menjual tanpa bayar sepanjang 2026.' },
-    { id: '0310', init: 'YM', tone: 'tone-success', blok: 'Blok A-18', name: 'Yusuf Maulana', cat: 'rajin', rank: '#5', rankCls: '', nights: 262, pct: 84, rate: '98,1%', violations: 1, badge: 'badge-success', status: 'Layak Koperasi', note: '1 keterlambatan di bulan Maret sudah diselesaikan. Keaktifan 6 bulan terakhir 100%.' },
-    { id: '0187', init: 'NL', tone: 'tone-success', blok: 'Blok B-12', name: 'Ningsih Lestari', cat: 'rajin', rank: '#6', rankCls: '', nights: 251, pct: 81, rate: '97,6%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Terdaftar dengan 2 penjaga lapak resmi. Pembayaran QRIS selalu lunas.' },
+    { id: '0014', name: 'H. Slamet Raharjo', blok: 'Blok A-02', cat: 'rajin', rank: '#1', nights: 304, rate: 100, violations: 0, status: 'Layak Bak Ikan', note: 'Konsisten membayar paket 30 malam sejak Januari 2026 tanpa tunggakan. Memenuhi syarat penerima bak ikan dan surat pengantar koperasi.' },
+    { id: '0156', name: 'Suherman', blok: 'Blok A-07', cat: 'rajin', rank: '#2', nights: 296, rate: 100, violations: 0, status: 'Layak Bak Ikan', note: 'Berjualan rutin 6 – 7 malam per pekan dan selalu membayar sebelum buka lapak.' },
+    { id: '0089', name: 'Hj. Rohimah', blok: 'Blok B-05', cat: 'rajin', rank: '#3', nights: 289, rate: 99.3, violations: 0, status: 'Layak Bak Ikan', note: 'Konsisten membayar tepat waktu sebelum pukul 22:00 WIB. Riwayat siap dicetak untuk pengajuan pinjaman modal koperasi.' },
+    { id: '0241', name: 'Darmawan Putra', blok: 'Blok C-09', cat: 'rajin', rank: '#4', nights: 274, rate: 98.9, violations: 0, status: 'Layak Bak Ikan', note: 'Aktif di Blok C. Belum pernah tercatat menjual tanpa bayar sepanjang 2026.' },
+    { id: '0310', name: 'Yusuf Maulana', blok: 'Blok A-18', cat: 'rajin', rank: '#5', nights: 262, rate: 98.1, violations: 1, status: 'Layak Koperasi', note: 'Satu keterlambatan di bulan Maret sudah diselesaikan. Keaktifan 6 bulan terakhir 100%.' },
+    { id: '0187', name: 'Ningsih Lestari', blok: 'Blok B-12', cat: 'rajin', rank: '#6', nights: 251, rate: 97.6, violations: 0, status: 'Layak Bak Ikan', note: 'Terdaftar dengan 2 penjaga lapak resmi. Pembayaran QRIS selalu lunas.' },
 
-    { id: '0518', init: 'WY', tone: 'tone-warning', blok: 'Blok D-07', name: 'Wahyudi', cat: 'jarang', rank: '3/bln', rankCls: 'warn', nights: 36, pct: 12, rate: '91,6%', violations: 0, badge: 'badge-warning', status: 'Jarang Jualan', note: 'Rata-rata hanya berjualan 3 malam per bulan dalam 3 bulan terakhir (terbaru 11 Nov). Disarankan konfirmasi apakah berbagi lapak atau kendala pasokan ikan.' },
-    { id: '0392', init: 'SL', tone: 'tone-warning', blok: 'Blok E-04', name: 'Slamet Riyadi', cat: 'jarang', rank: '4/bln', rankCls: 'warn', nights: 48, pct: 16, rate: '95,8%', violations: 0, badge: 'badge-warning', status: 'Jarang Jualan', note: 'Rata-rata jualan 4 malam per bulan, umumnya hanya di malam akhir pekan. Kepatuhan bayar baik saat buka lapak.' },
-    { id: '0612', init: 'RT', tone: 'tone-warning', blok: 'Blok B-19', name: 'Rudi Hartono', cat: 'jarang', rank: '4/bln', rankCls: 'warn', nights: 42, pct: 14, rate: '92,9%', violations: 0, badge: 'badge-warning', status: 'Jarang Jualan', note: 'Frekuensi jualan turun dari 18 malam/bulan menjadi 4 malam/bulan sejak September. Perlu pengecekan pengurus.' },
-    { id: '0445', init: 'EP', tone: 'tone-warning', blok: 'Blok F-12', name: 'Eko Prasetyo', cat: 'jarang', rank: '5/bln', rankCls: 'warn', nights: 54, pct: 18, rate: '88,9%', violations: 1, badge: 'badge-warning', status: 'Jarang Jualan', note: 'Rata-rata 5 malam per bulan dengan 1 catatan keterlambatan bayar di bulan Oktober.' },
+    { id: '0518', name: 'Wahyudi', blok: 'Blok D-07', cat: 'jarang', rank: '3/bln', nights: 36, rate: 91.6, violations: 0, status: 'Jarang Jualan', note: 'Rata-rata hanya berjualan 3 malam per bulan dalam 3 bulan terakhir (terbaru 11 Nov). Disarankan konfirmasi apakah berbagi lapak atau kendala pasokan ikan.' },
+    { id: '0392', name: 'Slamet Riyadi', blok: 'Blok E-04', cat: 'jarang', rank: '4/bln', nights: 48, rate: 95.8, violations: 0, status: 'Jarang Jualan', note: 'Rata-rata jualan 4 malam per bulan, umumnya hanya di malam akhir pekan. Kepatuhan bayar baik saat buka lapak.' },
+    { id: '0612', name: 'Rudi Hartono', blok: 'Blok B-19', cat: 'jarang', rank: '4/bln', nights: 42, rate: 92.9, violations: 0, status: 'Jarang Jualan', note: 'Frekuensi jualan turun dari 18 malam per bulan menjadi 4 malam per bulan sejak September. Perlu pengecekan pengurus.' },
+    { id: '0445', name: 'Eko Prasetyo', blok: 'Blok F-12', cat: 'jarang', rank: '5/bln', nights: 54, rate: 88.9, violations: 1, status: 'Jarang Jualan', note: 'Rata-rata 5 malam per bulan dengan 1 catatan keterlambatan bayar di bulan Oktober.' },
 
-    { id: '0609', init: 'HW', tone: 'tone-warning', blok: 'Blok D-11', name: 'Hendra Wijaya', cat: 'pasif', rank: '42 hr', rankCls: 'warn', nights: 118, pct: 38, rate: '96,5%', violations: 0, badge: 'badge-warning', status: 'Cek Lapangan', note: 'Terakhir jualan 3 Oktober 2026 (42 hari lalu). Perlu pengecekan apakah berhenti jualan atau pindah jam siang.' },
-    { id: '0491', init: 'MY', tone: 'tone-warning', blok: 'Blok E-09', name: 'Mulyadi', cat: 'pasif', rank: '35 hr', rankCls: 'warn', nights: 94, pct: 30, rate: '91,2%', violations: 1, badge: 'badge-warning', status: 'Cek Lapangan', note: 'Terakhir jualan 10 Oktober 2026 (35 hari lalu). Malam terbayar masih 2 malam.' },
-    { id: '0633', init: 'TH', tone: 'tone-warning', blok: 'Blok F-03', name: 'Tuti Handayani', cat: 'pasif', rank: '31 hr', rankCls: 'warn', nights: 155, pct: 50, rate: '98,0%', violations: 0, badge: 'badge-warning', status: 'Cek Lapangan', note: 'Terakhir jualan 14 Oktober 2026 (31 hari lalu). Nomor WhatsApp masih aktif, belum ada laporan berhenti.' },
+    { id: '0609', name: 'Hendra Wijaya', blok: 'Blok D-11', cat: 'pasif', rank: '42 hr', nights: 118, rate: 96.5, violations: 0, status: 'Cek Lapangan', note: 'Terakhir jualan 3 Oktober 2026 (42 hari lalu). Perlu pengecekan apakah berhenti jualan atau pindah jam siang.' },
+    { id: '0491', name: 'Mulyadi', blok: 'Blok E-09', cat: 'pasif', rank: '35 hr', nights: 94, rate: 91.2, violations: 1, status: 'Cek Lapangan', note: 'Terakhir jualan 10 Oktober 2026 (35 hari lalu). Malam terbayar masih 2 malam.' },
+    { id: '0633', name: 'Tuti Handayani', blok: 'Blok F-03', cat: 'pasif', rank: '31 hr', nights: 155, rate: 98.0, violations: 0, status: 'Cek Lapangan', note: 'Terakhir jualan 14 Oktober 2026 (31 hari lalu). Nomor WhatsApp masih aktif, belum ada laporan berhenti.' },
 
-    { id: '0456', init: 'SA', tone: 'tone-danger', blok: 'Blok B-09', name: 'Siti Aminah', cat: 'pelanggar', rank: '3x', rankCls: 'danger', nights: 142, pct: 46, rate: '82,4%', violations: 3, badge: 'badge-danger', status: 'Perlu Teguran', note: 'Tercatat jualan tanpa bayar 3 kali dalam 30 hari terakhir (terbaru 14 Nov 23:41 oleh Satgas A). Direkomendasikan surat teguran pertama.' },
-    { id: '0078', init: 'RH', tone: 'tone-danger', blok: 'Blok B-03', name: 'Rahmat Hidayat', cat: 'pelanggar', rank: '2x', rankCls: 'danger', nights: 168, pct: 54, rate: '86,0%', violations: 2, badge: 'badge-danger', status: 'QR Ganda', note: 'Terdeteksi pemakaian QR ganda pada dua lapak berbeda di malam yang sama. Perlu klarifikasi di sekretariat.' },
-    { id: '0592', init: 'AS', tone: 'tone-danger', blok: 'Blok D-02', name: 'Agus Salim', cat: 'pelanggar', rank: '2x', rankCls: 'danger', nights: 119, pct: 38, rate: '84,5%', violations: 2, badge: 'badge-danger', status: 'Perlu Teguran', note: 'Dua kali melewati batas bayar pukul 03:00 WIB setelah ditegur satgas di lapangan.' }
+    { id: '0456', name: 'Siti Aminah', blok: 'Blok B-09', cat: 'pelanggar', rank: '3x', nights: 142, rate: 82.4, violations: 3, status: 'Perlu Teguran', note: 'Tercatat jualan tanpa bayar 3 kali dalam 30 hari terakhir (terbaru 14 Nov 23:41 oleh Satgas A). Direkomendasikan surat teguran pertama.' },
+    { id: '0078', name: 'Rahmat Hidayat', blok: 'Blok B-03', cat: 'pelanggar', rank: '2x', nights: 168, rate: 86.0, violations: 2, status: 'Perlu Teguran', note: 'Terdeteksi pemakaian QR ganda pada dua lapak berbeda di malam yang sama. Perlu klarifikasi di sekretariat.' },
+    { id: '0592', name: 'Agus Salim', blok: 'Blok D-02', cat: 'pelanggar', rank: '2x', nights: 119, rate: 84.5, violations: 2, status: 'Perlu Teguran', note: 'Dua kali melewati batas bayar pukul 03:00 WIB setelah ditegur satgas di lapangan.' }
   ];
+  var TITLES = { rajin: 'Paling Rajin', jarang: 'Jarang Jualan', pasif: 'Pasif >= 30 Hari', pelanggar: 'Perlu Teguran' };
+  var STATUS_CLS = { rajin: 'st-ok', jarang: 'st-warn', pasif: 'st-warn', pelanggar: 'st-bad' };
+  var tab = 'rajin';
+  var rows = [];
 
-  var TITLES = {
-    rajin: 'Peringkat pedagang paling rajin jualan (2026)',
-    jarang: 'Daftar pedagang jarang jualan (kurang dari 6 malam per bulan)',
-    pasif: 'Anggota tidak aktif >= 30 hari (cek lapangan)',
-    pelanggar: 'Daftar pelanggar berulang yang perlu teguran'
-  };
+  function rateCls(r) { return r >= 95 ? 'st-ok' : (r >= 85 ? 'st-warn' : 'st-bad'); }
+  function pct(r) { return A.num(r, r % 1 ? 1 : 0) + '%'; }
 
-  var currentTab = 'rajin';
-
-  function openMemberSheet(id) {
-    var m = MEMBERS.find(function (x) { return x.id === id; });
+  function openMember(id, trigger) {
+    var m = MEMBERS.filter(function (x) { return x.id === id; })[0];
     if (!m) return;
-    var note = m.note;
-    if (m.id === '0123' && window.APIMA_STORE) {
-      var liveBudi = window.APIMA_STORE.getMember('0123');
-      if (liveBudi) {
-        var stLabel = window.APIMA_STORE.getStatusMeta(liveBudi.tonightStatus).label;
-        note = 'Berjualan rutin 6 \u2013 7 malam per pekan. Malam terbayar saat ini ' + liveBudi.paidNights + ' malam, status malam ini ' + stLabel + ', dan 1 penjaga lapak terdaftar (' + (liveBudi.penjagaActive ? 'Aktif' : 'Nonaktif') + ').';
-      }
-    }
-    document.getElementById('mem-id').textContent = 'ID ' + m.id + ' \u00b7 ' + m.blok;
-    document.getElementById('mem-title').textContent = m.name;
-    document.getElementById('mem-nights').textContent = m.nights + ' malam';
-    document.getElementById('mem-rate').textContent = m.rate;
-    document.getElementById('mem-note').textContent = note;
-    var sheet = document.getElementById('sheet-member');
-    sheet.hidden = false;
-    var closeBtn = sheet.querySelector('[data-sheet-close]');
-    if (closeBtn) closeBtn.focus();
+    document.getElementById('pd-m-id').textContent = 'ID ' + m.id + ' · ' + m.blok;
+    document.getElementById('pd-m-name').textContent = m.name;
+    document.getElementById('pd-m-nights').textContent = m.nights + ' malam';
+    var rate = document.getElementById('pd-m-rate');
+    rate.textContent = pct(m.rate);
+    rate.className = 'adm-tile-val ' + (m.rate >= 95 ? 'is-success' : 'is-warning');
+    document.getElementById('pd-m-note').textContent = m.note;
+    A.openModal('pd-modal', trigger);
   }
 
-  function renderTable() {
-    var q = (document.getElementById('ped-search').value || '').trim().toLowerCase();
-    var rows = MEMBERS.filter(function (m) {
-      if (m.cat !== currentTab) return false;
-      if (!q) return true;
-      return (m.name + ' ' + m.id + ' ' + m.blok + ' ' + m.status).toLowerCase().indexOf(q) !== -1;
+  function render() {
+    var q = (document.getElementById('pd-search').value || '').trim().toLowerCase();
+    rows = MEMBERS.filter(function (m) {
+      if (q) return (m.name + ' ' + m.id + ' ' + m.blok + ' ' + m.status).toLowerCase().indexOf(q) !== -1;
+      return m.cat === tab;
     });
-
-    document.getElementById('ped-list-title').textContent = TITLES[currentTab];
-    document.getElementById('ped-count').textContent = rows.length + ' pedagang ditampilkan';
-    document.getElementById('ped-empty').hidden = rows.length > 0;
-    document.getElementById('ped-table-wrap').hidden = rows.length === 0;
-
-    var tbody = document.getElementById('ped-tbody');
-    tbody.innerHTML = rows.map(function (m) {
-      var barTone = m.cat === 'rajin' ? 'tone-success' : (m.cat === 'pelanggar' ? 'tone-danger' : 'tone-warning');
+    document.getElementById('pd-title').textContent = q ? 'Hasil pencarian "' + document.getElementById('pd-search').value.trim() + '"' : 'Peringkat pedagang · ' + TITLES[tab] + ' (2026)';
+    document.getElementById('pd-count').textContent = rows.length + ' pedagang ditampilkan';
+    document.getElementById('pd-empty').hidden = rows.length > 0;
+    document.getElementById('pd-wrap').hidden = rows.length === 0;
+    document.getElementById('pd-tbody').innerHTML = rows.map(function (m) {
       return '<tr>' +
-        '<td><span class="rank-badge' + (m.rankCls ? ' ' + m.rankCls : '') + '">' + m.rank + '</span></td>' +
-        '<td><div class="row gap-3 items-center"><span class="avatar-initials ' + m.tone + '" aria-hidden="true">' + m.init + '</span><div class="stack"><span class="fw-700">' + m.name + '</span><span class="text-xs text-secondary tnum">ID ' + m.id + ' · ' + m.blok + '</span></div></div></td>' +
-        '<td style="min-width:150px"><div class="stack"><span class="fw-700 tnum">' + m.nights + ' malam</span><div class="merchant-bar-track"><div class="merchant-bar-fill ' + barTone + '" style="width:' + m.pct + '%"></div></div></div></td>' +
-        '<td class="num">' + m.rate + '</td>' +
-        '<td class="num">' + m.violations + '</td>' +
-        '<td><span class="badge ' + m.badge + '">' + m.status + '</span></td>' +
-        '<td><button type="button" class="btn-chip" data-member-open="' + m.id + '">Lihat Riwayat</button></td>' +
+        '<td><span class="rank">' + A.esc(m.rank) + '</span></td>' +
+        '<td><div class="adm-person"><span class="adm-person-name">' + A.esc(m.name) + '</span><span class="adm-person-sub mono">ID ' + m.id + ' · ' + A.esc(m.blok) + '</span></div></td>' +
+        '<td class="num strong">' + m.nights + ' malam</td>' +
+        '<td class="num ' + rateCls(m.rate) + '">' + pct(m.rate) + '</td>' +
+        '<td class="num">' + m.violations + 'x</td>' +
+        '<td><span class="' + STATUS_CLS[m.cat] + '">' + A.esc(m.status) + '</span></td>' +
+        '<td class="end"><button type="button" class="adm-link" data-member="' + m.id + '" aria-label="Lihat riwayat ' + A.esc(m.name) + '">Lihat Riwayat</button></td>' +
       '</tr>';
     }).join('');
-
-    tbody.querySelectorAll('[data-member-open]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        openMemberSheet(btn.dataset.memberOpen);
-      });
+    document.querySelectorAll('#pd-tbody [data-member]').forEach(function (btn) {
+      btn.addEventListener('click', function () { openMember(btn.getAttribute('data-member'), btn); });
     });
   }
 
-  function boot() {
-    var tabs = document.querySelectorAll('[data-ped-tab]');
-    tabs.forEach(function (tab) {
-      tab.addEventListener('click', function () {
-        tabs.forEach(function (t) {
-          t.classList.remove('active');
-          t.setAttribute('aria-pressed', 'false');
-        });
-        tab.classList.add('active');
-        tab.setAttribute('aria-pressed', 'true');
-        currentTab = tab.dataset.pedTab;
-        renderTable();
-      });
-    });
-
-    var search = document.getElementById('ped-search');
-    if (search) search.addEventListener('input', renderTable);
-
-    var reset = document.getElementById('ped-reset');
-    if (reset) {
-      reset.addEventListener('click', function () {
-        search.value = '';
-        renderTable();
-        search.focus();
-      });
-    }
-
-    document.querySelectorAll('.exec-banner [data-member-open]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        openMemberSheet(btn.dataset.memberOpen);
-      });
-    });
-
-    var exportBtn = document.getElementById('ped-export-csv');
-    if (exportBtn) {
-      exportBtn.addEventListener('click', function () {
-        var lines = ['ID,Nama,Blok,Kategori,Malam Jualan 2026,Kepatuhan,Pelanggaran,Status'];
-        MEMBERS.forEach(function (m) {
-          lines.push(['"' + m.id + '"', '"' + m.name + '"', '"' + m.blok + '"', m.cat, m.nights, m.rate, m.violations, '"' + m.status + '"'].join(','));
-        });
-        var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'keaktifan-pedagang-apima-2026.csv';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        if (window.apimaToast) window.apimaToast('Daftar keaktifan pedagang (.csv) berhasil diunduh.');
-      });
-    }
-
-    renderTable();
+  function exportCsv() {
+    var out = [['ID', 'Nama', 'Blok', 'Kategori', 'Malam jualan 2026', 'Kepatuhan', 'Pelanggaran', 'Status']];
+    MEMBERS.forEach(function (m) { out.push([m.id, m.name, m.blok, TITLES[m.cat], m.nights, pct(m.rate), m.violations, m.status]); });
+    A.downloadCsv('keaktifan-pedagang-apima-2026.csv', out, 'Daftar keaktifan pedagang (.csv) berhasil diunduh.');
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 30); });
-  } else {
-    setTimeout(boot, 30);
-  }
+  A.onReady(function () {
+    var search = document.getElementById('pd-search');
+    var q = A.queryParam('q');
+    if (q) search.value = q;
+    var tabs = document.querySelectorAll('[data-pd-tab]');
+    tabs.forEach(function (b) {
+      b.addEventListener('click', function () {
+        tab = b.getAttribute('data-pd-tab');
+        A.setPill('[data-pd-tab]', tab, 'data-pd-tab');
+        if (search.value) search.value = '';
+        render();
+      });
+    });
+    search.addEventListener('input', render);
+    document.getElementById('pd-reset').addEventListener('click', function () { search.value = ''; render(); search.focus(); });
+    document.getElementById('pd-top1').addEventListener('click', function (e) { openMember('0014', e.currentTarget); });
+    document.getElementById('pd-csv').addEventListener('click', exportCsv);
+    document.getElementById('pd-pdf').addEventListener('click', A.printPage);
+    document.getElementById('pd-m-print').addEventListener('click', function () { A.printModal(document.getElementById('pd-modal')); });
+    A.setCsv(exportCsv);
+    render();
+  });
 })();
 </script>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>
 </body>

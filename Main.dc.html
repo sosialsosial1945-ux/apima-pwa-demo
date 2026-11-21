@@ -5,9 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>APIMA · Beranda</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,121 +23,55 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2 items-center">
+  <header class="v5-app-header ag-header">
+    <span class="v5-app-logo" aria-hidden="true">
+      <img src="brand/apima-wordmark-light.webp" width="240" height="85" alt="" class="wm-light">
+      <img src="brand/apima-wordmark-dark.webp" width="240" height="85" alt="" class="wm-dark">
+    </span>
+    <div class="ag-header-text">
       <h1 class="sr-only">Beranda APIMA</h1>
-      <span class="brand-wordmark">
-        <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
-        <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
-      </span>
+      <p class="v5-app-title" data-ag-name>Budi Santoso</p>
+      <span class="v5-app-meta" data-ag-meta>Blok C-14 · ID 0123 · Sab, 14 Nov</span>
     </div>
-    <div class="row gap-2 items-center shrink-0">
-      <span class="text-sm fw-700 text-main tnum" id="main-date">Sab, 14 Nov</span>
-      <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
-        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <div class="v5-app-actions">
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
       </button>
+      <a href="MasukId.dc.html" class="v5-icon-btn" aria-label="Keluar akun">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
     </div>
   </header>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main">
 
-    <!-- Fokus tunggal layar: status malam ini + 1 aksi utama -->
-    <section class="hero-card" id="main-hero-card" aria-label="Status malam ini">
-      <span class="pill pill-warning" id="main-status-pill">
-        <span class="status-dot dot-warning" id="main-status-dot" aria-hidden="true"></span>
-        <span id="main-status-label">Belum Lapor</span>
-      </span>
-      <div class="stack gap-1">
-        <h2 class="text-lg m-0" id="main-hero-title">Buka lapak malam ini?</h2>
-        <p class="text-sm text-secondary m-0" id="main-hero-desc">Sudah dibayar untuk 4 malam lagi. Lapor jualan akan memakai 1 malam terbayar untuk malam ini.</p>
-      </div>
-      <div id="main-hero-cta-wrap">
-        <button type="button" id="btn-lapor-jualan" class="btn btn-primary">Lapor Jualan Malam Ini</button>
-      </div>
-    </section>
+    <!-- HAPUS SEBELUM PRODUKSI: tab keadaan demo (tidak mengubah data uji) -->
+    <div class="v5-seg v5-demo-seg ag-seg" role="group" aria-label="Pilih keadaan beranda untuk demo">
+      <button type="button" data-ag-view="normal" aria-pressed="true">Normal</button>
+      <button type="button" data-ag-view="tutup" aria-pressed="false">Tutup</button>
+      <button type="button" data-ag-view="kuota0" aria-pressed="false">Kuota 0</button>
+      <button type="button" data-ag-view="memuat" aria-pressed="false">Memuat</button>
+      <button type="button" data-ag-view="nonaktif" aria-pressed="false">Nonaktif</button>
+    </div>
+    <!-- /HAPUS SEBELUM PRODUKSI -->
 
-    <section class="info-strip" aria-label="Ringkasan akun">
-      <a href="AnggotaPilihHari.dc.html" class="info-cell no-underline">
-        <div class="row between gap-1">
-          <span class="text-sm text-secondary">Malam terbayar</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--apima-text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-        <span class="text-md fw-700 text-main tnum" id="main-paid-nights">4 malam</span>
-      </a>
-      <a href="AnggotaQrIdentitas.dc.html" class="info-cell no-underline">
-        <div class="row between gap-1">
-          <span class="text-sm text-secondary">Penjaga lapak</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--apima-text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-        </div>
-        <span class="text-base fw-700 text-main" id="main-penjaga-status">Rahmat · Aktif</span>
-      </a>
-    </section>
-
-    <!-- Daftar terbuka di atas kanvas halaman (tanpa kotak bertumpuk) -->
-    <section id="riwayat" class="open-section" aria-label="Riwayat pembayaran dan laporan retribusi">
-      <div class="open-section-head">
-        <h2 class="text-base fw-700 m-0">Riwayat retribusi</h2>
-        <span class="text-sm text-secondary tnum" id="main-history-total">Total Rp30.000</span>
-      </div>
-      <ul class="open-list" id="main-history-list"></ul>
-      <div id="main-history-empty" class="empty-state" hidden style="padding:20px 12px">
-        <span class="text-sm fw-700 text-main">Belum ada riwayat</span>
-        <span class="text-xs text-secondary">Pembayaran dan laporan jualan Anda akan tampil di sini.</span>
-      </div>
-    </section>
+    <div id="ag-beranda" class="ag-main" style="padding:0" aria-live="polite"></div>
 
   </main>
 
-  <nav class="bottom-nav" aria-label="Navigasi utama">
-    <a href="Main.dc.html" class="nav-item active" data-nav="Main.dc.html" aria-current="page">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4.5v-6h3v6H18a1 1 0 0 0 1-1V9.5"/></svg>
-      <span>Beranda</span>
-    </a>
-    <a href="AnggotaRiwayat.dc.html" class="nav-item" data-nav="AnggotaRiwayat.dc.html">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-      <span>Riwayat</span>
-    </a>
-    <a href="AnggotaQrIdentitas.dc.html" class="nav-item" data-nav="AnggotaQrIdentitas.dc.html">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 20h3"/></svg>
-      <span>QR saya</span>
-    </a>
-    <button type="button" class="nav-item" data-sheet-open="sheet-akun">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span>Akun</span>
-    </button>
-  </nav>
+  <nav class="v5-nav" data-v5-nav="anggota" data-active="beranda"></nav>
 
-  <div id="sheet-akun" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-akun-title">
+  <div id="sheet-aktifkan" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-aktifkan-title">
     <div class="sheet">
-      <div class="row between">
-        <h2 id="sheet-akun-title" class="text-md m-0 fw-700">Akun anggota</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup informasi akun">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <div class="ag-sheet-head">
+        <h2 id="sheet-aktifkan-title">Aktifkan akun kembali</h2>
+        <button type="button" class="v5-icon-btn" data-sheet-close aria-label="Tutup kontak pengurus">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <ul class="open-list">
-        <li class="open-row">
-          <span class="text-sm text-secondary">Nama</span>
-          <span class="text-sm fw-700">Budi Santoso</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Nomor anggota</span>
-          <span class="text-sm fw-700 tnum">0123</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Lapak</span>
-          <span class="text-sm fw-700">Blok C-14</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Penjaga lapak</span>
-          <span class="text-sm fw-700" id="sheet-penjaga-name">Rahmat</span>
-        </li>
-      </ul>
-      <div class="stack gap-2">
-        <a href="AnggotaPilihHari.dc.html" class="btn btn-primary no-underline">Tambah Malam Terbayar</a>
-        <a href="MasukId.dc.html" class="btn btn-secondary no-underline">Keluar Akun</a>
-      </div>
+      <p class="ag-sheet-text">Siapkan kartu anggota Anda dan temui pengurus di sekretariat APIMA pada jam pasar (16:00 – 03:00 WIB) atau hubungi satgas blok, ya.</p>
+      <button type="button" class="btn btn-primary" data-sheet-close>Oke, Mengerti</button>
     </div>
   </div>
 
@@ -142,126 +79,219 @@
 </x-dc>
 <script>
 (function () {
-  function renderMain() {
-    var store = window.APIMA_STORE;
-    if (!store) return;
-    var st = store.getState();
-    var m = store.getActiveMember();
-    var dateInfo = store.formatDateInfo(st.dayOffset);
-    var paid = Math.max(0, parseInt(m.paidNights, 10) || 0);
+  'use strict';
+  /* HAPUS SEBELUM PRODUKSI: keadaan demo lewat ?state=tutup|kuota0|memuat|nonaktif */
+  var VIEWS = ['normal', 'tutup', 'kuota0', 'memuat', 'nonaktif'];
+  var params = new URLSearchParams(window.location.search || '');
+  var view = VIEWS.indexOf(params.get('state')) !== -1 ? params.get('state') : 'normal';
 
-    var dateEl = document.getElementById('main-date');
-    if (dateEl) dateEl.textContent = dateInfo.short;
+  var ICON_CHEVRON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>';
 
-    var heroCard = document.getElementById('main-hero-card');
-    var pill = document.getElementById('main-status-pill');
-    var dot = document.getElementById('main-status-dot');
-    var statusLabel = document.getElementById('main-status-label');
-    var heroTitle = document.getElementById('main-hero-title');
-    var heroDesc = document.getElementById('main-hero-desc');
-    var ctaWrap = document.getElementById('main-hero-cta-wrap');
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
 
-    if (m.tonightStatus === 'sudah_bayar') {
-      if (heroCard) heroCard.className = 'hero-card tone-success';
-      if (pill) pill.className = 'pill pill-success';
-      if (dot) dot.className = 'status-dot dot-success';
-      if (statusLabel) statusLabel.textContent = 'Jualan · Sudah Bayar';
-      if (heroTitle) heroTitle.textContent = 'Anda tercatat jualan malam ini';
-      if (heroDesc) {
-        heroDesc.textContent = 'Sudah dibayar untuk ' + paid + ' malam lagi. Tunjukkan QR identitas saat satgas keliling.';
-      }
-      if (ctaWrap) {
-        ctaWrap.innerHTML = '<a href="AnggotaQrIdentitas.dc.html" class="btn btn-primary no-underline">Lihat QR Identitas</a>';
-      }
-    } else if (paid > 0) {
-      if (heroCard) heroCard.className = 'hero-card';
-      if (pill) pill.className = 'pill pill-warning';
-      if (dot) dot.className = 'status-dot dot-warning';
-      if (statusLabel) statusLabel.textContent = 'Belum Lapor';
-      if (heroTitle) heroTitle.textContent = 'Buka lapak malam ini?';
-      if (heroDesc) {
-        heroDesc.textContent = 'Sudah dibayar untuk ' + paid + ' malam lagi. Lapor jualan akan memakai 1 malam terbayar untuk malam ini.';
-      }
-      if (ctaWrap) {
-        ctaWrap.innerHTML = '<button type="button" id="btn-lapor-jualan" class="btn btn-primary">Lapor Jualan Malam Ini</button>';
-        var laporBtn = document.getElementById('btn-lapor-jualan');
-        if (laporBtn) {
-          laporBtn.addEventListener('click', function () {
-            var res = store.reportSellingTonight(m.id);
-            if (res && res.ok) {
-              renderMain();
-              if (window.apimaToast) {
-                window.apimaToast('Laporan jualan malam ini tercatat. Sudah dibayar untuk ' + res.member.paidNights + ' malam lagi.');
-              }
-            }
-          });
-        }
-      }
-    } else {
-      if (heroCard) heroCard.className = 'hero-card tone-warning';
-      if (pill) pill.className = 'pill pill-warning';
-      if (dot) dot.className = 'status-dot dot-warning';
-      if (statusLabel) statusLabel.textContent = 'Belum Bayar';
-      if (heroTitle) heroTitle.textContent = 'Buka lapak malam ini?';
-      if (heroDesc) {
-        heroDesc.textContent = 'Belum ada malam terbayar. Bayar retribusi lewat QRIS untuk langsung melapor jualan malam ini.';
-      }
-      if (ctaWrap) {
-        ctaWrap.innerHTML = '<a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary no-underline">Bayar Retribusi</a>';
-      }
+  function historyRow(h, todayShort, store) {
+    var date = esc(h.date) + (h.date === todayShort ? ' (Malam ini)' : '');
+    var label = esc(h.title) + (h.sub ? ' · ' + esc(h.sub) : '');
+    var sub = h.type === 'tidak_lapor' ? label : '<span class="tone">' + label + '</span>';
+    var right = (h.type === 'bayar' && typeof h.amount === 'number' && h.amount > 0)
+      ? '<span class="ag-list-amt mono">' + store.formatRupiah(h.amount) + '</span>'
+      : '<span class="ag-list-dash" aria-label="Tanpa pembayaran">–</span>';
+    return '<li><div class="ag-list-main"><span class="ag-list-date">' + date + '</span><span class="ag-list-sub">' + sub + '</span></div>' + right + '</li>';
+  }
+
+  function heroCard(o) {
+    return '<section class="v5-card ag-card" aria-label="Status malam ini">' +
+      '<div class="ag-hero-top"><span class="ag-status ' + o.statusClass + '">' + o.status + '</span>' +
+        '<span class="ag-rate mono">' + o.right + '</span></div>' +
+      '<div class="ag-hero-body">' +
+        '<img src="illustrations/' + o.illus + '" width="360" height="' + o.illusH + '" alt="">' +
+        '<div><h2 class="ag-hero-title">' + o.title + '</h2><p class="ag-hero-desc">' + o.desc + '</p></div>' +
+      '</div>' +
+      (o.actions ? '<div class="ag-btn-stack">' + o.actions + '</div>' : '') +
+    '</section>';
+  }
+
+  function tiles(paid, m, linked) {
+    var penjagaName = (m.penjaga && m.penjaga !== 'Jaga sendiri') ? m.penjaga : 'Jaga sendiri';
+    var activeTxt = m.penjagaActive ? 'Aktif' : 'Nonaktif';
+    var nightsVal = '<span class="ag-tile-value' + (paid === 0 ? ' is-zero' : '') + '" id="main-paid-nights">' + paid + ' malam</span>';
+    if (!linked) {
+      return '<div class="ag-tiles">' +
+        '<div class="v5-tile ag-tile"><span class="ag-tile-head">Malam terbayar</span>' + nightsVal + '</div>' +
+        '<div class="v5-tile ag-tile"><span class="ag-tile-head">Penjaga lapak</span><span class="ag-tile-value" id="main-penjaga-status">' + esc(penjagaName) + ' · ' + activeTxt + '</span></div>' +
+      '</div>';
     }
+    return '<div class="ag-tiles">' +
+      '<a href="AnggotaPilihHari.dc.html" class="v5-tile ag-tile" aria-label="Malam terbayar ' + paid + ' malam. Tambah malam terbayar">' +
+        '<span class="ag-tile-head">Malam terbayar' + ICON_CHEVRON + '</span>' + nightsVal + '</a>' +
+      '<a href="AnggotaQrIdentitas.dc.html" class="v5-tile ag-tile" aria-label="Penjaga lapak ' + esc(penjagaName) + ', ' + activeTxt + '. Buka QR identitas">' +
+        '<span class="ag-tile-head">Penjaga lapak' + ICON_CHEVRON + '</span>' +
+        '<span class="stack" style="gap:2px"><span class="ag-tile-value" id="main-penjaga-status">' + esc(penjagaName) + '</span>' +
+        '<span class="ag-tile-sub ' + (m.penjagaActive ? 'st-success' : 'st-muted') + '">' + activeTxt + '</span></span></a>' +
+    '</div>';
+  }
 
-    var paidEl = document.getElementById('main-paid-nights');
-    if (paidEl) {
-      paidEl.textContent = paid + ' malam';
-      paidEl.className = 'text-md fw-700 tnum ' + (paid > 0 ? 'text-main' : 'text-warning');
-    }
-
-    var penjagaEl = document.getElementById('main-penjaga-status');
-    if (penjagaEl) {
-      var pName = m.penjaga || 'Rahmat';
-      penjagaEl.textContent = pName + ' · ' + (m.penjagaActive ? 'Aktif' : 'Nonaktif');
-    }
-
-    var totalPaid = store.getHistoryTotal(m);
-    var totalEl = document.getElementById('main-history-total');
-    if (totalEl) totalEl.textContent = 'Total ' + store.formatRupiah(totalPaid);
-
-    var listEl = document.getElementById('main-history-list');
-    var emptyEl = document.getElementById('main-history-empty');
+  function historySection(m, store, todayShort) {
     var history = Array.isArray(m.history) ? m.history : [];
-    if (listEl && emptyEl) {
-      if (!history.length) {
-        listEl.innerHTML = '';
-        emptyEl.hidden = false;
+    var head = '<div class="ag-section-head"><h2>Riwayat retribusi</h2>' +
+      '<span class="ag-total mono" id="main-history-total">Total ' + store.formatRupiah(store.getHistoryTotal(m)) + '</span></div>';
+    if (!history.length) {
+      return head + '<div class="v5-card ag-card ag-empty" id="main-history-empty">' +
+        '<img src="illustrations/data-kosong.webp" width="360" height="332" alt="" loading="lazy">' +
+        '<span class="ag-empty-title">Belum ada riwayat</span>' +
+        '<p class="ag-small">Pembayaran QRIS dan laporan jualan Anda tercatat di sini setelah malam pertama.</p></div>';
+    }
+    return head + '<ul class="v5-list ag-list" id="main-history-list">' +
+      history.slice(0, 5).map(function (h) { return historyRow(h, todayShort, store); }).join('') + '</ul>';
+  }
+
+  function render() {
+    var store = window.APIMA_STORE;
+    var host = document.getElementById('ag-beranda');
+    if (!store || !host) return;
+    var st = store.getState();
+    var real = store.getActiveMember();
+    var todayShort = store.formatDateInfo(st.dayOffset).short;
+    var m = real;
+    if (view === 'kuota0') {
+      m = JSON.parse(JSON.stringify(real));
+      m.paidNights = 0;
+      m.tonightStatus = 'belum_bayar';
+    }
+    var paid = Math.max(0, parseInt(m.paidNights, 10) || 0);
+    var html = '';
+
+    if (view === 'memuat') {
+      html =
+        '<section class="v5-card ag-card" aria-label="Memuat status malam ini" aria-busy="true">' +
+          '<div class="ag-row-between"><span class="v5-skel ag-skel-line" style="width:128px"></span><span class="v5-skel ag-skel-line" style="width:80px"></span></div>' +
+          '<span class="v5-skel" style="height:24px;width:62%"></span>' +
+          '<span class="v5-skel ag-skel-line" style="width:100%"></span>' +
+          '<span class="v5-skel ag-skel-line" style="width:66%;margin-top:-6px"></span>' +
+          '<span class="v5-skel ag-skel-block"></span>' +
+        '</section>' +
+        '<div class="ag-tiles" aria-hidden="true">' +
+          '<div class="v5-tile ag-tile"><span class="v5-skel ag-skel-line" style="width:80px"></span><span class="v5-skel" style="height:20px;width:64px"></span></div>' +
+          '<div class="v5-tile ag-tile"><span class="v5-skel ag-skel-line" style="width:96px"></span><span class="v5-skel" style="height:20px;width:80px"></span></div>' +
+        '</div>' +
+        '<p class="ag-loading-note" role="status">Memuat data malam ini…</p>';
+    } else if (view === 'nonaktif') {
+      html =
+        '<section class="v5-card ag-card" aria-label="Status akun tidak aktif">' +
+          '<div class="ag-row-between" style="padding-bottom:16px;border-bottom:1px solid var(--apima-line)"><span class="ag-muted" style="font-size:15px">Status keanggotaan</span><span class="ag-status st-danger">Tidak Aktif</span></div>' +
+          '<div class="ag-hero-body">' +
+            '<img src="illustrations/akun-nonaktif.webp" width="360" height="305" alt="">' +
+            '<div><h2 class="ag-hero-title">Akun sedang dinonaktifkan</h2><p class="ag-hero-desc">Anda belum bisa melapor jualan untuk sementara. Hubungi pengurus APIMA untuk mengaktifkan kembali akun Anda.</p></div>' +
+          '</div>' +
+          '<button type="button" class="btn btn-primary" data-ag-open-aktifkan aria-haspopup="dialog">Hubungi Pengurus APIMA</button>' +
+        '</section>';
+    } else if (view === 'tutup') {
+      html = heroCard({
+        status: 'Pasar Tutup', statusClass: '', right: '16:00 – 03:00 WIB',
+        illus: 'tutup-offline.webp', illusH: 324,
+        title: 'Lapak dibuka pukul 16:00 WIB',
+        desc: 'Sekarang di luar jam pasar. Malam terbayar Anda tetap aman dan tidak berkurang.',
+        actions: '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Tambah Malam Terbayar</a>'
+      }) + tiles(paid, m, false);
+    } else {
+      var hero;
+      if (m.tonightStatus === 'sudah_bayar') {
+        hero = heroCard({
+          status: 'Jualan · Sudah Bayar', statusClass: 'st-success', right: 'Rp3.000/mlm',
+          illus: 'cek-satgas.webp', illusH: 304,
+          title: 'Lapak tercatat buka malam ini',
+          desc: paid > 0
+            ? 'Sudah dibayar untuk <strong>' + paid + ' malam</strong> lagi. Siapkan QR saat satgas keliling.'
+            : 'Malam terbayar sudah terpakai semua. Siapkan QR saat satgas keliling.',
+          actions: '<a href="AnggotaQrIdentitas.dc.html" class="btn ag-btn-tonal">Tunjukkan QR ke Satgas</a>' +
+            '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Tambah Malam Terbayar</a>'
+        });
+      } else if (paid > 0) {
+        hero = heroCard({
+          status: 'Belum Lapor Malam Ini', statusClass: 'st-warning', right: 'Rp3.000/mlm',
+          illus: 'pasang-hp.webp', illusH: 343,
+          title: 'Buka lapak malam ini?',
+          desc: 'Sudah dibayar untuk <strong>' + paid + ' malam</strong> lagi. Lapor jualan memakai 1 malam terbayar.',
+          actions: (view === 'normal'
+            ? '<button type="button" id="btn-lapor-jualan" class="btn btn-primary">Lapor Jualan Malam Ini</button>'
+            : '') +
+            '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Bayar Retribusi (Tambah Malam)</a>'
+        });
       } else {
-        emptyEl.hidden = true;
-        listEl.innerHTML = history.map(function (h) {
-          var subText = h.title + (h.sub ? ' · ' + h.sub : '');
-          var subClass = h.type === 'bayar'
-            ? 'text-xs text-primary-color fw-500'
-            : (h.type === 'lapor' ? 'text-xs text-success fw-500' : 'text-xs text-secondary');
-          var rightHtml = (h.type === 'bayar' && typeof h.amount === 'number' && h.amount > 0)
-            ? '<span class="text-sm fw-700 tnum text-main">' + store.formatRupiah(h.amount) + '</span>'
-            : '<span class="text-sm text-secondary tnum">\u2013</span>';
-          return '<li class="open-row">' +
-            '<div class="stack gap-1">' +
-              '<span class="text-sm fw-500 text-main">' + h.date + '</span>' +
-              '<span class="' + subClass + '">' + subText + '</span>' +
-            '</div>' +
-            rightHtml +
-          '</li>';
-        }).join('');
+        hero = heroCard({
+          status: 'Belum Bayar', statusClass: 'st-danger', right: 'Rp3.000/mlm',
+          illus: 'bayar-sukses.webp', illusH: 255,
+          title: 'Buka lapak malam ini?',
+          desc: 'Belum ada malam terbayar. Bayar retribusi lewat QRIS untuk langsung melapor jualan malam ini.',
+          actions: '<a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary">Bayar Retribusi</a>'
+        });
       }
+      html = hero + tiles(paid, m, true) + historySection(m, store, todayShort);
+    }
+
+    host.innerHTML = html;
+
+    var laporBtn = document.getElementById('btn-lapor-jualan');
+    if (laporBtn) {
+      laporBtn.addEventListener('click', function () {
+        laporBtn.disabled = true;
+        var res = store.reportSellingTonight(real.id);
+        if (res && res.ok) {
+          render();
+          if (window.apimaToast) window.apimaToast('Lapak tercatat buka malam ini (1 malam terbayar digunakan).');
+        } else {
+          laporBtn.disabled = false;
+        }
+      });
+    }
+    var openAktif = host.querySelector('[data-ag-open-aktifkan]');
+    if (openAktif) {
+      openAktif.addEventListener('click', function () {
+        var sheet = document.getElementById('sheet-aktifkan');
+        sheet.hidden = false;
+        var c = sheet.querySelector('[data-sheet-close]');
+        if (c) c.focus();
+        sheet._agReturn = openAktif;
+      });
     }
   }
 
-  window.addEventListener('apima:ready', renderMain);
-  window.addEventListener('apima:state-change', renderMain);
+  function syncSeg() {
+    document.querySelectorAll('[data-ag-view]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.agView === view ? 'true' : 'false');
+    });
+  }
+
+  var booted = false;
+  function boot() {
+    if (booted) return;
+    booted = true;
+    document.querySelectorAll('[data-ag-view]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        view = b.dataset.agView;
+        syncSeg();
+        try {
+          var url = new URL(window.location.href);
+          if (view === 'normal') url.searchParams.delete('state'); else url.searchParams.set('state', view);
+          history.replaceState(null, '', url.pathname + url.search);
+        } catch (e) {}
+        render();
+      });
+    });
+    syncSeg();
+    render();
+    window.addEventListener('apima:state-change', render);
+  }
+
+  window.addEventListener('apima:ready', boot);
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(renderMain, 40); });
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 40); });
   } else {
-    setTimeout(renderMain, 40);
+    setTimeout(boot, 40);
   }
 })();
 </script>

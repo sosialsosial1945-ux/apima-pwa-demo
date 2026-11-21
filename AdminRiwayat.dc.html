@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · Pengurus · Riwayat Setoran</title>
+<title>APIMA · Riwayat Setoran</title>
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./admin.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-admin.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
+<script src="./admin-charts.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -15,444 +18,199 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="APIMA">
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" href="./icons/icon-192.png">
 <script src="./pwa.js" defer></script>
 </head>
-<body>
+<body class="adm-body">
 <x-dc>
-<div class="admin-shell">
+<div class="adm admin-shell">
+  <aside class="adm-side" id="adm-side" aria-label="Menu pengurus"></aside>
+  <div class="adm-main">
+    <header class="adm-top" id="adm-top"></header>
 
-  <nav class="admin-nav" aria-label="Navigasi pengurus">
-    <div class="admin-nav-head">
-      <div class="row gap-2 items-center admin-brand-text">
-        <span class="brand-wordmark">
-          <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
-          <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
-        </span>
-      </div>
-      <button type="button" class="btn-icon" data-sidebar-toggle aria-expanded="true" aria-label="Ciutkan menu samping" title="Ciutkan atau perluas menu">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
-      </button>
-    </div>
+    <main class="adm-content" id="main">
 
-    <div class="admin-nav-body">
-      <div class="admin-nav-group">
-        <span class="admin-nav-group-label">Utama</span>
-        <a href="AdminRingkasan.dc.html" class="admin-nav-link" aria-label="Ringkasan" title="Ringkasan dan analisis AI">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          <span class="admin-nav-text">Ringkasan</span>
-        </a>
-        <a href="AdminLaporan.dc.html" class="admin-nav-link" aria-label="Laporan" title="Laporan mingguan, bulanan, tahunan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          <span class="admin-nav-text">Laporan</span>
-        </a>
-        <a href="AdminRiwayat.dc.html" class="admin-nav-link active" aria-current="page" aria-label="Riwayat setoran" title="Riwayat transaksi retribusi">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
-          <span class="admin-nav-text">Riwayat setoran</span>
-        </a>
-      </div>
-
-      <div class="admin-nav-group">
-        <span class="admin-nav-group-label">Anggota dan Lapangan</span>
-        <a href="AdminPedagang.dc.html" class="admin-nav-link" aria-label="Keaktifan pedagang" title="Pedagang rajin dan jarang jualan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span class="admin-nav-text">Keaktifan pedagang</span>
-        </a>
-        <a href="AdminSatgas.dc.html" class="admin-nav-link" aria-label="Kinerja satgas" title="Kinerja satgas lapangan">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span class="admin-nav-text">Kinerja satgas</span>
-        </a>
-      </div>
-
-      <div class="admin-nav-footer">
-        <button type="button" class="admin-nav-link admin-nav-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
-          <svg class="icon-moon shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-          <span class="admin-nav-text" data-theme-label>Mode gelap</span>
-        </button>
-        <div class="admin-user-pill">
-          <span class="avatar-initials" aria-hidden="true">HD</span>
-          <div class="stack admin-user-meta" style="min-width:0">
-            <span class="text-xs fw-700 text-main">H. Darmawan</span>
-            <span class="text-xs text-secondary">Pengurus APIMA</span>
-          </div>
-        </div>
-        <a href="MasukId.dc.html" class="admin-nav-link" aria-label="Keluar akun" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span class="admin-nav-text">Keluar akun</span>
-        </a>
-      </div>
-    </div>
-  </nav>
-
-  <div class="admin-content">
-
-    <div class="admin-mobile-bar">
-      <span class="brand-wordmark">
-        <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
-        <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
-      </span>
-      <div class="row gap-1">
-        <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
-          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        </button>
-        <button type="button" class="btn-chip" data-sheet-open="sheet-admin-menu" aria-label="Buka menu navigasi pengurus">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          Menu
-        </button>
-      </div>
-    </div>
-
-    <main class="admin-main">
-
-      <header class="admin-page-head">
-        <div class="stack gap-1">
-          <div class="row gap-2 items-center wrap">
-            <h1 class="text-lg m-0">Riwayat setoran retribusi</h1>
-            <span class="sample-data-badge">Data contoh</span>
-          </div>
-          <span class="text-sm text-secondary">Catatan lengkap pembayaran retribusi QRIS seluruh anggota APIMA.</span>
-        </div>
-
-        <div class="admin-actions">
-          <button type="button" class="btn-chip" id="riw-export-csv">Unduh Excel (.csv)</button>
-          <button type="button" class="btn-chip" data-export-pdf="Riwayat setoran retribusi PDF">Unduh PDF</button>
-        </div>
-      </header>
-
-      <!-- Banner Eksekutif Biru Maritim -->
-      <section class="exec-banner" aria-label="Ringkasan setoran hari ini">
-        <div class="exec-banner-top">
-          <div class="stack gap-2">
-            <span class="text-sm exec-banner-muted" id="riw-banner-date">Setoran retribusi masuk · Sab, 14 Nov 2026</span>
-            <div class="row gap-3 items-center wrap">
-              <span class="exec-kpi-big" id="riw-banner-total">Rp1.740.000</span>
-              <span class="exec-delta">Rekonsiliasi QRIS Cocok Rp0 Selisih</span>
+      <section class="adm-hero" aria-labelledby="rw-total">
+        <div class="adm-hero-head">
+          <div class="rk-hero-body">
+            <span class="adm-hero-eyebrow" id="rw-eyebrow">Setoran retribusi masuk · Sab, 14 Nov 2026</span>
+            <div class="adm-hero-big">
+              <span class="adm-hero-num" id="rw-total">Rp1.740.000</span>
+              <span class="adm-hero-badge"><span data-icon="check" data-icon-size="16"></span>Rekonsiliasi QRIS Cocok Rp0 Selisih</span>
             </div>
+            <p class="adm-hero-text">Catatan lengkap pembayaran retribusi QRIS seluruh anggota APIMA.</p>
           </div>
-          <a href="AdminLaporan.dc.html" class="exec-seg-btn active no-underline" style="display:inline-flex;align-items:center;padding:0 18px">Lihat Laporan</a>
+          <div class="adm-hero-actions">
+            <a class="adm-btn adm-btn-primary" href="AdminLaporan.dc.html">Lihat Laporan</a>
+            <button type="button" class="adm-btn adm-btn-onhero" id="rw-csv"><span data-icon="download" data-icon-size="16"></span>Unduh Excel (.csv)</button>
+            <button type="button" class="adm-btn adm-btn-onhero" id="rw-pdf"><span data-icon="printer" data-icon-size="16"></span>Unduh PDF</button>
+          </div>
         </div>
-
-        <div class="exec-stats-row">
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Transaksi lunas</span>
-            <span class="exec-stat-val" id="riw-lunas-count">205 transaksi</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Menunggu bayar</span>
-            <span class="exec-stat-val">9 transaksi</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Kedaluwarsa / gagal</span>
-            <span class="exec-stat-val">2 transaksi</span>
-          </div>
-          <div class="exec-stat">
-            <span class="exec-stat-lbl">Metode pembayaran</span>
-            <span class="exec-stat-val">QRIS 100%</span>
-          </div>
+        <div class="adm-hero-tiles">
+          <div class="adm-htile"><span class="adm-htile-label">Transaksi lunas</span><span class="adm-htile-val is-success" id="rw-t-lunas">205 transaksi</span></div>
+          <div class="adm-htile"><span class="adm-htile-label">Menunggu bayar</span><span class="adm-htile-val is-warning">9 transaksi</span></div>
+          <div class="adm-htile"><span class="adm-htile-label">Kedaluwarsa / gagal</span><span class="adm-htile-val is-danger">2 transaksi</span></div>
+          <div class="adm-htile"><span class="adm-htile-label">Metode pembayaran</span><span class="adm-htile-val">QRIS 100%</span></div>
         </div>
       </section>
 
-      <!-- Tabel Riwayat + Filter + Search -->
-      <section class="admin-card" aria-label="Daftar riwayat transaksi retribusi">
-        <div class="admin-toolbar">
-          <div class="seg" role="group" aria-label="Filter status pembayaran">
-            <button type="button" class="seg-btn active" data-riw-filter="semua" aria-pressed="true">Semua</button>
-            <button type="button" class="seg-btn" data-riw-filter="lunas" aria-pressed="false">Lunas</button>
-            <button type="button" class="seg-btn" data-riw-filter="menunggu" aria-pressed="false">Menunggu</button>
-            <button type="button" class="seg-btn" data-riw-filter="gagal" aria-pressed="false">Gagal</button>
+      <section class="adm-card" aria-labelledby="rw-title">
+        <div class="adm-toolbar">
+          <div class="adm-pills" role="group" aria-label="Saring status transaksi">
+            <button type="button" class="adm-pill is-active" data-rw-filter="semua" aria-pressed="true">Semua</button>
+            <button type="button" class="adm-pill" data-rw-filter="lunas" aria-pressed="false">Lunas</button>
+            <button type="button" class="adm-pill" data-rw-filter="menunggu" aria-pressed="false">Menunggu</button>
+            <button type="button" class="adm-pill" data-rw-filter="gagal" aria-pressed="false">Gagal</button>
           </div>
-
-          <div class="admin-search-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <label for="riw-search" class="sr-only">Cari nama pedagang, ID, blok, atau nomor referensi</label>
-            <input id="riw-search" type="search" placeholder="Cari nama, ID, blok, atau referensi" class="input">
-          </div>
+          <label class="adm-field">
+            <span data-icon="search" data-icon-size="16"></span>
+            <span class="sr-only">Cari transaksi</span>
+            <input type="search" id="rw-search" placeholder="Cari nama, ID, blok, atau referensi" autocomplete="off">
+          </label>
         </div>
-
-        <div class="row between wrap gap-2">
-          <h2 class="text-md m-0 fw-700">Transaksi terbaru (Sab, 14 Nov 2026)</h2>
-          <span class="text-sm text-secondary tnum" id="riw-count">10 transaksi ditampilkan</span>
+        <div class="adm-card-head">
+          <h2 class="adm-card-title" id="rw-title">Transaksi terbaru (Sab, 14 Nov 2026)</h2>
+          <span class="adm-count" id="rw-count" aria-live="polite">0 transaksi ditampilkan</span>
         </div>
-
-        <div class="admin-table-wrap" id="riw-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Waktu</th>
-                <th>Pedagang</th>
-                <th>Paket retribusi</th>
-                <th class="num">Nominal</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="riw-tbody"></tbody>
+        <div class="adm-table-wrap" id="rw-wrap" tabindex="0" role="region" aria-label="Tabel transaksi, geser ke samping di layar kecil">
+          <table class="adm-table">
+            <thead><tr>
+              <th scope="col">Waktu</th><th scope="col">Pedagang</th><th scope="col">Paket retribusi</th>
+              <th scope="col" class="num">Nominal</th><th scope="col">Status</th><th scope="col" class="end">Aksi</th>
+            </tr></thead>
+            <tbody id="rw-tbody"></tbody>
           </table>
         </div>
+        <div class="adm-empty" id="rw-empty" hidden>
+          <img src="illustrations/tidak-ditemukan.webp" width="96" height="96" alt="">
+          <strong>Transaksi tidak ditemukan</strong>
+          <span>Coba kata kunci lain atau pilih filter Semua.</span>
+          <button type="button" class="adm-btn adm-btn-ghost" id="rw-reset">Atur Ulang Pencarian</button>
+        </div>
+      </section>
 
-        <div id="riw-empty" class="empty-state" hidden>
-          <img src="illustrations/tidak-ditemukan.webp" alt="Ilustrasi pencarian tidak ditemukan" class="illus-sm">
-          <span class="text-bold">Riwayat transaksi tidak ditemukan</span>
-          <span class="text-sm text-secondary">Coba ubah kata pencarian atau pilih filter status lain.</span>
-          <button type="button" class="btn-chip" id="riw-reset">Reset Filter</button>
+      <section class="adm-card" id="temuan" aria-labelledby="rw-find-title">
+        <div class="adm-card-head">
+          <h2 class="adm-card-title" id="rw-find-title" tabindex="-1">Temuan Lapangan Satgas</h2>
+          <span class="adm-count" id="rw-find-count" aria-live="polite">0 perlu ditinjau</span>
+        </div>
+        <div class="adm-finds" id="rw-finds"></div>
+        <div class="adm-empty" id="rw-finds-empty" hidden>
+          <img src="illustrations/cek-satgas.webp" width="96" height="80" alt="">
+          <strong>Semua temuan sudah ditinjau</strong>
+          <span>Temuan baru dari Satgas A dan Satgas B akan muncul di sini.</span>
         </div>
       </section>
 
     </main>
+
+    <footer class="adm-foot" id="adm-foot"></footer>
   </div>
-
-  <!-- Modal Detail Bukti Setoran -->
-  <div id="sheet-trx" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="trx-title">
-    <div class="sheet">
-      <div class="row between">
-        <div class="stack">
-          <span class="text-xs text-secondary tnum" id="trx-ref">REF QRIS-20261114-0842</span>
-          <h2 id="trx-title" class="text-md m-0 fw-700">Detail bukti setoran</h2>
-        </div>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup detail transaksi">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-
-      <ul class="open-list">
-        <li class="open-row">
-          <span class="text-sm text-secondary">Pedagang</span>
-          <span class="text-sm fw-700" id="trx-merchant">Budi Santoso (0123)</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Lapak</span>
-          <span class="text-sm fw-700" id="trx-blok">Blok C-14</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Waktu bayar</span>
-          <span class="text-sm fw-700 tnum" id="trx-time">14 Nov 2026 · 23:38 WIB</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Jumlah retribusi</span>
-          <span class="text-sm fw-700 tnum" id="trx-nights">7 malam (Rp3.000/malam)</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Total nominal</span>
-          <span class="text-md fw-700 text-main tnum" id="trx-amount">Rp21.000</span>
-        </li>
-        <li class="open-row">
-          <span class="text-sm text-secondary">Status pembayaran</span>
-          <span id="trx-status-badge" class="badge badge-success">Lunas</span>
-        </li>
-      </ul>
-
-      <div class="stack gap-2">
-        <button type="button" class="btn btn-primary" data-export-pdf="Bukti transaksi retribusi PDF">Unduh Bukti PDF</button>
-        <button type="button" class="btn btn-secondary" data-sheet-close>Tutup</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Sheet menu navigasi mobile -->
-  <div id="sheet-admin-menu" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
-    <div class="sheet">
-      <div class="row between">
-        <h2 id="mobile-menu-title" class="text-md m-0 fw-700">Menu Pengurus APIMA</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup menu pengurus">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="stack gap-1">
-        <a href="AdminRingkasan.dc.html" class="admin-nav-link">Ringkasan</a>
-        <a href="AdminLaporan.dc.html" class="admin-nav-link">Laporan</a>
-        <a href="AdminRiwayat.dc.html" class="admin-nav-link active" aria-current="page">Riwayat setoran</a>
-        <a href="AdminPedagang.dc.html" class="admin-nav-link">Keaktifan pedagang</a>
-        <a href="AdminSatgas.dc.html" class="admin-nav-link">Kinerja satgas</a>
-        <div style="height:1px;background:var(--apima-line);margin:6px 0"></div>
-        <a href="MasukId.dc.html" class="admin-nav-link" aria-label="Keluar akun">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span>Keluar akun</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
 </div>
+<script>APIMA_ADMIN.mountShell({ page: 'riwayat', title: 'Riwayat Setoran' });</script>
 </x-dc>
 <script>
 (function () {
-  var BASE_TX_TODAY = [
-    { ref: 'QRIS-1411-0839', time: '22:54 WIB', date: '14 Nov 2026', id: '0014', init: 'SR', tone: 'tone-success', name: 'H. Slamet Raharjo', blok: 'Blok A-02', nights: '30 malam', amount: 'Rp90.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-1411-0831', time: '22:15 WIB', date: '14 Nov 2026', id: '0311', init: 'DL', tone: 'tone-success', name: 'Dewi Lestari', blok: 'Blok B-08', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-1411-0827', time: '21:48 WIB', date: '14 Nov 2026', id: '0310', init: 'YM', tone: 'tone-warning', name: 'Yusuf Maulana', blok: 'Blok A-18', nights: '7 malam', amount: 'Rp21.000', status: 'menunggu', label: 'Menunggu', badge: 'badge-warning' },
-    { ref: 'QRIS-1411-0820', time: '21:32 WIB', date: '14 Nov 2026', id: '0089', init: 'RH', tone: 'tone-success', name: 'Hj. Rohimah', blok: 'Blok B-05', nights: '14 malam', amount: 'Rp42.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-1411-0814', time: '21:19 WIB', date: '14 Nov 2026', id: '0241', init: 'DP', tone: 'tone-success', name: 'Darmawan Putra', blok: 'Blok C-09', nights: '7 malam', amount: 'Rp21.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-1411-0809', time: '21:05 WIB', date: '14 Nov 2026', id: '0518', init: 'WY', tone: 'tone-danger', name: 'Wahyudi', blok: 'Blok D-07', nights: '1 malam', amount: 'Rp3.000', status: 'gagal', label: 'Kedaluwarsa', badge: 'badge-danger' },
-    { ref: 'QRIS-1411-0802', time: '20:51 WIB', date: '14 Nov 2026', id: '0310', init: 'YM', tone: 'tone-success', name: 'Yusuf Maulana', blok: 'Blok A-18', nights: '7 malam', amount: 'Rp21.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-1411-0796', time: '20:36 WIB', date: '14 Nov 2026', id: '0445', init: 'EP', tone: 'tone-warning', name: 'Eko Prasetyo', blok: 'Blok F-12', nights: '1 malam', amount: 'Rp3.000', status: 'menunggu', label: 'Menunggu', badge: 'badge-warning' },
-    { ref: 'QRIS-1411-0788', time: '20:14 WIB', date: '14 Nov 2026', id: '0187', init: 'NL', tone: 'tone-success', name: 'Ningsih Lestari', blok: 'Blok B-12', nights: '14 malam', amount: 'Rp42.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' }
-  ];
+  var A = window.APIMA_ADMIN;
+  var filter = 'semua';
+  var rowsCache = [];
 
-  var BUDI_HISTORY_TX = [
-    { ref: 'QRIS-1011-0412', time: '20:45 WIB', date: '10 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '7 malam', amount: 'Rp21.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-0811-0318', time: '21:10 WIB', date: '8 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-0711-0294', time: '20:52 WIB', date: '7 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-0611-0211', time: '21:05 WIB', date: '6 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' }
-  ];
-
-  function getAllTx() {
-    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
-    var live = (st && Array.isArray(st.adminLivePayments)) ? st.adminLivePayments.map(function (item) {
-      return {
-        ref: item.ref,
-        time: item.time,
-        date: item.date,
-        id: item.id,
-        init: item.init || item.initials || 'BS',
-        tone: item.tone || 'tone-success',
-        name: item.name,
-        blok: item.blok,
-        nights: item.nights,
-        amount: item.amount,
-        status: item.statusKey || 'lunas',
-        label: item.label || item.status || 'Lunas',
-        badge: item.badge || 'badge-success'
-      };
-    }) : [];
-    var extraBudi = (!st || st.preset === 'lama') ? BUDI_HISTORY_TX : [];
-    return live.concat(BASE_TX_TODAY, extraBudi);
+  function whenText(t) {
+    var today = A.dateOnly();
+    return t.date === today ? t.time : t.date.replace(' 2026', '') + ' · ' + t.time.replace(' WIB', '');
   }
 
-  var currentFilter = 'semua';
-
-  function openTrxSheet(ref) {
-    var all = getAllTx();
-    var t = all.find(function (x) { return x.ref === ref; });
-    if (!t) return;
-    document.getElementById('trx-ref').textContent = 'REF ' + t.ref;
-    document.getElementById('trx-merchant').textContent = t.name + ' (' + t.id + ')';
-    document.getElementById('trx-blok').textContent = t.blok;
-    document.getElementById('trx-time').textContent = t.date + ' \u00b7 ' + t.time;
-    document.getElementById('trx-nights').textContent = t.nights + ' (Rp3.000/malam)';
-    document.getElementById('trx-amount').textContent = t.amount;
-    var sb = document.getElementById('trx-status-badge');
-    sb.className = 'badge ' + t.badge;
-    sb.textContent = t.label;
-    var sheet = document.getElementById('sheet-trx');
-    sheet.hidden = false;
-    var closeBtn = sheet.querySelector('[data-sheet-close]');
-    if (closeBtn) closeBtn.focus();
+  function renderHero() {
+    document.getElementById('rw-total').textContent = A.rp(1740000 + A.liveDelta());
+    document.getElementById('rw-t-lunas').textContent = (205 + A.liveCount()) + ' transaksi';
+    document.getElementById('rw-eyebrow').textContent = 'Setoran retribusi masuk · ' + A.dateFull();
+    document.getElementById('rw-title').textContent = 'Transaksi terbaru (' + A.dateFull() + ')';
   }
 
   function renderTable() {
-    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
-    var delta = st ? (Number(st.budiPaidTonightDelta) || 0) : 0;
-    var liveCount = (st && Array.isArray(st.adminLivePayments)) ? st.adminLivePayments.length : 0;
-    var totalEl = document.getElementById('riw-banner-total');
-    var lunasEl = document.getElementById('riw-lunas-count');
-    var dateBannerEl = document.getElementById('riw-banner-date');
-    if (totalEl && window.APIMA_STORE) {
-      totalEl.textContent = window.APIMA_STORE.formatRupiah(1740000 + delta);
-    }
-    if (lunasEl) lunasEl.textContent = (205 + liveCount) + ' transaksi';
-    if (dateBannerEl && window.APIMA_STORE && st) {
-      dateBannerEl.textContent = 'Setoran retribusi masuk \u00b7 ' + window.APIMA_STORE.formatDateInfo(st.dayOffset).full;
-    }
-
-    var all = getAllTx();
-    var q = (document.getElementById('riw-search').value || '').trim().toLowerCase();
-    var rows = all.filter(function (t) {
-      if (currentFilter !== 'semua' && t.status !== currentFilter) return false;
+    var q = (document.getElementById('rw-search').value || '').trim().toLowerCase();
+    rowsCache = A.getAllTx().filter(function (t) {
+      if (filter !== 'semua' && t.status !== filter) return false;
       if (!q) return true;
       return (t.name + ' ' + t.id + ' ' + t.blok + ' ' + t.ref + ' ' + t.label + ' ' + t.date).toLowerCase().indexOf(q) !== -1;
     });
-
-    document.getElementById('riw-count').textContent = rows.length + ' transaksi ditampilkan';
-    document.getElementById('riw-empty').hidden = rows.length > 0;
-    document.getElementById('riw-table-wrap').hidden = rows.length === 0;
-
-    var tbody = document.getElementById('riw-tbody');
-    tbody.innerHTML = rows.map(function (t) {
+    document.getElementById('rw-count').textContent = rowsCache.length + ' transaksi ditampilkan';
+    document.getElementById('rw-empty').hidden = rowsCache.length > 0;
+    document.getElementById('rw-wrap').hidden = rowsCache.length === 0;
+    document.getElementById('rw-tbody').innerHTML = rowsCache.map(function (t, i) {
       return '<tr>' +
-        '<td><div class="stack"><span class="fw-700 tnum">' + t.date + ' \u00b7 ' + t.time + '</span><span class="text-xs text-secondary tnum">' + t.ref + '</span></div></td>' +
-        '<td><div class="row gap-3 items-center"><span class="avatar-initials ' + t.tone + '" aria-hidden="true">' + t.init + '</span><div class="stack"><span class="fw-700">' + t.name + '</span><span class="text-xs text-secondary tnum">ID ' + t.id + ' \u00b7 ' + t.blok + '</span></div></div></td>' +
-        '<td class="tnum">' + t.nights + '</td>' +
-        '<td class="num fw-700">' + t.amount + '</td>' +
-        '<td><span class="badge ' + t.badge + '">' + t.label + '</span></td>' +
-        '<td><button type="button" class="btn-chip" data-trx-open="' + t.ref + '">Lihat Bukti</button></td>' +
+        '<td class="mono">' + A.esc(whenText(t)) + '</td>' +
+        '<td><div class="adm-person"><span class="adm-person-name">' + A.esc(t.name) + (t.live ? '<span class="st-live">Baru</span>' : '') + '</span><span class="adm-person-sub mono">ID ' + A.esc(t.id) + ' · ' + A.esc(t.blok) + '</span></div></td>' +
+        '<td>' + A.esc(t.nights) + ' · <span class="mono">' + A.esc(t.ref) + '</span></td>' +
+        '<td class="num strong">' + A.esc(t.amount) + '</td>' +
+        '<td><span class="st-' + t.status + '">' + A.esc(t.label) + '</span></td>' +
+        '<td class="end"><button type="button" class="adm-link" data-tx="' + i + '" aria-label="Detail bukti ' + A.esc(t.name) + ' ' + A.esc(t.ref) + '">Detail Bukti</button></td>' +
       '</tr>';
     }).join('');
+    document.querySelectorAll('#rw-tbody [data-tx]').forEach(function (btn) {
+      btn.addEventListener('click', function () { A.openTx(rowsCache[+btn.getAttribute('data-tx')], btn); });
+    });
+  }
 
-    tbody.querySelectorAll('[data-trx-open]').forEach(function (btn) {
+  function renderFindings() {
+    var list = A.openFindings();
+    document.getElementById('rw-find-count').textContent = list.length + ' perlu ditinjau';
+    document.getElementById('rw-finds-empty').hidden = list.length > 0;
+    var host = document.getElementById('rw-finds');
+    host.hidden = list.length === 0;
+    host.innerHTML = list.map(function (f) {
+      var who = A.parseAnggota(f.anggota);
+      var blok = String(f.lokasi || '').split(',')[0];
+      var name = who.id ? who.name : 'Pedagang tidak terdaftar';
+      var toneCls = f.tone === 'danger' ? 'st-bad' : (f.tone === 'warning' ? 'st-warn' : '');
+      return '<article class="adm-find" aria-label="Temuan ' + A.esc(f.temuan) + ', ' + A.esc(name) + '">' +
+        '<h3 class="adm-find-name">' + A.esc(name) + '</h3>' +
+        '<span class="adm-find-meta mono">' + A.esc(blok) + (who.id ? ' · ID ' + A.esc(who.id) : '') + '</span>' +
+        '<span class="adm-find-meta">' + A.esc((f.satgasCode || 'S-01') + ' · ' + A.satgasName(f.satgasCode) + ' · ' + f.jam) + '</span>' +
+        '<span class="adm-find-type ' + toneCls + '">' + A.esc(f.temuan) + '</span>' +
+        '<p class="adm-find-desc">' + A.esc(A.findingDesc(f)) + '</p>' +
+        '<button type="button" class="adm-btn adm-btn-primary adm-btn-block" data-done="' + A.esc(f.id) + '">Tandai Selesai</button>' +
+      '</article>';
+    }).join('');
+    host.querySelectorAll('[data-done]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        openTrxSheet(btn.dataset.trxOpen);
+        if (window.APIMA_STORE) window.APIMA_STORE.markFindingReviewed(btn.getAttribute('data-done'));
+        A.toast('Temuan ditandai selesai ditinjau.');
+        renderFindings();
+        var next = document.querySelector('#rw-finds [data-done]');
+        (next || document.getElementById('rw-find-title')).focus();
       });
     });
   }
 
-  function boot() {
-    var btns = document.querySelectorAll('[data-riw-filter]');
-    btns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        btns.forEach(function (b) {
-          b.classList.remove('active');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-pressed', 'true');
-        currentFilter = btn.dataset.riwFilter;
-        renderTable();
-      });
+  function exportCsv() {
+    var rows = [['Referensi', 'Tanggal', 'Jam', 'ID', 'Pedagang', 'Blok', 'Paket', 'Nominal', 'Status']];
+    A.getAllTx().forEach(function (t) { rows.push([t.ref, t.date, t.time, t.id, t.name, t.blok, t.nights, t.amountNum, t.label]); });
+    A.downloadCsv('riwayat-setoran-apima.csv', rows, 'Riwayat setoran (.csv) berhasil diunduh.');
+  }
+
+  function renderAll() { renderHero(); renderTable(); renderFindings(); }
+
+  A.onReady(function () {
+    var search = document.getElementById('rw-search');
+    var q = A.queryParam('q');
+    if (q) search.value = q;
+    A.bindPills('[data-rw-filter]', 'data-rw-filter', function (v) { filter = v; renderTable(); });
+    search.addEventListener('input', renderTable);
+    document.getElementById('rw-reset').addEventListener('click', function () {
+      search.value = ''; filter = 'semua';
+      A.setPill('[data-rw-filter]', 'semua', 'data-rw-filter');
+      renderTable(); search.focus();
     });
-
-    var search = document.getElementById('riw-search');
-    if (search) search.addEventListener('input', renderTable);
-
-    var reset = document.getElementById('riw-reset');
-    if (reset) {
-      reset.addEventListener('click', function () {
-        search.value = '';
-        currentFilter = 'semua';
-        btns.forEach(function (b) {
-          var isAll = b.dataset.riwFilter === 'semua';
-          b.classList.toggle('active', isAll);
-          b.setAttribute('aria-pressed', isAll ? 'true' : 'false');
-        });
-        renderTable();
-        search.focus();
-      });
-    }
-
-    var exportBtn = document.getElementById('riw-export-csv');
-    if (exportBtn) {
-      exportBtn.addEventListener('click', function () {
-        var all = getAllTx();
-        var lines = ['Referensi,Tanggal,Jam,ID,Pedagang,Blok,Paket,Nominal,Status'];
-        all.forEach(function (t) {
-          lines.push(['"' + t.ref + '"', '"' + t.date + '"', '"' + t.time + '"', '"' + t.id + '"', '"' + t.name + '"', '"' + t.blok + '"', '"' + t.nights + '"', '"' + t.amount + '"', '"' + t.label + '"'].join(','));
-        });
-        var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = 'riwayat-setoran-apima.csv';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        if (window.apimaToast) window.apimaToast('Riwayat setoran (.csv) berhasil diunduh.');
-      });
-    }
-
-    renderTable();
-    window.addEventListener('apima:state-change', renderTable);
-    window.addEventListener('storage', renderTable);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 30); });
-  } else {
-    setTimeout(boot, 30);
-  }
+    document.getElementById('rw-csv').addEventListener('click', exportCsv);
+    document.getElementById('rw-pdf').addEventListener('click', A.printPage);
+    A.setCsv(exportCsv);
+    renderAll();
+    A.onStore(renderAll);
+  });
 })();
 </script>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>
 </body>

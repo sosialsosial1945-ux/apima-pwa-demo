@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>APIMA · Foto diri</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
@@ -19,48 +21,49 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-primary-tall">
-    <div class="row gap-2">
-      <a href="AktivasiPersetujuan.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke pemakaian data">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </a>
-      <div class="stack gap-1 flex-1">
-        <span class="row gap-2 items-center"><span class="brand-wordmark brand-wordmark-sm"><img src="brand/apima-wordmark-light.webp" width="62" height="22" alt="APIMA" class="wm-light"><img src="brand/apima-wordmark-dark.webp" width="62" height="22" alt="" aria-hidden="true" class="wm-dark"></span><span class="header-eyebrow">Aktifkan akun</span></span>
-        <h1 class="text-md m-0 fw-700">Foto diri</h1>
-      </div>
-    </div>
-    <div class="progress-bar" aria-label="Langkah 4 dari 4">
-      <div class="progress-seg done"></div>
-      <div class="progress-seg done"></div>
-      <div class="progress-seg done"></div>
-      <div class="progress-seg active"></div>
-      <span class="progress-label tnum">4 / 4</span>
+  <header class="ag-topbar">
+    <a href="AktivasiPersetujuan.dc.html" class="ag-back-link">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Kembali
+    </a>
+    <div class="ag-topbar-right">
+      <span class="ag-step-count mono" aria-hidden="true">4 / 4</span>
+      <button type="button" class="v5-icon-btn boxed theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
     </div>
   </header>
+  <div class="ag-progress" role="progressbar" aria-label="Langkah aktivasi" aria-valuemin="1" aria-valuemax="4" aria-valuenow="4" aria-valuetext="Langkah 4 dari 4"><span style="width:100%"></span></div>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main ag-wide">
 
-    <section class="hero-card items-center text-center" aria-label="Preview foto diri anggota">
-      <p class="text-sm text-secondary m-0">Foto ini dipakai satgas untuk mengenali Anda saat keliling lapak.</p>
+    <div class="ag-step-head">
+      <span class="ag-eyebrow">Aktifkan akun</span>
+      <h1 class="ag-step-title">Foto diri</h1>
+      <p class="ag-step-desc">Foto ini dipakai satgas untuk mengenali Anda saat keliling lapak.</p>
+    </div>
 
-      <div class="rounded-md overflow-hidden d-flex items-center justify-center" style="width:100%;max-width:240px;height:168px;background:var(--apima-bg-raised);border:1px solid var(--apima-line);padding:12px">
-        <img src="illustrations/foto-selfie.webp" alt="Preview foto diri anggota" class="illus-hero" style="height:140px">
+    <section class="v5-card ag-card" aria-label="Preview foto diri">
+      <div class="ag-photo-box">
+        <span class="v5-illus"><img src="illustrations/foto-selfie.webp" width="360" height="257" alt="Preview foto diri anggota"></span>
+        <span id="foto-status" class="ag-photo-status" role="status">Preview foto diri siap dipakai</span>
       </div>
-
-      <span id="foto-status" class="text-sm text-secondary">Preview foto diri</span>
+      <ul class="ag-tips">
+        <li>Pastikan wajah terlihat jelas tanpa topi atau masker.</li>
+        <li>Ambil foto di tempat yang cukup terang.</li>
+        <li>Tunjukkan foto ini ke pengurus APIMA jika diminta verifikasi.</li>
+      </ul>
     </section>
-
-    <ul class="stack gap-1 text-sm text-secondary m-0" style="padding-left:20px">
-      <li>Pastikan wajah terlihat jelas tanpa topi atau masker.</li>
-      <li>Ambil foto di tempat yang cukup terang.</li>
-      <li>Tunjukkan foto ini ke pengurus APIMA jika diminta verifikasi.</li>
-    </ul>
 
   </main>
 
-  <div class="screen-footer">
-    <a href="AktivasiSelesai.dc.html" class="btn btn-primary no-underline">Pakai Foto Ini</a>
-    <button type="button" class="btn btn-secondary" data-retake-photo>Foto Ulang</button>
+  <div class="screen-footer ag-footer">
+    <a href="AktivasiSelesai.dc.html" class="btn btn-primary">Pakai Foto Ini</a>
+    <button type="button" class="btn btn-secondary" data-retake-photo>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Foto Ulang
+    </button>
   </div>
 
 </div>

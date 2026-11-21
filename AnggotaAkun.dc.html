@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Akun Anggota</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
+<script src="./support.js"></script>
+<script src="./apima-store.js"></script>
+<script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="v5-app-header ag-header">
+    <span class="v5-app-logo" aria-hidden="true">
+      <img src="brand/apima-wordmark-light.webp" width="240" height="85" alt="" class="wm-light">
+      <img src="brand/apima-wordmark-dark.webp" width="240" height="85" alt="" class="wm-dark">
+    </span>
+    <div class="ag-header-text">
+      <p class="v5-app-title" data-ag-name>Budi Santoso</p>
+      <span class="v5-app-meta" data-ag-meta>Blok C-14 · ID 0123 · Sab, 14 Nov</span>
+    </div>
+    <div class="v5-app-actions">
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a href="MasukId.dc.html" class="v5-icon-btn" aria-label="Keluar akun">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="screen-scroll ag-main">
+
+    <section class="v5-card ag-card" aria-labelledby="akun-title">
+      <div class="ag-profile">
+        <img src="illustrations/akun-aktif.webp" width="360" height="332" alt="">
+        <div>
+          <h1 class="ag-profile-title" id="akun-title">Akun Anggota</h1>
+          <span class="ag-profile-sub" id="akun-sub">Status Terverifikasi · Blok C-14</span>
+        </div>
+      </div>
+      <div class="ag-rows ag-rows-lg">
+        <div class="v5-row"><span class="v5-row-label">Nama</span><span class="v5-row-value" id="akun-nama">Budi Santoso</span></div>
+        <div class="v5-row"><span class="v5-row-label">Nomor anggota</span><span class="v5-row-value mono" id="akun-id">0123</span></div>
+        <div class="v5-row"><span class="v5-row-label">Lapak</span><span class="v5-row-value" id="akun-lapak">Blok C-14</span></div>
+        <div class="v5-row"><span class="v5-row-label">Penjaga lapak</span><span class="v5-row-value" id="akun-penjaga">Rahmat (Aktif)</span></div>
+        <div class="v5-row"><span class="v5-row-label">Malam terbayar</span><span class="v5-row-value mono" id="akun-malam">4 malam</span></div>
+      </div>
+      <a href="AnggotaPilihHari.dc.html" class="btn btn-primary">Bayar Retribusi</a>
+      <a href="MasukId.dc.html" class="ag-link-danger" id="akun-keluar">Keluar Akun</a>
+    </section>
+
+  </main>
+
+  <nav class="v5-nav" data-v5-nav="anggota" data-active="akun"></nav>
+
+</div>
+</x-dc>
+<script>
+(function () {
+  'use strict';
+  function render() {
+    var store = window.APIMA_STORE;
+    if (!store) return;
+    var m = store.getActiveMember();
+    var penjaga = (m.penjaga && m.penjaga !== 'Jaga sendiri') ? m.penjaga : 'Jaga sendiri';
+    var paid = Math.max(0, parseInt(m.paidNights, 10) || 0);
+    document.getElementById('akun-sub').textContent = 'Status Terverifikasi · ' + m.blok;
+    document.getElementById('akun-nama').textContent = m.name;
+    document.getElementById('akun-id').textContent = m.id;
+    document.getElementById('akun-lapak').textContent = m.blok;
+    document.getElementById('akun-penjaga').textContent = penjaga === 'Jaga sendiri' ? penjaga : penjaga + ' (' + (m.penjagaActive ? 'Aktif' : 'Nonaktif') + ')';
+    var malamEl = document.getElementById('akun-malam');
+    malamEl.textContent = paid + ' malam';
+    malamEl.classList.toggle('st-danger', paid === 0);
+  }
+  var booted = false;
+  function boot() {
+    if (booted) return;
+    booted = true;
+    render();
+    window.addEventListener('apima:state-change', render);
+  }
+  window.addEventListener('apima:ready', boot);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 40); });
+  } else {
+    setTimeout(boot, 40);
+  }
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

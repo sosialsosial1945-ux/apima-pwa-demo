@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Satgas · Akun</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-satgas.css">
+<script src="./support.js"></script>
+<script src="./apima-store.js"></script>
+<script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="v5-app-header sg-header">
+    <span class="v5-app-logo sg-logo" aria-hidden="true">
+      <span class="brand-wordmark">
+        <img src="brand/apima-wordmark-light.webp" width="51" height="18" alt="" class="wm-light">
+        <img src="brand/apima-wordmark-dark.webp" width="50" height="18" alt="" class="wm-dark">
+      </span>
+    </span>
+    <div class="sg-header-text">
+      <p class="v5-app-title">APIMA · Satgas</p>
+      <span class="v5-app-meta"><span id="ak-date">Sab, 14 Nov</span> · S-01 Ahmad Fauzi</span>
+    </div>
+    <div class="v5-app-actions">
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="screen-scroll sg-main">
+    <section class="v5-card" aria-labelledby="ak-title">
+      <div class="sg-akun-head">
+        <span class="v5-illus sg-illus-lg"><img src="illustrations/cek-satgas.webp" width="128" height="112" alt=""></span>
+        <h1 id="ak-title" class="sg-card-title lg" style="margin:0">Akun Satgas</h1>
+        <p class="sg-card-text">Petugas lapangan Pasar Ikan Muara Angke</p>
+      </div>
+      <div class="sg-rows">
+        <div class="v5-row"><span class="v5-row-label">Nama</span><span class="v5-row-value">Ahmad Fauzi</span></div>
+        <div class="v5-row"><span class="v5-row-label">Kode</span><span class="v5-row-value mono">S-01</span></div>
+        <div class="v5-row"><span class="v5-row-label">Zona</span><span class="v5-row-value">Blok A–C</span></div>
+        <div class="v5-row"><span class="v5-row-label">Shift</span><span class="v5-row-value">Malam <span class="mono">20:00</span> – <span class="mono">03:00</span> WIB</span></div>
+        <div class="v5-row"><span class="v5-row-label">Lapak dicek malam ini</span><span id="ak-checked" class="v5-row-value"><span class="mono">0</span> lapak</span></div>
+      </div>
+      <a href="SatgasScan.dc.html?scan=1" class="btn btn-primary sg-btn">Scan QR Anggota</a>
+      <a href="MasukId.dc.html" class="sg-danger-link">Keluar Akun</a>
+    </section>
+  </main>
+
+  <nav class="v5-nav" data-v5-nav="satgas" data-active="akun"></nav>
+</div>
+</x-dc>
+<script>
+(function () {
+  function render() {
+    var store = window.APIMA_STORE;
+    if (!store) return;
+    var st = store.reload();
+    document.getElementById('ak-date').textContent = store.formatDateInfo(st.dayOffset).short;
+    var n = Array.isArray(st.checkedMemberIds) ? st.checkedMemberIds.length : 0;
+    document.getElementById('ak-checked').innerHTML = '<span class="mono">' + n + '</span> lapak';
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render);
+  else render();
+  window.addEventListener('apima:state-change', render);
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

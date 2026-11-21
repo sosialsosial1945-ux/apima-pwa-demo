@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>APIMA · Masukkan kode</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
@@ -19,38 +21,41 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2">
-      <a href="MasukId.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke halaman masuk">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </a>
-      <div class="stack">
-        <span class="header-eyebrow tnum" data-otp-id-label>ID 0123</span>
-        <h1 class="text-md m-0 fw-700">Masukkan kode</h1>
-      </div>
-    </div>
+  <header class="ag-topbar">
+    <a href="MasukId.dc.html" class="ag-back-link">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Kembali
+    </a>
+    <button type="button" class="v5-icon-btn boxed theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+      <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
   </header>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main ag-wide">
 
-    <section class="hero-card" aria-label="Isian kode verifikasi WhatsApp">
-      <img src="illustrations/otp-wa.webp" alt="Ilustrasi verifikasi kode WhatsApp" class="illus-md">
-      <div class="stack gap-2">
-        <label for="otp" class="text-bold">Kode 6 angka dari WhatsApp</label>
-        <input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" class="input-otp">
-        <span class="text-sm text-secondary">Setelah kode benar, Anda langsung masuk ke halaman sesuai ID akun.</span>
+    <div class="ag-step-head">
+      <span class="ag-eyebrow mono" data-otp-id-label>ID 0123</span>
+      <h1 class="ag-step-title">Masukkan kode</h1>
+      <p class="ag-step-desc">Kode 6 angka sudah dikirim lewat WhatsApp. Setelah kode benar, Anda langsung masuk ke halaman sesuai ID akun.</p>
+    </div>
+
+    <section class="v5-card ag-card" aria-label="Isian kode verifikasi WhatsApp">
+      <div class="ag-field">
+        <label for="otp" class="ag-label" style="font-size:14px">Kode 6 angka dari WhatsApp</label>
+        <input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" class="ag-otp">
+      </div>
+      <div class="ag-resend">
+        <span data-resend-label>Kirim ulang dalam <strong data-resend-after="42">42 detik</strong></span>
+        <span data-resend-ready hidden>Kode belum masuk?</span>
+        <button type="button" disabled class="v5-link" data-resend-btn>Kirim Ulang Kode</button>
       </div>
     </section>
 
-    <div class="stack gap-2" style="padding:0 2px">
-      <span class="text-sm text-secondary">Kode belum masuk? Kirim ulang dalam <strong class="text-main tnum" data-resend-after="42">42 detik</strong>.</span>
-      <button type="button" disabled class="btn-chip" data-resend-btn>Kirim Ulang Kode</button>
-    </div>
-
   </main>
 
-  <div class="screen-footer">
-    <a href="Main.dc.html" class="btn btn-primary no-underline" data-otp-submit>Masuk</a>
+  <div class="screen-footer ag-footer">
+    <a href="Main.dc.html" class="btn btn-primary" data-otp-submit>Masuk</a>
   </div>
 
 </div>

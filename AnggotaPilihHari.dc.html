@@ -3,11 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · Pilih jumlah malam</title>
+<title>APIMA · Bayar Retribusi</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,159 +23,127 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2">
-      <a href="Main.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke beranda">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+  <header class="v5-app-header ag-header ag-subheader">
+    <a href="Main.dc.html" class="v5-icon-btn ag-back" aria-label="Kembali ke beranda">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </a>
+    <h1 class="ag-sub-title">Bayar Retribusi</h1>
+    <div class="v5-app-actions">
+      <button type="button" class="v5-icon-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <a href="MasukId.dc.html" class="v5-icon-btn" aria-label="Keluar akun">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </a>
-      <h1 class="text-md m-0 fw-700">Bayar retribusi</h1>
     </div>
-    <span class="text-sm text-secondary tnum" id="pilih-date">Sab, 14 Nov</span>
   </header>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main">
 
-    <div class="row gap-3 items-center">
-      <img src="illustrations/pilih-paket.webp" alt="Ilustrasi pilihan jumlah malam retribusi" width="64" height="64" class="illus-side">
-      <p class="text-sm text-secondary m-0">Pilih jumlah malam retribusi bebas dari 1 sampai 30 malam. Tarif tetap Rp3.000 per malam.</p>
-    </div>
-
-    <section class="night-stepper-card" aria-label="Atur jumlah malam retribusi">
-      <button type="button" class="stepper-btn" id="btn-night-minus" aria-label="Kurangi 1 malam">−</button>
-      <div class="stepper-readout">
-        <span class="text-lg fw-700 text-main tnum" id="stepper-nights">1 malam</span>
-        <span class="text-xs text-secondary tnum" id="stepper-sub">1 × Rp3.000</span>
-      </div>
-      <button type="button" class="stepper-btn" id="btn-night-plus" aria-label="Tambah 1 malam">+</button>
+    <section class="v5-card ag-intro" aria-label="Aturan tarif retribusi">
+      <img src="illustrations/pilih-paket.webp" width="360" height="240" alt="">
+      <p>Atur fleksibel <strong>1–30 malam</strong>. Tarif tetap <strong>Rp3.000/malam</strong>, langsung aktif setelah QRIS lunas.</p>
     </section>
 
-    <div class="stack gap-2">
-      <span class="text-sm fw-700 text-secondary">Pilihan cepat</span>
-      <div data-selectable-group data-managed-by="pilih-hari" class="grid-2" role="group" aria-label="Pilihan cepat jumlah malam">
-        <button type="button" class="selectable-card selected stack items-center gap-1" data-value="1" aria-pressed="true">
-          <span class="text-lg tnum text-main">1 malam</span>
-          <span class="text-sm text-primary-color fw-700 tnum">Rp3.000</span>
+    <section class="v5-card ag-card" aria-label="Atur jumlah malam">
+      <div class="ag-stepper">
+        <button type="button" class="ag-step-btn" id="btn-night-minus" aria-label="Kurangi 1 malam">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
-        <button type="button" class="selectable-card stack items-center gap-1" data-value="7" aria-pressed="false">
-          <span class="text-lg tnum text-main">7 malam</span>
-          <span class="text-sm text-primary-color fw-700 tnum">Rp21.000</span>
-        </button>
-        <button type="button" class="selectable-card stack items-center gap-1" data-value="14" aria-pressed="false">
-          <span class="text-lg tnum text-main">14 malam</span>
-          <span class="text-sm text-primary-color fw-700 tnum">Rp42.000</span>
-        </button>
-        <button type="button" class="selectable-card stack items-center gap-1" data-value="30" aria-pressed="false">
-          <span class="text-lg tnum text-main">30 malam</span>
-          <span class="text-sm text-primary-color fw-700 tnum">Rp90.000</span>
+        <div class="ag-step-readout" aria-live="polite">
+          <span class="ag-step-nights" id="stepper-nights">1 malam</span>
+          <span class="ag-step-eq mono" id="stepper-sub">1 × Rp3.000 = Rp3.000</span>
+        </div>
+        <button type="button" class="ag-step-btn" id="btn-night-plus" aria-label="Tambah 1 malam">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
       </div>
-    </div>
+      <div class="ag-picks" role="group" aria-label="Pilihan cepat jumlah malam">
+        <button type="button" class="ag-pick" data-value="1" aria-pressed="false"><span class="ag-pick-label">Harian</span><span class="ag-pick-nights">1 malam</span><span class="ag-pick-price mono">Rp3.000</span><span class="ag-pick-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+        <button type="button" class="ag-pick" data-value="7" aria-pressed="false"><span class="ag-pick-label">Paling umum</span><span class="ag-pick-nights">7 malam</span><span class="ag-pick-price mono">Rp21.000</span><span class="ag-pick-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+        <button type="button" class="ag-pick" data-value="14" aria-pressed="false"><span class="ag-pick-label">Dua pekan</span><span class="ag-pick-nights">14 malam</span><span class="ag-pick-price mono">Rp42.000</span><span class="ag-pick-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+        <button type="button" class="ag-pick" data-value="30" aria-pressed="false"><span class="ag-pick-label">Satu bulan</span><span class="ag-pick-nights">30 malam</span><span class="ag-pick-price mono">Rp90.000</span><span class="ag-pick-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+      </div>
+    </section>
 
-    <section class="hero-card" aria-label="Ringkasan total pembayaran">
-      <div class="row between items-end gap-3">
-        <div class="stack gap-1">
-          <span class="text-sm text-secondary">Total bayar</span>
-          <span class="text-xl tnum" data-selectable-output>Rp3.000</span>
+    <section class="v5-card ag-card" aria-label="Ringkasan pembayaran">
+      <div class="ag-sum">
+        <div class="stack" style="gap:4px">
+          <span class="ag-muted" style="font-size:15px">Total bayar</span>
+          <span class="ag-sum-amt" id="pilih-total">Rp3.000</span>
         </div>
-        <div class="stack gap-1 items-end text-right">
-          <span class="text-sm text-secondary">Malam terbayar</span>
-          <span class="text-md fw-700 text-success tnum" data-selectable-quota>5 malam</span>
+        <div class="stack" style="gap:4px;align-items:flex-end">
+          <span class="ag-muted" style="font-size:15px;text-align:right">Malam terbayar nanti</span>
+          <span class="ag-sum-after" id="pilih-after">5 malam</span>
         </div>
       </div>
-      <p class="text-sm fw-700 text-main m-0 tnum" id="night-equation">Sekarang 4 + dibayar 1 = 5 malam</p>
-      <p class="text-sm text-secondary m-0" id="night-auto-note">Pembayaran memakai QRIS. Pastikan saldo dompet digital atau m-banking Anda cukup sebelum lanjut.</p>
+      <p class="ag-note" id="night-auto-note">Pembayaran via QRIS. Pastikan saldo dompet digital atau m-banking mencukupi sebelum lanjut.</p>
+      <a href="AnggotaQris.dc.html?nights=1" id="btn-lanjut-qris" class="btn btn-primary">Lanjut Bayar Rp3.000</a>
     </section>
 
   </main>
 
-  <div class="screen-footer">
-    <a href="AnggotaQris.dc.html?nights=1" id="btn-lanjut-qris" class="btn btn-primary no-underline" data-selectable-cta>Lanjut Bayar Rp3.000</a>
-  </div>
+  <nav class="v5-nav" data-v5-nav="anggota" data-active="bayar"></nav>
 
 </div>
 </x-dc>
 <script>
 (function () {
+  'use strict';
+  var booted = false;
   function boot() {
+    if (booted) return;
+    booted = true;
     var store = window.APIMA_STORE;
-    var state = store ? store.getState() : null;
     var member = store ? store.getActiveMember() : { paidNights: 4, tonightStatus: 'belum_lapor' };
     var params = new URLSearchParams(window.location.search || '');
     var fromBeranda = params.get('from') === 'beranda';
-
-    var dateEl = document.getElementById('pilih-date');
-    if (dateEl && store && state) {
-      dateEl.textContent = store.formatDateInfo(state.dayOffset).short;
-    }
+    var TARIFF = store ? store.TARIFF : 3000;
 
     var currentPaid = Math.max(0, parseInt(member.paidNights, 10) || 0);
+    /* Bayar saat malam terbayar 0 otomatis melapor jualan malam ini (memakai 1 malam) */
     var autoReportTonight = (currentPaid === 0 && member.tonightStatus !== 'sudah_bayar');
-    var selectedNights = Math.max(1, Math.min(30, parseInt(params.get('nights'), 10) || (store ? store.getPendingOrder().nights : 1) || 1));
+    var selected = Math.max(1, Math.min(30, parseInt(params.get('nights'), 10) || (store ? store.getPendingOrder().nights : 1) || 1));
 
     var minusBtn = document.getElementById('btn-night-minus');
     var plusBtn = document.getElementById('btn-night-plus');
     var readoutEl = document.getElementById('stepper-nights');
     var subEl = document.getElementById('stepper-sub');
-    var outPrice = document.querySelector('[data-selectable-output]');
-    var outQuota = document.querySelector('[data-selectable-quota]');
-    var eqEl = document.getElementById('night-equation');
+    var totalEl = document.getElementById('pilih-total');
+    var afterEl = document.getElementById('pilih-after');
     var noteEl = document.getElementById('night-auto-note');
     var ctaLink = document.getElementById('btn-lanjut-qris');
-    var presetBtns = document.querySelectorAll('[data-selectable-group] .selectable-card');
+    var picks = document.querySelectorAll('.ag-pick');
+
+    function rp(n) { return store ? store.formatRupiah(n) : ('Rp' + n.toLocaleString('id-ID')); }
 
     function sync(n) {
-      selectedNights = Math.max(1, Math.min(30, parseInt(n, 10) || 1));
-      var total = selectedNights * 3000;
-      var priceStr = store ? store.formatRupiah(total) : ('Rp' + total.toLocaleString('id-ID'));
-      var sumAfterPay = currentPaid + selectedNights;
-      var afterTonight = autoReportTonight ? Math.max(0, sumAfterPay - 1) : sumAfterPay;
-
-      if (readoutEl) readoutEl.textContent = selectedNights + ' malam';
-      if (subEl) subEl.textContent = selectedNights + ' × Rp3.000';
-      if (minusBtn) minusBtn.disabled = selectedNights <= 1;
-      if (plusBtn) plusBtn.disabled = selectedNights >= 30;
-      if (outPrice) outPrice.textContent = priceStr;
-      if (outQuota) outQuota.textContent = afterTonight + ' malam';
-
-      if (eqEl) {
-        eqEl.textContent = 'Sekarang ' + currentPaid + ' + dibayar ' + selectedNights + ' = ' + sumAfterPay + ' malam';
-      }
-      if (noteEl) {
-        if (autoReportTonight) {
-          noteEl.textContent = 'Pembayaran saat malam terbayar 0 otomatis melapor jualan malam ini (terpakai 1, sudah dibayar untuk ' + afterTonight + ' malam lagi).';
-        } else {
-          noteEl.textContent = 'Pembayaran memakai QRIS. Pastikan saldo dompet digital atau m-banking Anda cukup sebelum lanjut.';
-        }
-      }
-
-      if (ctaLink) {
-        ctaLink.textContent = 'Lanjut Bayar ' + priceStr;
-        ctaLink.setAttribute('href', 'AnggotaQris.dc.html?nights=' + selectedNights);
-      }
-
-      presetBtns.forEach(function (btn) {
-        var match = parseInt(btn.dataset.value, 10) === selectedNights;
-        btn.classList.toggle('selected', match);
-        btn.setAttribute('aria-pressed', match ? 'true' : 'false');
+      selected = Math.max(1, Math.min(30, parseInt(n, 10) || 1));
+      var total = selected * TARIFF;
+      var after = currentPaid + selected - (autoReportTonight ? 1 : 0);
+      readoutEl.textContent = selected + ' malam';
+      subEl.textContent = selected + ' × ' + rp(TARIFF) + ' = ' + rp(total);
+      minusBtn.disabled = selected <= 1;
+      plusBtn.disabled = selected >= 30;
+      totalEl.textContent = rp(total);
+      afterEl.textContent = after + ' malam';
+      noteEl.textContent = autoReportTonight
+        ? 'Malam terbayar Anda 0, jadi 1 malam langsung dipakai untuk melapor jualan malam ini setelah QRIS lunas.'
+        : 'Pembayaran via QRIS. Pastikan saldo dompet digital atau m-banking mencukupi sebelum lanjut.';
+      ctaLink.textContent = 'Lanjut Bayar ' + rp(total);
+      ctaLink.setAttribute('href', 'AnggotaQris.dc.html?nights=' + selected);
+      picks.forEach(function (b) {
+        b.setAttribute('aria-pressed', parseInt(b.dataset.value, 10) === selected ? 'true' : 'false');
       });
-
-      if (store) store.setPendingOrder(selectedNights, fromBeranda);
+      if (store) store.setPendingOrder(selected, fromBeranda);
     }
 
-    if (minusBtn) minusBtn.addEventListener('click', function () { sync(selectedNights - 1); });
-    if (plusBtn) plusBtn.addEventListener('click', function () { sync(selectedNights + 1); });
-    presetBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        sync(parseInt(btn.dataset.value, 10));
-      });
-    });
-    if (ctaLink) {
-      ctaLink.addEventListener('click', function () {
-        if (store) store.setPendingOrder(selectedNights, fromBeranda);
-      });
-    }
-
-    sync(selectedNights);
+    minusBtn.addEventListener('click', function () { sync(selected - 1); });
+    plusBtn.addEventListener('click', function () { sync(selected + 1); });
+    picks.forEach(function (b) { b.addEventListener('click', function () { sync(parseInt(b.dataset.value, 10)); }); });
+    ctaLink.addEventListener('click', function () { if (store) store.setPendingOrder(selected, fromBeranda); });
+    sync(selected);
   }
 
   window.addEventListener('apima:ready', boot);

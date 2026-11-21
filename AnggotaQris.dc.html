@@ -3,12 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · QR Pembayaran</title>
+<title>APIMA · Bayar QRIS</title>
 <link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
 <script src="./lib/qrcode.js"></script>
 <script src="./interactions.js" defer></script>
+<script src="./nav-v5.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,116 +24,62 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact between">
-    <div class="row gap-2">
-      <a href="AnggotaPilihHari.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke pilih malam">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-      </a>
-      <h1 class="text-md m-0 fw-700">QR Pembayaran</h1>
-    </div>
-    <span class="pill pill-warning tnum" aria-label="Sisa waktu bayar QRIS">
-      <span class="status-dot dot-warning" aria-hidden="true"></span>
-      <span data-countdown="892">14:52</span>
+  <header class="v5-app-header ag-header ag-subheader">
+    <a href="AnggotaPilihHari.dc.html" class="v5-icon-btn ag-back" aria-label="Kembali ke pilih jumlah malam">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </a>
+    <h1 class="ag-sub-title">Bayar QRIS</h1>
+    <span class="ag-timer" role="timer" aria-label="Sisa waktu bayar QRIS">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span class="mono" data-countdown="892">14:52</span>
     </span>
   </header>
 
-  <main class="screen-scroll stack gap-3" style="padding:16px">
+  <main class="screen-scroll ag-main">
 
-    <!-- QR Pembayaran: latar putih polos, nominal besar di atas QR, logo QRIS, hitung mundur batas bayar -->
-    <section class="qr-pay-card" aria-label="QR Pembayaran QRIS">
-      <span class="qr-pay-tag">QR Pembayaran</span>
-
-      <div class="stack gap-1 items-center">
-        <span class="qr-pay-nominal tnum" id="qris-amount">Rp3.000</span>
-        <span class="qr-pay-meta tnum" id="qris-breakdown">1 malam × Rp3.000</span>
+    <section class="v5-card ag-card" aria-label="QR pembayaran QRIS">
+      <div class="ag-pay-head">
+        <img src="illustrations/bayar-sukses.webp" width="360" height="255" alt="">
+        <div class="stack" style="gap:2px;min-width:0">
+          <span class="ag-muted" style="font-size:15px">Total bayar</span>
+          <span class="ag-pay-amt" id="qris-amount">Rp3.000</span>
+          <span class="ag-muted" style="font-size:14px" id="qris-breakdown">1 malam × Rp3.000 · Batas 03:00 WIB</span>
+        </div>
       </div>
 
-      <div class="qr-pay-qris-row">
-        <svg width="72" height="24" viewBox="0 0 120 40" role="img" aria-label="Logo QRIS" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="4" width="12" height="12" rx="2" fill="none" stroke="#0F172A" stroke-width="2.5"/>
-          <rect x="4.5" y="7.5" width="5" height="5" fill="#0F172A"/>
-          <rect x="1" y="22" width="12" height="12" rx="2" fill="none" stroke="#0F172A" stroke-width="2.5"/>
-          <rect x="4.5" y="25.5" width="5" height="5" fill="#0F172A"/>
-          <text x="22" y="28" fill="#0F172A" font-family="Inter, sans-serif" font-size="24" font-weight="700" letter-spacing="1">QRIS</text>
-        </svg>
-        <span class="text-xs fw-700" style="color:#475569">APIMA · Retribusi</span>
+      <div class="ag-qr-box">
+        <span class="ag-qr-box-title">APIMA · Retribusi Pasar</span>
+        <span class="ag-qr-tile" id="qris-svg-host">
+          <svg id="qris-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212" width="176" height="176" role="img" aria-label="Kode QRIS untuk pembayaran"><rect width="212" height="212" fill="#FFFFFF"/></svg>
+        </span>
+        <span class="ag-muted" style="font-size:14px">Scan lewat dompet digital atau m-banking</span>
       </div>
 
-      <div class="qr-pay-frame" id="qris-svg-host">
-        <svg id="qris-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212" width="212" height="212" role="img" aria-label="Kode QRIS untuk pembayaran Rp3.000">
-          <rect width="212" height="212" fill="#FFFFFF"/>
-        </svg>
+      <div class="ag-btn-stack">
+        <button type="button" id="btn-confirm-pay" class="btn btn-primary">Konfirmasi Sudah Bayar</button>
+        <button type="button" class="btn btn-secondary" data-save-qr>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Simpan QR
+        </button>
       </div>
 
-      <div class="qr-pay-timer tnum">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        <span>Batas bayar <span data-countdown="892">14:52</span> · s.d. 03:00 WIB</span>
+      <!-- HAPUS SEBELUM PRODUKSI: simulasi keadaan gagal untuk demo -->
+      <div class="ag-demo-row" aria-label="Simulasi demo">
+        <a href="AnggotaGagal.dc.html" class="ag-demo-btn" id="sim-expired">Simulasi QR Kedaluwarsa</a>
+        <a href="AnggotaGangguan.dc.html" class="ag-demo-btn" id="sim-gangguan">Simulasi Gangguan Sistem</a>
       </div>
-    </section>
-
-    <section class="open-section" aria-label="Cara bayar dari HP ini">
-      <h2 class="text-base fw-700 m-0">Cara bayar dari HP ini</h2>
-      <ol class="step-list">
-        <li class="step-item">
-          <span class="step-num tnum">1</span>
-          <span>Ketuk <strong class="text-main">Simpan QR</strong> di bawah, atau screenshot layar ini.</span>
-        </li>
-        <li class="step-item">
-          <span class="step-num tnum">2</span>
-          <span>Buka GoPay, DANA, OVO, atau m-banking, lalu pilih <strong class="text-main">Scan dari Galeri</strong>.</span>
-        </li>
-        <li class="step-item">
-          <span class="step-num tnum">3</span>
-          <span>Pastikan tujuan <strong class="text-main">APIMA</strong> dan nominal <strong class="text-main tnum" id="qris-step-amount">Rp3.000</strong>, lalu bayar.</span>
-        </li>
-      </ol>
+      <!-- /HAPUS SEBELUM PRODUKSI -->
     </section>
 
   </main>
 
-  <div id="apima-toast" class="toast" role="status" aria-live="polite" hidden></div>
-
-  <div class="screen-footer">
-    <div class="grid-2">
-      <button type="button" class="btn btn-secondary" data-save-qr>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Simpan QR
-      </button>
-      <button type="button" class="btn btn-secondary" data-sheet-open="ewallet-sheet">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        Cara Bayar
-      </button>
-    </div>
-    <button type="button" id="btn-confirm-pay" class="btn btn-primary">Saya Sudah Bayar</button>
-  </div>
-
-  <div id="ewallet-sheet" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="ewallet-title" hidden>
-    <div class="sheet">
-      <div class="row between gap-2">
-        <h2 id="ewallet-title" class="text-md m-0 fw-700">Bayar lewat galeri HP</h2>
-        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup panduan">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="stack gap-2">
-        <div class="open-row" style="padding:12px 0">
-          <span class="text-sm fw-700">GoPay / DANA / OVO</span>
-          <span class="text-sm text-secondary">Ketuk Scan · ikon Galeri</span>
-        </div>
-        <div class="open-row" style="padding:12px 0">
-          <span class="text-sm fw-700">BCA / BRImo / Livin</span>
-          <span class="text-sm text-secondary">Menu QRIS · pilih foto QR</span>
-        </div>
-      </div>
-      <p class="text-sm text-secondary m-0">Setelah bayar berhasil, status Anda di APIMA berubah otomatis dalam beberapa detik.</p>
-      <button type="button" class="btn btn-primary" data-sheet-close>Oke, Mengerti</button>
-    </div>
-  </div>
+  <nav class="v5-nav" data-v5-nav="anggota" data-active="bayar"></nav>
 
 </div>
 </x-dc>
 <script>
 (function () {
+  'use strict';
   function renderQrisSvg(payload, priceStr) {
     var host = document.getElementById('qris-svg-host');
     if (!host || typeof window.qrcode !== 'function') return;
@@ -150,13 +99,16 @@
         }
       }
       host.innerHTML =
-        '<svg id="qris-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + total + ' ' + total + '" width="212" height="212" shape-rendering="crispEdges" role="img" aria-label="Kode QRIS untuk pembayaran ' + priceStr + '">' +
+        '<svg id="qris-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + total + ' ' + total + '" width="176" height="176" shape-rendering="crispEdges" role="img" aria-label="Kode QRIS untuk pembayaran ' + priceStr + '">' +
         rects.join('') +
         '</svg>';
     } catch (e) {}
   }
 
+  var booted = false;
   function boot() {
+    if (booted) return;
+    booted = true;
     var store = window.APIMA_STORE;
     var params = new URLSearchParams(window.location.search || '');
     var qNights = parseInt(params.get('nights'), 10);
@@ -167,27 +119,21 @@
     var amount = nights * 3000;
     var priceStr = store ? store.formatRupiah(amount) : ('Rp' + amount.toLocaleString('id-ID'));
 
-    var amtEl = document.getElementById('qris-amount');
-    var brkEl = document.getElementById('qris-breakdown');
-    var stepEl = document.getElementById('qris-step-amount');
-    if (amtEl) amtEl.textContent = priceStr;
-    if (brkEl) brkEl.textContent = nights + ' malam × Rp3.000';
-    if (stepEl) stepEl.textContent = priceStr;
+    document.getElementById('qris-amount').textContent = priceStr;
+    document.getElementById('qris-breakdown').textContent = nights + ' malam × Rp3.000 · Batas 03:00 WIB';
+    document.getElementById('sim-expired').setAttribute('href', 'AnggotaGagal.dc.html?nights=' + nights);
+    document.getElementById('sim-gangguan').setAttribute('href', 'AnggotaGangguan.dc.html?nights=' + nights);
 
     var member = store ? store.getActiveMember() : { id: '0123' };
     var payload = '00020101021226380014ID.APIMA.QRIS0204' + member.id + '5406' + String(amount) + '5802ID5905APIMA6304' + String(nights).padStart(2, '0');
     renderQrisSvg(payload, priceStr);
 
     var payBtn = document.getElementById('btn-confirm-pay');
-    if (payBtn && !payBtn.dataset.boundPay) {
-      payBtn.dataset.boundPay = '1';
-      payBtn.addEventListener('click', function () {
-        if (store) {
-          store.confirmPayment(nights);
-        }
-        window.location.href = 'AnggotaBerhasil.dc.html?nights=' + nights;
-      });
-    }
+    payBtn.addEventListener('click', function () {
+      payBtn.disabled = true;
+      if (store) store.confirmPayment(nights);
+      window.location.href = 'AnggotaBerhasil.dc.html?nights=' + nights;
+    });
   }
 
   window.addEventListener('apima:ready', boot);
