@@ -14,9 +14,11 @@
     document.documentElement.dataset.theme = mode;
   }
   try {
-    applyTheme(localStorage.getItem('apima-theme') || 'light');
+    // Halaman admin membuka Mode Gelap (Navy Maritim) sebagai bawaan; pilihan tersimpan tetap menang
+    var isAdmin = /\/Admin[A-Za-z]*\.dc\.html$/.test(window.location.pathname || '');
+    applyTheme(localStorage.getItem('apima-theme') || (isAdmin ? 'dark' : 'light'));
   } catch (e) {
-    applyTheme('light');
+    applyTheme(/\/Admin[A-Za-z]*\.dc\.html$/.test(window.location.pathname || '') ? 'dark' : 'light');
   }
   window.addEventListener('storage', function (e) {
     if (e.key === 'apima-theme') applyTheme(e.newValue);

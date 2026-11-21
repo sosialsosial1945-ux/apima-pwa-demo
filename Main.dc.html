@@ -6,6 +6,7 @@
 <title>APIMA · Beranda</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -28,7 +29,7 @@
       </span>
     </div>
     <div class="row gap-2 items-center shrink-0">
-      <span class="text-sm fw-700 text-main">Sab, 14 Nov</span>
+      <span class="text-sm fw-700 text-main tnum" id="main-date">Sab, 14 Nov</span>
       <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
         <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -39,92 +40,48 @@
   <main class="screen-scroll stack gap-3" style="padding:16px">
 
     <!-- Fokus tunggal layar: status malam ini + 1 aksi utama -->
-    <section class="hero-card" aria-label="Status malam ini">
-      <span class="pill pill-warning">
-        <span class="status-dot dot-warning" aria-hidden="true"></span>
-        Belum Lapor
+    <section class="hero-card" id="main-hero-card" aria-label="Status malam ini">
+      <span class="pill pill-warning" id="main-status-pill">
+        <span class="status-dot dot-warning" id="main-status-dot" aria-hidden="true"></span>
+        <span id="main-status-label">Belum Lapor</span>
       </span>
       <div class="stack gap-1">
-        <h2 class="text-lg m-0">Buka lapak malam ini?</h2>
-        <p class="text-sm text-secondary m-0">Retribusi Anda masih tersisa 7 malam. Ketuk tombol di bawah untuk bayar retribusi.</p>
+        <h2 class="text-lg m-0" id="main-hero-title">Buka lapak malam ini?</h2>
+        <p class="text-sm text-secondary m-0" id="main-hero-desc">Sudah dibayar untuk 4 malam lagi. Lapor jualan akan memakai 1 malam terbayar untuk malam ini.</p>
       </div>
-      <a href="AnggotaPilihHari.dc.html" class="btn btn-primary">Bayar Retribusi</a>
+      <div id="main-hero-cta-wrap">
+        <button type="button" id="btn-lapor-jualan" class="btn btn-primary">Lapor Jualan Malam Ini</button>
+      </div>
     </section>
 
     <section class="info-strip" aria-label="Ringkasan akun">
       <a href="AnggotaPilihHari.dc.html" class="info-cell no-underline">
         <div class="row between gap-1">
-          <span class="text-sm text-secondary">Sisa retribusi</span>
+          <span class="text-sm text-secondary">Malam terbayar</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--apima-text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
         </div>
-        <span class="text-md fw-700 text-main tnum">7 malam</span>
+        <span class="text-md fw-700 text-main tnum" id="main-paid-nights">4 malam</span>
       </a>
       <a href="AnggotaQrIdentitas.dc.html" class="info-cell no-underline">
         <div class="row between gap-1">
           <span class="text-sm text-secondary">Penjaga lapak</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--apima-text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
         </div>
-        <span class="text-base fw-700 text-main">Rahmat · Aktif</span>
+        <span class="text-base fw-700 text-main" id="main-penjaga-status">Rahmat · Aktif</span>
       </a>
     </section>
 
     <!-- Daftar terbuka di atas kanvas halaman (tanpa kotak bertumpuk) -->
-    <section id="riwayat" class="open-section" aria-label="Riwayat pembayaran retribusi">
+    <section id="riwayat" class="open-section" aria-label="Riwayat pembayaran dan laporan retribusi">
       <div class="open-section-head">
-        <h2 class="text-base fw-700 m-0">Riwayat pembayaran retribusi</h2>
-        <span class="text-sm text-secondary tnum">Total Rp15.000</span>
+        <h2 class="text-base fw-700 m-0">Riwayat retribusi</h2>
+        <span class="text-sm text-secondary tnum" id="main-history-total">Total Rp30.000</span>
       </div>
-      <ul class="open-list">
-        <li class="open-row">
-          <div class="stack gap-1">
-            <span class="text-sm fw-500 text-main">Jum, 13 Nov</span>
-            <span class="text-xs text-success fw-500">Jualan · Lunas</span>
-          </div>
-          <span class="text-sm fw-700 tnum">Rp3.000</span>
-        </li>
-        <li class="open-row">
-          <div class="stack gap-1">
-            <span class="text-sm fw-500 text-main">Kam, 12 Nov</span>
-            <span class="text-xs text-success fw-500">Jualan · Lunas</span>
-          </div>
-          <span class="text-sm fw-700 tnum">Rp3.000</span>
-        </li>
-        <li class="open-row">
-          <div class="stack gap-1">
-            <span class="text-sm fw-500 text-main">Rab, 11 Nov</span>
-            <span class="text-xs text-secondary">Tidak jualan</span>
-          </div>
-          <span class="text-sm text-secondary tnum">Rp0</span>
-        </li>
-        <li class="open-row">
-          <div class="stack gap-1">
-            <span class="text-sm fw-500 text-main">Sel, 10 Nov</span>
-            <span class="text-xs text-success fw-500">Jualan · Lunas</span>
-          </div>
-          <span class="text-sm fw-700 tnum">Rp3.000</span>
-        </li>
-        <li class="open-row">
-          <div class="stack gap-1">
-            <span class="text-sm fw-500 text-main">Sen, 9 Nov</span>
-            <span class="text-xs text-success fw-500">Jualan · Lunas</span>
-          </div>
-          <span class="text-sm fw-700 tnum">Rp3.000</span>
-        </li>
-        <li class="open-row">
-          <div class="stack gap-1">
-            <span class="text-sm fw-500 text-main">Min, 8 Nov</span>
-            <span class="text-xs text-secondary">Tidak jualan</span>
-          </div>
-          <span class="text-sm text-secondary tnum">Rp0</span>
-        </li>
-        <li class="open-row">
-          <div class="stack gap-1">
-            <span class="text-sm fw-500 text-main">Sab, 7 Nov</span>
-            <span class="text-xs text-success fw-500">Jualan · Lunas</span>
-          </div>
-          <span class="text-sm fw-700 tnum">Rp3.000</span>
-        </li>
-      </ul>
+      <ul class="open-list" id="main-history-list"></ul>
+      <div id="main-history-empty" class="empty-state" hidden style="padding:20px 12px">
+        <span class="text-sm fw-700 text-main">Belum ada riwayat</span>
+        <span class="text-xs text-secondary">Pembayaran dan laporan jualan Anda akan tampil di sini.</span>
+      </div>
     </section>
 
   </main>
@@ -171,11 +128,11 @@
         </li>
         <li class="open-row">
           <span class="text-sm text-secondary">Penjaga lapak</span>
-          <span class="text-sm fw-700">Rahmat</span>
+          <span class="text-sm fw-700" id="sheet-penjaga-name">Rahmat</span>
         </li>
       </ul>
       <div class="stack gap-2">
-        <a href="AnggotaPilihHari.dc.html" class="btn btn-primary no-underline">Bayar Retribusi</a>
+        <a href="AnggotaPilihHari.dc.html" class="btn btn-primary no-underline">Tambah Malam Terbayar</a>
         <a href="MasukId.dc.html" class="btn btn-secondary no-underline">Keluar Akun</a>
       </div>
     </div>
@@ -183,6 +140,131 @@
 
 </div>
 </x-dc>
+<script>
+(function () {
+  function renderMain() {
+    var store = window.APIMA_STORE;
+    if (!store) return;
+    var st = store.getState();
+    var m = store.getActiveMember();
+    var dateInfo = store.formatDateInfo(st.dayOffset);
+    var paid = Math.max(0, parseInt(m.paidNights, 10) || 0);
+
+    var dateEl = document.getElementById('main-date');
+    if (dateEl) dateEl.textContent = dateInfo.short;
+
+    var heroCard = document.getElementById('main-hero-card');
+    var pill = document.getElementById('main-status-pill');
+    var dot = document.getElementById('main-status-dot');
+    var statusLabel = document.getElementById('main-status-label');
+    var heroTitle = document.getElementById('main-hero-title');
+    var heroDesc = document.getElementById('main-hero-desc');
+    var ctaWrap = document.getElementById('main-hero-cta-wrap');
+
+    if (m.tonightStatus === 'sudah_bayar') {
+      if (heroCard) heroCard.className = 'hero-card tone-success';
+      if (pill) pill.className = 'pill pill-success';
+      if (dot) dot.className = 'status-dot dot-success';
+      if (statusLabel) statusLabel.textContent = 'Jualan · Sudah Bayar';
+      if (heroTitle) heroTitle.textContent = 'Anda tercatat jualan malam ini';
+      if (heroDesc) {
+        heroDesc.textContent = 'Sudah dibayar untuk ' + paid + ' malam lagi. Tunjukkan QR identitas saat satgas keliling.';
+      }
+      if (ctaWrap) {
+        ctaWrap.innerHTML = '<a href="AnggotaQrIdentitas.dc.html" class="btn btn-primary no-underline">Lihat QR Identitas</a>';
+      }
+    } else if (paid > 0) {
+      if (heroCard) heroCard.className = 'hero-card';
+      if (pill) pill.className = 'pill pill-warning';
+      if (dot) dot.className = 'status-dot dot-warning';
+      if (statusLabel) statusLabel.textContent = 'Belum Lapor';
+      if (heroTitle) heroTitle.textContent = 'Buka lapak malam ini?';
+      if (heroDesc) {
+        heroDesc.textContent = 'Sudah dibayar untuk ' + paid + ' malam lagi. Lapor jualan akan memakai 1 malam terbayar untuk malam ini.';
+      }
+      if (ctaWrap) {
+        ctaWrap.innerHTML = '<button type="button" id="btn-lapor-jualan" class="btn btn-primary">Lapor Jualan Malam Ini</button>';
+        var laporBtn = document.getElementById('btn-lapor-jualan');
+        if (laporBtn) {
+          laporBtn.addEventListener('click', function () {
+            var res = store.reportSellingTonight(m.id);
+            if (res && res.ok) {
+              renderMain();
+              if (window.apimaToast) {
+                window.apimaToast('Laporan jualan malam ini tercatat. Sudah dibayar untuk ' + res.member.paidNights + ' malam lagi.');
+              }
+            }
+          });
+        }
+      }
+    } else {
+      if (heroCard) heroCard.className = 'hero-card tone-warning';
+      if (pill) pill.className = 'pill pill-warning';
+      if (dot) dot.className = 'status-dot dot-warning';
+      if (statusLabel) statusLabel.textContent = 'Belum Bayar';
+      if (heroTitle) heroTitle.textContent = 'Buka lapak malam ini?';
+      if (heroDesc) {
+        heroDesc.textContent = 'Belum ada malam terbayar. Bayar retribusi lewat QRIS untuk langsung melapor jualan malam ini.';
+      }
+      if (ctaWrap) {
+        ctaWrap.innerHTML = '<a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary no-underline">Bayar Retribusi</a>';
+      }
+    }
+
+    var paidEl = document.getElementById('main-paid-nights');
+    if (paidEl) {
+      paidEl.textContent = paid + ' malam';
+      paidEl.className = 'text-md fw-700 tnum ' + (paid > 0 ? 'text-main' : 'text-warning');
+    }
+
+    var penjagaEl = document.getElementById('main-penjaga-status');
+    if (penjagaEl) {
+      var pName = m.penjaga || 'Rahmat';
+      penjagaEl.textContent = pName + ' · ' + (m.penjagaActive ? 'Aktif' : 'Nonaktif');
+    }
+
+    var totalPaid = store.getHistoryTotal(m);
+    var totalEl = document.getElementById('main-history-total');
+    if (totalEl) totalEl.textContent = 'Total ' + store.formatRupiah(totalPaid);
+
+    var listEl = document.getElementById('main-history-list');
+    var emptyEl = document.getElementById('main-history-empty');
+    var history = Array.isArray(m.history) ? m.history : [];
+    if (listEl && emptyEl) {
+      if (!history.length) {
+        listEl.innerHTML = '';
+        emptyEl.hidden = false;
+      } else {
+        emptyEl.hidden = true;
+        listEl.innerHTML = history.map(function (h) {
+          var subText = h.title + (h.sub ? ' · ' + h.sub : '');
+          var subClass = h.type === 'bayar'
+            ? 'text-xs text-primary-color fw-500'
+            : (h.type === 'lapor' ? 'text-xs text-success fw-500' : 'text-xs text-secondary');
+          var rightHtml = (h.type === 'bayar' && typeof h.amount === 'number' && h.amount > 0)
+            ? '<span class="text-sm fw-700 tnum text-main">' + store.formatRupiah(h.amount) + '</span>'
+            : '<span class="text-sm text-secondary tnum">\u2013</span>';
+          return '<li class="open-row">' +
+            '<div class="stack gap-1">' +
+              '<span class="text-sm fw-500 text-main">' + h.date + '</span>' +
+              '<span class="' + subClass + '">' + subText + '</span>' +
+            '</div>' +
+            rightHtml +
+          '</li>';
+        }).join('');
+      }
+    }
+  }
+
+  window.addEventListener('apima:ready', renderMain);
+  window.addEventListener('apima:state-change', renderMain);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(renderMain, 40); });
+  } else {
+    setTimeout(renderMain, 40);
+  }
+})();
+</script>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>

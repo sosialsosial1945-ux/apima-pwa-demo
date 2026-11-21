@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./admin.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -99,9 +100,6 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           Menu
         </button>
-        <a href="MasukId.dc.html" class="btn-icon no-underline" aria-label="Keluar akun" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </a>
       </div>
     </div>
 
@@ -109,7 +107,10 @@
 
       <header class="admin-page-head">
         <div class="stack gap-1">
-          <h1 class="text-lg m-0">Riwayat setoran retribusi</h1>
+          <div class="row gap-2 items-center wrap">
+            <h1 class="text-lg m-0">Riwayat setoran retribusi</h1>
+            <span class="sample-data-badge">Data contoh</span>
+          </div>
           <span class="text-sm text-secondary">Catatan lengkap pembayaran retribusi QRIS seluruh anggota APIMA.</span>
         </div>
 
@@ -123,9 +124,9 @@
       <section class="exec-banner" aria-label="Ringkasan setoran hari ini">
         <div class="exec-banner-top">
           <div class="stack gap-2">
-            <span class="text-sm exec-banner-muted">Setoran retribusi masuk · Sab, 14 Nov 2026</span>
+            <span class="text-sm exec-banner-muted" id="riw-banner-date">Setoran retribusi masuk · Sab, 14 Nov 2026</span>
             <div class="row gap-3 items-center wrap">
-              <span class="exec-kpi-big">Rp1.740.000</span>
+              <span class="exec-kpi-big" id="riw-banner-total">Rp1.740.000</span>
               <span class="exec-delta">Rekonsiliasi QRIS Cocok Rp0 Selisih</span>
             </div>
           </div>
@@ -135,7 +136,7 @@
         <div class="exec-stats-row">
           <div class="exec-stat">
             <span class="exec-stat-lbl">Transaksi lunas</span>
-            <span class="exec-stat-val">205 transaksi</span>
+            <span class="exec-stat-val" id="riw-lunas-count">205 transaksi</span>
           </div>
           <div class="exec-stat">
             <span class="exec-stat-lbl">Menunggu bayar</span>
@@ -276,11 +277,10 @@
 </x-dc>
 <script>
 (function () {
-  var TX = [
-    { ref: 'QRIS-1411-0842', time: '23:38 WIB', date: '14 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '7 malam', amount: 'Rp21.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
+  var BASE_TX_TODAY = [
     { ref: 'QRIS-1411-0839', time: '22:54 WIB', date: '14 Nov 2026', id: '0014', init: 'SR', tone: 'tone-success', name: 'H. Slamet Raharjo', blok: 'Blok A-02', nights: '30 malam', amount: 'Rp90.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-1411-0831', time: '22:15 WIB', date: '14 Nov 2026', id: '0192', init: 'DL', tone: 'tone-success', name: 'Dewi Lestari', blok: 'Blok B-08', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
-    { ref: 'QRIS-1411-0827', time: '21:48 WIB', date: '14 Nov 2026', id: '0609', init: 'HW', tone: 'tone-warning', name: 'Hendra Wijaya', blok: 'Blok D-11', nights: '7 malam', amount: 'Rp21.000', status: 'menunggu', label: 'Menunggu', badge: 'badge-warning' },
+    { ref: 'QRIS-1411-0831', time: '22:15 WIB', date: '14 Nov 2026', id: '0311', init: 'DL', tone: 'tone-success', name: 'Dewi Lestari', blok: 'Blok B-08', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
+    { ref: 'QRIS-1411-0827', time: '21:48 WIB', date: '14 Nov 2026', id: '0310', init: 'YM', tone: 'tone-warning', name: 'Yusuf Maulana', blok: 'Blok A-18', nights: '7 malam', amount: 'Rp21.000', status: 'menunggu', label: 'Menunggu', badge: 'badge-warning' },
     { ref: 'QRIS-1411-0820', time: '21:32 WIB', date: '14 Nov 2026', id: '0089', init: 'RH', tone: 'tone-success', name: 'Hj. Rohimah', blok: 'Blok B-05', nights: '14 malam', amount: 'Rp42.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
     { ref: 'QRIS-1411-0814', time: '21:19 WIB', date: '14 Nov 2026', id: '0241', init: 'DP', tone: 'tone-success', name: 'Darmawan Putra', blok: 'Blok C-09', nights: '7 malam', amount: 'Rp21.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
     { ref: 'QRIS-1411-0809', time: '21:05 WIB', date: '14 Nov 2026', id: '0518', init: 'WY', tone: 'tone-danger', name: 'Wahyudi', blok: 'Blok D-07', nights: '1 malam', amount: 'Rp3.000', status: 'gagal', label: 'Kedaluwarsa', badge: 'badge-danger' },
@@ -289,15 +289,46 @@
     { ref: 'QRIS-1411-0788', time: '20:14 WIB', date: '14 Nov 2026', id: '0187', init: 'NL', tone: 'tone-success', name: 'Ningsih Lestari', blok: 'Blok B-12', nights: '14 malam', amount: 'Rp42.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' }
   ];
 
+  var BUDI_HISTORY_TX = [
+    { ref: 'QRIS-1011-0412', time: '20:45 WIB', date: '10 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '7 malam', amount: 'Rp21.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
+    { ref: 'QRIS-0811-0318', time: '21:10 WIB', date: '8 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
+    { ref: 'QRIS-0711-0294', time: '20:52 WIB', date: '7 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' },
+    { ref: 'QRIS-0611-0211', time: '21:05 WIB', date: '6 Nov 2026', id: '0123', init: 'BS', tone: 'tone-success', name: 'Budi Santoso', blok: 'Blok C-14', nights: '1 malam', amount: 'Rp3.000', status: 'lunas', label: 'Lunas', badge: 'badge-success' }
+  ];
+
+  function getAllTx() {
+    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
+    var live = (st && Array.isArray(st.adminLivePayments)) ? st.adminLivePayments.map(function (item) {
+      return {
+        ref: item.ref,
+        time: item.time,
+        date: item.date,
+        id: item.id,
+        init: item.init || item.initials || 'BS',
+        tone: item.tone || 'tone-success',
+        name: item.name,
+        blok: item.blok,
+        nights: item.nights,
+        amount: item.amount,
+        status: item.statusKey || 'lunas',
+        label: item.label || item.status || 'Lunas',
+        badge: item.badge || 'badge-success'
+      };
+    }) : [];
+    var extraBudi = (!st || st.preset === 'lama') ? BUDI_HISTORY_TX : [];
+    return live.concat(BASE_TX_TODAY, extraBudi);
+  }
+
   var currentFilter = 'semua';
 
   function openTrxSheet(ref) {
-    var t = TX.find(function (x) { return x.ref === ref; });
+    var all = getAllTx();
+    var t = all.find(function (x) { return x.ref === ref; });
     if (!t) return;
     document.getElementById('trx-ref').textContent = 'REF ' + t.ref;
     document.getElementById('trx-merchant').textContent = t.name + ' (' + t.id + ')';
     document.getElementById('trx-blok').textContent = t.blok;
-    document.getElementById('trx-time').textContent = t.date + ' · ' + t.time;
+    document.getElementById('trx-time').textContent = t.date + ' \u00b7 ' + t.time;
     document.getElementById('trx-nights').textContent = t.nights + ' (Rp3.000/malam)';
     document.getElementById('trx-amount').textContent = t.amount;
     var sb = document.getElementById('trx-status-badge');
@@ -310,11 +341,26 @@
   }
 
   function renderTable() {
+    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
+    var delta = st ? (Number(st.budiPaidTonightDelta) || 0) : 0;
+    var liveCount = (st && Array.isArray(st.adminLivePayments)) ? st.adminLivePayments.length : 0;
+    var totalEl = document.getElementById('riw-banner-total');
+    var lunasEl = document.getElementById('riw-lunas-count');
+    var dateBannerEl = document.getElementById('riw-banner-date');
+    if (totalEl && window.APIMA_STORE) {
+      totalEl.textContent = window.APIMA_STORE.formatRupiah(1740000 + delta);
+    }
+    if (lunasEl) lunasEl.textContent = (205 + liveCount) + ' transaksi';
+    if (dateBannerEl && window.APIMA_STORE && st) {
+      dateBannerEl.textContent = 'Setoran retribusi masuk \u00b7 ' + window.APIMA_STORE.formatDateInfo(st.dayOffset).full;
+    }
+
+    var all = getAllTx();
     var q = (document.getElementById('riw-search').value || '').trim().toLowerCase();
-    var rows = TX.filter(function (t) {
+    var rows = all.filter(function (t) {
       if (currentFilter !== 'semua' && t.status !== currentFilter) return false;
       if (!q) return true;
-      return (t.name + ' ' + t.id + ' ' + t.blok + ' ' + t.ref + ' ' + t.label).toLowerCase().indexOf(q) !== -1;
+      return (t.name + ' ' + t.id + ' ' + t.blok + ' ' + t.ref + ' ' + t.label + ' ' + t.date).toLowerCase().indexOf(q) !== -1;
     });
 
     document.getElementById('riw-count').textContent = rows.length + ' transaksi ditampilkan';
@@ -324,8 +370,8 @@
     var tbody = document.getElementById('riw-tbody');
     tbody.innerHTML = rows.map(function (t) {
       return '<tr>' +
-        '<td><div class="stack"><span class="fw-700 tnum">' + t.time + '</span><span class="text-xs text-secondary tnum">' + t.ref + '</span></div></td>' +
-        '<td><div class="row gap-3 items-center"><span class="avatar-initials ' + t.tone + '" aria-hidden="true">' + t.init + '</span><div class="stack"><span class="fw-700">' + t.name + '</span><span class="text-xs text-secondary tnum">ID ' + t.id + ' · ' + t.blok + '</span></div></div></td>' +
+        '<td><div class="stack"><span class="fw-700 tnum">' + t.date + ' \u00b7 ' + t.time + '</span><span class="text-xs text-secondary tnum">' + t.ref + '</span></div></td>' +
+        '<td><div class="row gap-3 items-center"><span class="avatar-initials ' + t.tone + '" aria-hidden="true">' + t.init + '</span><div class="stack"><span class="fw-700">' + t.name + '</span><span class="text-xs text-secondary tnum">ID ' + t.id + ' \u00b7 ' + t.blok + '</span></div></div></td>' +
         '<td class="tnum">' + t.nights + '</td>' +
         '<td class="num fw-700">' + t.amount + '</td>' +
         '<td><span class="badge ' + t.badge + '">' + t.label + '</span></td>' +
@@ -376,8 +422,9 @@
     var exportBtn = document.getElementById('riw-export-csv');
     if (exportBtn) {
       exportBtn.addEventListener('click', function () {
+        var all = getAllTx();
         var lines = ['Referensi,Tanggal,Jam,ID,Pedagang,Blok,Paket,Nominal,Status'];
-        TX.forEach(function (t) {
+        all.forEach(function (t) {
           lines.push(['"' + t.ref + '"', '"' + t.date + '"', '"' + t.time + '"', '"' + t.id + '"', '"' + t.name + '"', '"' + t.blok + '"', '"' + t.nights + '"', '"' + t.amount + '"', '"' + t.label + '"'].join(','));
         });
         var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
@@ -394,6 +441,8 @@
     }
 
     renderTable();
+    window.addEventListener('apima:state-change', renderTable);
+    window.addEventListener('storage', renderTable);
   }
 
   if (document.readyState === 'loading') {

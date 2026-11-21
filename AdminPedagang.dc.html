@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./admin.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -99,9 +100,6 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           Menu
         </button>
-        <a href="MasukId.dc.html" class="btn-icon no-underline" aria-label="Keluar akun" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </a>
       </div>
     </div>
 
@@ -109,7 +107,10 @@
 
       <header class="admin-page-head">
         <div class="stack gap-1">
-          <h1 class="text-lg m-0">Keaktifan dan peringkat pedagang</h1>
+          <div class="row gap-2 items-center wrap">
+            <h1 class="text-lg m-0">Keaktifan dan peringkat pedagang</h1>
+            <span class="sample-data-badge">Data contoh</span>
+          </div>
           <span class="text-sm text-secondary">Pantau pedagang paling rajin, jarang jualan, pasif, hingga surat teguran pengurus.</span>
         </div>
 
@@ -273,7 +274,7 @@
 (function () {
   var MEMBERS = [
     { id: '0014', init: 'SR', tone: 'tone-success', blok: 'Blok A-02', name: 'H. Slamet Raharjo', cat: 'rajin', rank: '#1', rankCls: 'top', nights: 304, pct: 98, rate: '100%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Aktif hampir setiap malam sepanjang 2026 dan rutin bayar retribusi 30 malam sekaligus. Memenuhi syarat utama penerima bak ikan dan surat pengantar koperasi.' },
-    { id: '0123', init: 'BS', tone: 'tone-success', blok: 'Blok C-14', name: 'Budi Santoso', cat: 'rajin', rank: '#2', rankCls: 'top', nights: 296, pct: 95, rate: '100%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Berjualan rutin 6 – 7 malam per pekan. Sisa retribusi saat ini 7 malam dan 1 penjaga lapak terdaftar aktif.' },
+    { id: '0156', init: 'SH', tone: 'tone-success', blok: 'Blok A-07', name: 'Suherman', cat: 'rajin', rank: '#2', rankCls: 'top', nights: 296, pct: 95, rate: '100%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Berjualan rutin 6 – 7 malam per pekan dan selalu membayar sebelum buka lapak.' },
     { id: '0089', init: 'RH', tone: 'tone-success', blok: 'Blok B-05', name: 'Hj. Rohimah', cat: 'rajin', rank: '#3', rankCls: 'top', nights: 289, pct: 93, rate: '99,3%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Konsisten membayar tepat waktu sebelum pukul 22:00 WIB. Riwayat siap dicetak untuk pengajuan pinjaman modal koperasi.' },
     { id: '0241', init: 'DP', tone: 'tone-success', blok: 'Blok C-09', name: 'Darmawan Putra', cat: 'rajin', rank: '#4', rankCls: '', nights: 274, pct: 88, rate: '98,9%', violations: 0, badge: 'badge-success', status: 'Layak Bak Ikan', note: 'Aktif di Blok C. Belum pernah tercatat menjual tanpa bayar sepanjang 2026.' },
     { id: '0310', init: 'YM', tone: 'tone-success', blok: 'Blok A-18', name: 'Yusuf Maulana', cat: 'rajin', rank: '#5', rankCls: '', nights: 262, pct: 84, rate: '98,1%', violations: 1, badge: 'badge-success', status: 'Layak Koperasi', note: '1 keterlambatan di bulan Maret sudah diselesaikan. Keaktifan 6 bulan terakhir 100%.' },
@@ -285,12 +286,12 @@
     { id: '0445', init: 'EP', tone: 'tone-warning', blok: 'Blok F-12', name: 'Eko Prasetyo', cat: 'jarang', rank: '5/bln', rankCls: 'warn', nights: 54, pct: 18, rate: '88,9%', violations: 1, badge: 'badge-warning', status: 'Jarang Jualan', note: 'Rata-rata 5 malam per bulan dengan 1 catatan keterlambatan bayar di bulan Oktober.' },
 
     { id: '0609', init: 'HW', tone: 'tone-warning', blok: 'Blok D-11', name: 'Hendra Wijaya', cat: 'pasif', rank: '42 hr', rankCls: 'warn', nights: 118, pct: 38, rate: '96,5%', violations: 0, badge: 'badge-warning', status: 'Cek Lapangan', note: 'Terakhir jualan 3 Oktober 2026 (42 hari lalu). Perlu pengecekan apakah berhenti jualan atau pindah jam siang.' },
-    { id: '0491', init: 'MY', tone: 'tone-warning', blok: 'Blok E-09', name: 'Mulyadi', cat: 'pasif', rank: '35 hr', rankCls: 'warn', nights: 94, pct: 30, rate: '91,2%', violations: 1, badge: 'badge-warning', status: 'Cek Lapangan', note: 'Terakhir jualan 10 Oktober 2026 (35 hari lalu). Sisa retribusi masih 2 malam.' },
+    { id: '0491', init: 'MY', tone: 'tone-warning', blok: 'Blok E-09', name: 'Mulyadi', cat: 'pasif', rank: '35 hr', rankCls: 'warn', nights: 94, pct: 30, rate: '91,2%', violations: 1, badge: 'badge-warning', status: 'Cek Lapangan', note: 'Terakhir jualan 10 Oktober 2026 (35 hari lalu). Malam terbayar masih 2 malam.' },
     { id: '0633', init: 'TH', tone: 'tone-warning', blok: 'Blok F-03', name: 'Tuti Handayani', cat: 'pasif', rank: '31 hr', rankCls: 'warn', nights: 155, pct: 50, rate: '98,0%', violations: 0, badge: 'badge-warning', status: 'Cek Lapangan', note: 'Terakhir jualan 14 Oktober 2026 (31 hari lalu). Nomor WhatsApp masih aktif, belum ada laporan berhenti.' },
 
-    { id: '0456', init: 'SA', tone: 'tone-danger', blok: 'Blok C-14', name: 'Siti Aminah', cat: 'pelanggar', rank: '3x', rankCls: 'danger', nights: 142, pct: 46, rate: '82,4%', violations: 3, badge: 'badge-danger', status: 'Perlu Teguran', note: 'Tercatat jualan tanpa bayar 3 kali dalam 30 hari terakhir (terbaru 14 Nov 23:41 oleh Satgas A). Direkomendasikan surat teguran pertama.' },
+    { id: '0456', init: 'SA', tone: 'tone-danger', blok: 'Blok B-09', name: 'Siti Aminah', cat: 'pelanggar', rank: '3x', rankCls: 'danger', nights: 142, pct: 46, rate: '82,4%', violations: 3, badge: 'badge-danger', status: 'Perlu Teguran', note: 'Tercatat jualan tanpa bayar 3 kali dalam 30 hari terakhir (terbaru 14 Nov 23:41 oleh Satgas A). Direkomendasikan surat teguran pertama.' },
     { id: '0078', init: 'RH', tone: 'tone-danger', blok: 'Blok B-03', name: 'Rahmat Hidayat', cat: 'pelanggar', rank: '2x', rankCls: 'danger', nights: 168, pct: 54, rate: '86,0%', violations: 2, badge: 'badge-danger', status: 'QR Ganda', note: 'Terdeteksi pemakaian QR ganda pada dua lapak berbeda di malam yang sama. Perlu klarifikasi di sekretariat.' },
-    { id: '0512', init: 'AS', tone: 'tone-danger', blok: 'Blok D-02', name: 'Agus Salim', cat: 'pelanggar', rank: '2x', rankCls: 'danger', nights: 119, pct: 38, rate: '84,5%', violations: 2, badge: 'badge-danger', status: 'Perlu Teguran', note: 'Dua kali melewati batas bayar pukul 03:00 WIB setelah ditegur satgas di lapangan.' }
+    { id: '0592', init: 'AS', tone: 'tone-danger', blok: 'Blok D-02', name: 'Agus Salim', cat: 'pelanggar', rank: '2x', rankCls: 'danger', nights: 119, pct: 38, rate: '84,5%', violations: 2, badge: 'badge-danger', status: 'Perlu Teguran', note: 'Dua kali melewati batas bayar pukul 03:00 WIB setelah ditegur satgas di lapangan.' }
   ];
 
   var TITLES = {
@@ -305,11 +306,19 @@
   function openMemberSheet(id) {
     var m = MEMBERS.find(function (x) { return x.id === id; });
     if (!m) return;
-    document.getElementById('mem-id').textContent = 'ID ' + m.id + ' · ' + m.blok;
+    var note = m.note;
+    if (m.id === '0123' && window.APIMA_STORE) {
+      var liveBudi = window.APIMA_STORE.getMember('0123');
+      if (liveBudi) {
+        var stLabel = window.APIMA_STORE.getStatusMeta(liveBudi.tonightStatus).label;
+        note = 'Berjualan rutin 6 \u2013 7 malam per pekan. Malam terbayar saat ini ' + liveBudi.paidNights + ' malam, status malam ini ' + stLabel + ', dan 1 penjaga lapak terdaftar (' + (liveBudi.penjagaActive ? 'Aktif' : 'Nonaktif') + ').';
+      }
+    }
+    document.getElementById('mem-id').textContent = 'ID ' + m.id + ' \u00b7 ' + m.blok;
     document.getElementById('mem-title').textContent = m.name;
     document.getElementById('mem-nights').textContent = m.nights + ' malam';
     document.getElementById('mem-rate').textContent = m.rate;
-    document.getElementById('mem-note').textContent = m.note;
+    document.getElementById('mem-note').textContent = note;
     var sheet = document.getElementById('sheet-member');
     sheet.hidden = false;
     var closeBtn = sheet.querySelector('[data-sheet-close]');

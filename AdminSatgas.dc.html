@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./admin.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -99,9 +100,6 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           Menu
         </button>
-        <a href="MasukId.dc.html" class="btn-icon no-underline" aria-label="Keluar akun" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </a>
       </div>
     </div>
 
@@ -109,7 +107,10 @@
 
       <header class="admin-page-head">
         <div class="stack gap-1">
-          <h1 class="text-lg m-0">Kinerja satgas lapangan</h1>
+          <div class="row gap-2 items-center wrap">
+            <h1 class="text-lg m-0">Kinerja satgas lapangan</h1>
+            <span class="sample-data-badge">Data contoh</span>
+          </div>
           <span class="text-sm text-secondary">Pantau bukti keliling, jumlah lapak dicek, jam aktif, dan sebaran GPS per shift.</span>
         </div>
 
@@ -123,9 +124,9 @@
       <section class="exec-banner" aria-label="Ringkasan patroli satgas malam ini">
         <div class="exec-banner-top">
           <div class="stack gap-2">
-            <span class="text-sm exec-banner-muted">Shift malam · Sab, 14 Nov 2026 (20:00 – 03:00 WIB)</span>
+            <span class="text-sm exec-banner-muted" id="sat-banner-date">Shift malam · Sab, 14 Nov 2026 (20:00 – 03:00 WIB)</span>
             <div class="row gap-3 items-center wrap">
-              <span class="exec-kpi-big">212 lapak dicek</span>
+              <span class="exec-kpi-big" id="sat-checked-total">212 lapak dicek</span>
               <span class="exec-delta">2 dari 2 Satgas Aktif</span>
             </div>
             <p class="text-sm exec-banner-muted m-0">Arahkan Satgas B menyisir sisi barat Blok F pada putaran pukul 00:30 WIB sebelum batas bayar retribusi 03:00 WIB.</p>
@@ -143,7 +144,7 @@
           </div>
           <div class="exec-stat">
             <span class="exec-stat-lbl">Temuan lapangan</span>
-            <span class="exec-stat-val">3 kasus</span>
+            <span class="exec-stat-val" id="sat-findings-total">3 kasus</span>
           </div>
           <div class="exec-stat">
             <span class="exec-stat-lbl">Area prioritas</span>
@@ -264,56 +265,7 @@
                 <th>Hasil</th>
               </tr>
             </thead>
-            <tbody id="sat-log-tbody">
-              <tr data-sat="S-01">
-                <td class="tnum fw-700">23:41</td>
-                <td>Ahmad Fauzi (S-01)</td>
-                <td>Siti Aminah (0456)</td>
-                <td>Manual + Foto</td>
-                <td>Blok B · 6.1072 S, 106.7741 E</td>
-                <td><span class="badge badge-danger">Jualan Tanpa Bayar</span></td>
-              </tr>
-              <tr data-sat="S-01">
-                <td class="tnum fw-700">23:34</td>
-                <td>Ahmad Fauzi (S-01)</td>
-                <td>Budi Santoso (0123)</td>
-                <td>Scan QR dinamis</td>
-                <td>Blok B · 6.1070 S, 106.7743 E</td>
-                <td><span class="badge badge-success">Terverifikasi</span></td>
-              </tr>
-              <tr data-sat="S-02">
-                <td class="tnum fw-700">23:18</td>
-                <td>Dedi Kurniawan (S-02)</td>
-                <td>Rahmat Hidayat (0078)</td>
-                <td>Scan QR + Foto</td>
-                <td>Blok E · 6.1084 S, 106.7729 E</td>
-                <td><span class="badge badge-warning">QR Ganda</span></td>
-              </tr>
-              <tr data-sat="S-02">
-                <td class="tnum fw-700">23:09</td>
-                <td>Dedi Kurniawan (S-02)</td>
-                <td>Hj. Rohimah (0089)</td>
-                <td>Scan QR (tanpa sinyal)</td>
-                <td>Dermaga Timur · 6.1091 S</td>
-                <td><span class="badge badge-success">Terverifikasi</span></td>
-              </tr>
-              <tr data-sat="S-01">
-                <td class="tnum fw-700">22:55</td>
-                <td>Ahmad Fauzi (S-01)</td>
-                <td>Pedagang bukan anggota</td>
-                <td>Manual + Foto</td>
-                <td>Blok A · 6.1066 S, 106.7748 E</td>
-                <td><span class="badge badge-warning">Bukan Anggota</span></td>
-              </tr>
-              <tr data-sat="S-02">
-                <td class="tnum fw-700">22:47</td>
-                <td>Dedi Kurniawan (S-02)</td>
-                <td>Darmawan Putra (0241)</td>
-                <td>Scan QR dinamis</td>
-                <td>Blok D · 6.1081 S, 106.7735 E</td>
-                <td><span class="badge badge-success">Terverifikasi</span></td>
-              </tr>
-            </tbody>
+            <tbody id="sat-log-tbody"></tbody>
           </table>
         </div>
       </section>
@@ -349,9 +301,57 @@
 </x-dc>
 <script>
 (function () {
+  var BASE_LOGS = [
+    { jam: '23:41', satgasCode: 'S-01', satgas: 'Ahmad Fauzi (S-01)', anggota: 'Siti Aminah (0456)', metode: 'Manual + Foto', zona: 'Blok B-09 \u00b7 6.1072 S, 106.7741 E', hasil: 'Jualan Tanpa Bayar', badge: 'badge-danger' },
+    { jam: '23:34', satgasCode: 'S-01', satgas: 'Ahmad Fauzi (S-01)', anggota: 'Nurmala Sari (0640)', metode: 'Scan QR dinamis', zona: 'Blok A-11 \u00b7 6.1070 S, 106.7743 E', hasil: 'Terverifikasi', badge: 'badge-success' },
+    { jam: '23:18', satgasCode: 'S-02', satgas: 'Dedi Kurniawan (S-02)', anggota: 'Rahmat Hidayat (0078)', metode: 'Scan QR + Foto', zona: 'Blok B-03 \u00b7 6.1084 S, 106.7729 E', hasil: 'QR Ganda', badge: 'badge-warning' },
+    { jam: '23:09', satgasCode: 'S-02', satgas: 'Dedi Kurniawan (S-02)', anggota: 'Hj. Rohimah (0089)', metode: 'Scan QR (tanpa sinyal)', zona: 'Dermaga Timur \u00b7 6.1091 S', hasil: 'Terverifikasi', badge: 'badge-success' },
+    { jam: '22:55', satgasCode: 'S-01', satgas: 'Ahmad Fauzi (S-01)', anggota: 'Pedagang bukan anggota', metode: 'Manual + Foto', zona: 'Blok A \u00b7 6.1066 S, 106.7748 E', hasil: 'Bukan Anggota', badge: 'badge-warning' },
+    { jam: '22:47', satgasCode: 'S-02', satgas: 'Dedi Kurniawan (S-02)', anggota: 'Darmawan Putra (0241)', metode: 'Scan QR dinamis', zona: 'Blok D \u00b7 6.1081 S, 106.7735 E', hasil: 'Terverifikasi', badge: 'badge-success' }
+  ];
+
+  var currentSatFilter = 'semua';
+
+  function escHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  function renderLogs() {
+    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
+    var liveLogs = (st && Array.isArray(st.satgasLogs)) ? st.satgasLogs : [];
+    var allLogs = liveLogs.concat(BASE_LOGS);
+    var tbody = document.getElementById('sat-log-tbody');
+    if (tbody) {
+      tbody.innerHTML = allLogs.map(function (row) {
+        var code = row.satgasCode || 'S-01';
+        var hide = !(currentSatFilter === 'semua' || code === currentSatFilter);
+        return '<tr data-sat="' + escHtml(code) + '"' + (hide ? ' hidden' : '') + '>' +
+          '<td class="tnum fw-700">' + escHtml(row.jam) + '</td>' +
+          '<td>' + escHtml(row.satgas) + '</td>' +
+          '<td>' + escHtml(row.anggota) + '</td>' +
+          '<td>' + escHtml(row.metode) + '</td>' +
+          '<td>' + escHtml(row.zona) + '</td>' +
+          '<td><span class="badge ' + escHtml(row.badge || 'badge-neutral') + '">' + escHtml(row.hasil) + '</span></td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    var checkedEl = document.getElementById('sat-checked-total');
+    var findingsEl = document.getElementById('sat-findings-total');
+    var dateEl = document.getElementById('sat-banner-date');
+    if (checkedEl) checkedEl.textContent = (212 + liveLogs.length) + ' lapak dicek';
+    if (findingsEl && st && Array.isArray(st.findings)) {
+      findingsEl.textContent = st.findings.filter(function (f) { return !f.reviewed; }).length + ' kasus';
+    }
+    if (dateEl && window.APIMA_STORE && st) {
+      dateEl.textContent = 'Shift malam \u00b7 ' + window.APIMA_STORE.formatDateInfo(st.dayOffset).full + ' (20:00 \u2013 03:00 WIB)';
+    }
+  }
+
   function boot() {
     var btns = document.querySelectorAll('[data-sat-filter]');
-    var rows = document.querySelectorAll('#sat-log-tbody tr');
     btns.forEach(function (btn) {
       btn.addEventListener('click', function () {
         btns.forEach(function (b) {
@@ -360,16 +360,15 @@
         });
         btn.classList.add('active');
         btn.setAttribute('aria-pressed', 'true');
-        var val = btn.dataset.satFilter;
-        rows.forEach(function (tr) {
-          tr.hidden = !(val === 'semua' || tr.dataset.sat === val);
-        });
+        currentSatFilter = btn.dataset.satFilter;
+        renderLogs();
       });
     });
 
     var exportBtn = document.getElementById('sat-export-csv');
     if (exportBtn) {
       exportBtn.addEventListener('click', function () {
+        var rows = document.querySelectorAll('#sat-log-tbody tr');
         var lines = ['Jam,Satgas,Anggota,Metode,Zona GPS,Hasil'];
         rows.forEach(function (tr) {
           if (tr.hidden) return;
@@ -388,6 +387,10 @@
         if (window.apimaToast) window.apimaToast('Log kinerja satgas (.csv) berhasil diunduh.');
       });
     }
+
+    renderLogs();
+    window.addEventListener('apima:state-change', renderLogs);
+    window.addEventListener('storage', renderLogs);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 30); });

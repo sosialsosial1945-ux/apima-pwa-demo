@@ -186,6 +186,8 @@
    Reset & Base
    ====================================== */
 *, *::before, *::after { box-sizing: border-box; }
+/* Atribut hidden selalu menang atas kelas tata letak (.card, .stack, .banner) */
+[hidden] { display: none !important; }
 body {
   margin: 0;
   font-family: var(--apima-font);
@@ -1324,6 +1326,601 @@ a.info-cell:hover { background: var(--apima-bg-page); color: inherit; }
 }
 
 /* =====================================
+   APIMA Spring & Morph Micro-Interactions (v5.0)
+   Terinspirasi animasi spring, frosted glass, sliding pill, dan morphing sheet
+   ===================================== */
+:root {
+  --apima-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --apima-spring-pop: cubic-bezier(0.34, 1.38, 0.64, 1);
+  --apima-glass-light: rgba(255, 255, 255, 0.86);
+  --apima-glass-dark: rgba(20, 25, 34, 0.84);
+}
+
+/* Frosted glass pada topbar, mobile bar, dan bottom nav */
+.bottom-nav,
+.admin-topbar,
+.admin-mobile-bar {
+  background: var(--apima-glass-light);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+}
+:root[data-theme="dark"] .bottom-nav,
+:root[data-theme="dark"] .admin-topbar,
+:root[data-theme="dark"] .admin-mobile-bar {
+  background: var(--apima-glass-dark);
+}
+
+/* Sliding spring pill untuk semua segmented control (.seg & .seg-control) */
+.seg.seg-has-thumb,
+.seg-control.seg-has-thumb {
+  position: relative;
+  isolation: isolate;
+}
+.seg-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-bg-card);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.04);
+  pointer-events: none;
+  transition: transform 320ms var(--apima-spring), width 320ms var(--apima-spring), height 320ms var(--apima-spring), opacity 180ms ease;
+  will-change: transform, width, height;
+}
+:root[data-theme="dark"] .seg-thumb {
+  background: #1C2432;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.seg.seg-has-thumb .seg-btn,
+.seg-control.seg-has-thumb .seg-btn {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  box-shadow: none;
+  transition: color 220ms var(--apima-spring), transform 140ms var(--apima-spring);
+}
+.seg.seg-has-thumb .seg-btn.active,
+.seg-control.seg-has-thumb .seg-btn.active {
+  background: transparent;
+  box-shadow: none;
+  color: var(--apima-text);
+}
+
+/* Tactile spring press & hover micro-lift */
+.btn,
+.btn-chip,
+.btn-icon,
+.selectable-card,
+.nav-item,
+.list-row,
+.live-feed-btn {
+  transition: background 200ms var(--apima-spring), color 200ms var(--apima-spring), border-color 200ms var(--apima-spring), box-shadow 220ms var(--apima-spring), transform 180ms var(--apima-spring);
+}
+.btn:active,
+.btn-chip:active,
+.btn-icon:active,
+.selectable-card:active,
+.nav-item:active,
+.live-feed-btn:active {
+  transform: scale(0.97);
+}
+.selectable-card.selected {
+  animation: apimaSelectPop 260ms var(--apima-spring-pop);
+}
+.admin-nav-link {
+  transition: background 200ms var(--apima-spring), color 200ms var(--apima-spring), transform 220ms var(--apima-spring);
+}
+.admin-nav-link:hover {
+  transform: translateX(3px);
+}
+.admin-nav.collapsed .admin-nav-link:hover {
+  transform: none;
+}
+
+/* Morphing Frosted Sheet, Popover & Slide-Over Drawer */
+@keyframes apimaFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes apimaSheetMorph {
+  from { opacity: 0; transform: translateY(22px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes apimaDrawerSlide {
+  from { opacity: 0.4; transform: translateX(48px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes apimaPopoverIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes apimaStaggerItem {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes apimaSelectPop {
+  0%   { transform: scale(0.98); }
+  60%  { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+@keyframes apimaSwapRise {
+  from { opacity: 0.35; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes apimaToastPop {
+  from { opacity: 0; transform: translateY(14px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes apimaBarRise {
+  from { opacity: 0.2; transform: scaleY(0.18); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+
+.sheet-backdrop:not([hidden]),
+.admin-drawer-backdrop:not([hidden]) {
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: apimaFadeIn 200ms var(--apima-spring) both;
+}
+.sheet-backdrop:not([hidden]) .sheet {
+  animation: apimaSheetMorph 320ms var(--apima-spring) both;
+}
+.admin-drawer-backdrop:not([hidden]) .admin-drawer {
+  animation: apimaDrawerSlide 320ms var(--apima-spring) both;
+}
+.topbar-dropdown:not([hidden]) {
+  transform-origin: top center;
+  animation: apimaPopoverIn 220ms var(--apima-spring) both;
+}
+
+/* Staggered reveal untuk isi sheet dan drawer saat dibuka */
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link,
+.sheet-backdrop:not([hidden]) .sheet .open-row,
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row {
+  animation: apimaStaggerItem 280ms var(--apima-spring) both;
+}
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(2),
+.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(2),
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(2) { animation-delay: 28ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(3),
+.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(3),
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(3) { animation-delay: 56ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(4),
+.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(4),
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(4) { animation-delay: 84ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(5),
+.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(5),
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(5) { animation-delay: 112ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(6) { animation-delay: 140ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(7) { animation-delay: 168ms; }
+
+/* Entrance halus untuk kartu bento, KPI, dan toast */
+.bento-card,
+.hero-card,
+.ai-panel {
+  animation: apimaStaggerItem 320ms var(--apima-spring) both;
+}
+.bento-kpi-grid .bento-card:nth-child(2) { animation-delay: 45ms; }
+.bento-kpi-grid .bento-card:nth-child(3) { animation-delay: 90ms; }
+
+.apima-swap {
+  animation: apimaSwapRise 240ms var(--apima-spring) both;
+}
+.toast:not([hidden]) {
+  animation: apimaToastPop 280ms var(--apima-spring-pop) both;
+}
+
+/* Animasi batang grafik Vision & mini sparkbar saat periode berubah */
+.vc-bar,
+.ms-bar {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: apimaBarRise 380ms var(--apima-spring) both;
+}
+.vc-bar:nth-of-type(2), .ms-bar:nth-of-type(2) { animation-delay: 25ms; }
+.vc-bar:nth-of-type(3), .ms-bar:nth-of-type(3) { animation-delay: 50ms; }
+.vc-bar:nth-of-type(4), .ms-bar:nth-of-type(4) { animation-delay: 75ms; }
+.vc-bar:nth-of-type(5), .ms-bar:nth-of-type(5) { animation-delay: 100ms; }
+.vc-bar:nth-of-type(6), .ms-bar:nth-of-type(6) { animation-delay: 125ms; }
+.vc-bar:nth-of-type(7), .ms-bar:nth-of-type(7) { animation-delay: 150ms; }
+
+/* ======================================
+   Stepper Jumlah Malam (1 sampai 30)
+   ====================================== */
+.night-stepper-card {
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line-soft);
+  border-radius: var(--apima-radius-lg);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: var(--apima-card-shadow);
+}
+.stepper-btn {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: var(--apima-radius-pill);
+  border: 1.5px solid var(--apima-line-strong);
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--apima-transition), border-color var(--apima-transition), color var(--apima-transition);
+}
+.stepper-btn:hover:not(:disabled) {
+  border-color: var(--apima-primary);
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+}
+.stepper-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.stepper-readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ======================================
+   Pembeda Visual: QR Pembayaran vs QR Identitas
+   ====================================== */
+/* QR Pembayaran (QRIS): latar putih polos seperti slip tagihan */
+.qr-pay-card {
+  background: #FFFFFF;
+  color: #0F172A;
+  border: 1.5px solid #CBD5E1;
+  border-radius: var(--apima-radius-lg);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+}
+.qr-pay-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--apima-radius-pill);
+  background: #F1F5F9;
+  color: #0F172A;
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+}
+.qr-pay-nominal {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+}
+.qr-pay-meta {
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  color: #475569;
+}
+.qr-pay-qris-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 244px;
+  padding: 8px 12px;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--apima-radius-sm);
+  background: #FFFFFF;
+}
+.qr-pay-frame {
+  background: #FFFFFF;
+  padding: 10px;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--apima-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.qr-pay-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--apima-radius-sm);
+  background: #FEF5E4;
+  color: #A15C07;
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+}
+
+/* QR Identitas: bingkai warna Biru Laut APIMA + foto & nama + bukan untuk pembayaran */
+.qr-id-card {
+  background: #0B4F8A;
+  color: #FFFFFF;
+  border: 2px solid #0B4F8A;
+  border-radius: var(--apima-radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 14px rgba(11, 79, 138, 0.18);
+}
+:root[data-theme="dark"] .qr-id-card {
+  background: #133B6B;
+  border-color: #3B82F6;
+  box-shadow: none;
+}
+.qr-id-head {
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.qr-id-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  color: #DBEAFE;
+  letter-spacing: 0.01em;
+}
+.qr-id-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+.qr-id-body {
+  background: #FFFFFF;
+  color: #0F172A;
+  margin: 0 12px;
+  padding: 16px 14px 14px;
+  border-radius: var(--apima-radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.qr-id-timer-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  color: #334155;
+}
+.qr-id-not-payment {
+  margin: 12px;
+  padding: 10px 12px;
+  border-radius: var(--apima-radius-sm);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #FFFFFF;
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Avatar foto anggota (inisial jelas, sesuai R-23) */
+.member-avatar-photo {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: var(--apima-radius-pill);
+  background: #FFFFFF;
+  color: #0B4F8A;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.member-avatar-scan {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+  border: 1.5px solid var(--apima-line-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ======================================
+   // HAPUS SEBELUM PRODUKSI
+   Panel kecil "Mode uji" yang bisa disembunyikan
+   ====================================== */
+.test-mode-fab {
+  position: fixed;
+  right: 12px;
+  bottom: 76px;
+  z-index: 900;
+  min-height: 44px;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: var(--apima-radius-pill);
+  border: 1.5px solid var(--apima-line-strong);
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  font-family: inherit;
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.14);
+}
+.test-mode-fab:hover {
+  border-color: var(--apima-primary);
+  color: var(--apima-accent-text);
+}
+.test-mode-panel {
+  position: fixed;
+  right: 12px;
+  bottom: 128px;
+  z-index: 910;
+  width: min(312px, calc(100vw - 24px));
+  background: var(--apima-bg-card);
+  border: 1.5px solid var(--apima-line-strong);
+  border-radius: var(--apima-radius-lg);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.22);
+}
+.test-mode-panel[hidden] {
+  display: none;
+}
+.test-chip-active {
+  background: var(--apima-primary) !important;
+  border-color: var(--apima-primary) !important;
+  color: var(--apima-on-primary) !important;
+}
+
+/* Badge "Data contoh" di halaman admin */
+.sample-data-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-bg-raised);
+  border: 1px solid var(--apima-line-soft);
+  color: var(--apima-text-secondary);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ======================================
+   Kamera Scanner QR Satgas & Hasil Scan
+   ====================================== */
+.scanner-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 280px;
+  background: #0F172A;
+  border-radius: var(--apima-radius-lg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--apima-line-strong);
+}
+.scanner-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.scanner-reticle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.scanner-box {
+  width: 176px;
+  height: 176px;
+  border: 2px solid #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.48);
+  position: relative;
+}
+.scanner-box::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 50%;
+  height: 2px;
+  background: #38BDF8;
+  opacity: 0.9;
+}
+.scanner-caption {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+.scan-ok-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--apima-radius-sm);
+  background: var(--apima-bg-raised);
+  border: 1px solid var(--apima-line-soft);
+  color: var(--apima-text);
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+}
+.scan-ok-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.scan-status-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--apima-radius-sm);
+  border: 1px solid var(--apima-line-soft);
+  background: var(--apima-bg-page);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =====================================
    PWA Demo Presentasi: Pilih Peran Cepat di Halaman Masuk
    ===================================== */
 .demo-role-box {
@@ -1561,208 +2158,87 @@ a.info-cell:hover { background: var(--apima-bg-page); color: inherit; }
 }
 
 /* =====================================
-   APIMA Spring & Morph Micro-Interactions (v5.0)
-   Terinspirasi animasi spring, frosted glass, sliding pill, dan morphing sheet
+   Halaman Masuk: wordmark, kartu formulir, akses cepat demo
    ===================================== */
-:root {
-  --apima-spring: cubic-bezier(0.22, 1, 0.36, 1);
-  --apima-spring-pop: cubic-bezier(0.34, 1.38, 0.64, 1);
-  --apima-glass-light: rgba(255, 255, 255, 0.86);
-  --apima-glass-dark: rgba(20, 25, 34, 0.84);
+.login-header { background: transparent; justify-content: flex-end; }
+.login-main {
+  padding: 8px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
-
-/* Frosted glass pada topbar, mobile bar, dan bottom nav */
-.bottom-nav,
-.admin-topbar,
-.admin-mobile-bar {
-  background: var(--apima-glass-light);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  backdrop-filter: blur(12px) saturate(160%);
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  padding-top: 8px;
 }
-:root[data-theme="dark"] .bottom-nav,
-:root[data-theme="dark"] .admin-topbar,
-:root[data-theme="dark"] .admin-mobile-bar {
-  background: var(--apima-glass-dark);
+.login-wordmark img { width: 240px; height: auto; display: block; }
+.login-tagline {
+  font-size: var(--apima-text-sm);
+  line-height: var(--apima-lh-sm);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+  letter-spacing: 0.01em;
 }
-
-/* Sliding spring pill untuk semua segmented control (.seg & .seg-control) */
-.seg.seg-has-thumb,
-.seg-control.seg-has-thumb {
-  position: relative;
-  isolation: isolate;
-}
-.seg-thumb {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  border-radius: var(--apima-radius-pill);
+.login-card {
   background: var(--apima-bg-card);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.04);
-  pointer-events: none;
-  transition: transform 320ms var(--apima-spring), width 320ms var(--apima-spring), height 320ms var(--apima-spring), opacity 180ms ease;
-  will-change: transform, width, height;
+  border: 1px solid var(--apima-line);
+  border-radius: 20px;
+  padding: 24px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--apima-card-shadow);
 }
-:root[data-theme="dark"] .seg-thumb {
-  background: #1C2432;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06);
+.login-label {
+  font-size: var(--apima-text-md);
+  line-height: var(--apima-lh-md);
+  font-weight: 700;
+  color: var(--apima-text);
 }
-.seg.seg-has-thumb .seg-btn,
-.seg-control.seg-has-thumb .seg-btn {
-  position: relative;
-  z-index: 1;
+.login-input {
+  height: 56px;
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: var(--apima-text-sm);
+  background: var(--apima-bg-page);
+}
+.login-input:focus { background: var(--apima-bg-card); }
+.password-wrap .login-input { padding-right: 52px; }
+.login-submit { margin-top: 8px; min-height: 56px; border-radius: 14px; font-size: var(--apima-text-md); }
+.login-demo {
   background: transparent;
-  box-shadow: none;
-  transition: color 220ms var(--apima-spring), transform 140ms var(--apima-spring);
+  border-top: 1px solid var(--apima-line);
+  padding: 20px 20px 24px;
+  gap: 12px;
 }
-.seg.seg-has-thumb .seg-btn.active,
-.seg-control.seg-has-thumb .seg-btn.active {
-  background: transparent;
-  box-shadow: none;
+.demo-role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
 }
-
-/* Tactile spring press & hover micro-lift */
-.btn,
-.btn-chip,
-.btn-icon,
-.selectable-card,
-.nav-item,
-.list-row,
-.live-feed-btn {
-  transition: background 200ms var(--apima-spring), color 200ms var(--apima-spring), border-color 200ms var(--apima-spring), box-shadow 220ms var(--apima-spring), transform 180ms var(--apima-spring);
+.demo-role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 72px;
+  padding: 12px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--apima-line);
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  text-decoration: none;
+  transition: border-color var(--apima-transition), background var(--apima-transition), transform 120ms ease;
 }
-.btn:active,
-.btn-chip:active,
-.btn-icon:active,
-.selectable-card:active,
-.nav-item:active,
-.live-feed-btn:active {
-  transform: scale(0.97);
-}
-.selectable-card.selected {
-  animation: apimaSelectPop 260ms var(--apima-spring-pop);
-}
-.admin-nav-link {
-  transition: background 200ms var(--apima-spring), color 200ms var(--apima-spring), transform 220ms var(--apima-spring);
-}
-.admin-nav-link:hover {
-  transform: translateX(3px);
-}
-.admin-nav.collapsed .admin-nav-link:hover {
-  transform: none;
-}
-
-/* Morphing Frosted Sheet, Popover & Slide-Over Drawer */
-@keyframes apimaFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes apimaSheetMorph {
-  from { opacity: 0; transform: translateY(22px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes apimaDrawerSlide {
-  from { opacity: 0.4; transform: translateX(48px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes apimaPopoverIn {
-  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes apimaStaggerItem {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes apimaSelectPop {
-  0%   { transform: scale(0.98); }
-  60%  { transform: scale(1.015); }
-  100% { transform: scale(1); }
-}
-@keyframes apimaSwapRise {
-  from { opacity: 0.35; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes apimaToastPop {
-  from { opacity: 0; transform: translateY(14px) scale(0.94); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes apimaBarRise {
-  from { opacity: 0.2; transform: scaleY(0.18); }
-  to   { opacity: 1; transform: scaleY(1); }
-}
-
-.sheet-backdrop:not([hidden]),
-.admin-drawer-backdrop:not([hidden]) {
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  animation: apimaFadeIn 200ms var(--apima-spring) both;
-}
-.sheet-backdrop:not([hidden]) .sheet {
-  animation: apimaSheetMorph 320ms var(--apima-spring) both;
-}
-.admin-drawer-backdrop:not([hidden]) .admin-drawer {
-  animation: apimaDrawerSlide 320ms var(--apima-spring) both;
-}
-.topbar-dropdown:not([hidden]) {
-  transform-origin: top center;
-  animation: apimaPopoverIn 220ms var(--apima-spring) both;
-}
-
-/* Staggered reveal untuk isi sheet dan drawer saat dibuka */
-.sheet-backdrop:not([hidden]) .sheet .admin-nav-link,
-.sheet-backdrop:not([hidden]) .sheet .open-row,
-.admin-drawer-backdrop:not([hidden]) .drawer-kv-row {
-  animation: apimaStaggerItem 280ms var(--apima-spring) both;
-}
-.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(2),
-.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(2),
-.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(2) { animation-delay: 28ms; }
-.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(3),
-.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(3),
-.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(3) { animation-delay: 56ms; }
-.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(4),
-.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(4),
-.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(4) { animation-delay: 84ms; }
-.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(5),
-.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(5),
-.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(5) { animation-delay: 112ms; }
-.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(6) { animation-delay: 140ms; }
-.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(7) { animation-delay: 168ms; }
-
-/* Entrance halus untuk kartu bento, KPI, dan toast */
-.bento-card,
-.hero-card,
-.ai-panel {
-  animation: apimaStaggerItem 320ms var(--apima-spring) both;
-}
-.bento-kpi-grid .bento-card:nth-child(2) { animation-delay: 45ms; }
-.bento-kpi-grid .bento-card:nth-child(3) { animation-delay: 90ms; }
-
-.apima-swap {
-  animation: apimaSwapRise 240ms var(--apima-spring) both;
-}
-.toast:not([hidden]) {
-  animation: apimaToastPop 280ms var(--apima-spring-pop) both;
-}
-
-/* Animasi batang grafik Vision & mini sparkbar saat periode berubah */
-.vc-bar,
-.ms-bar {
-  transform-box: fill-box;
-  transform-origin: bottom;
-  animation: apimaBarRise 380ms var(--apima-spring) both;
-}
-.vc-bar:nth-of-type(2), .ms-bar:nth-of-type(2) { animation-delay: 25ms; }
-.vc-bar:nth-of-type(3), .ms-bar:nth-of-type(3) { animation-delay: 50ms; }
-.vc-bar:nth-of-type(4), .ms-bar:nth-of-type(4) { animation-delay: 75ms; }
-.vc-bar:nth-of-type(5), .ms-bar:nth-of-type(5) { animation-delay: 100ms; }
-.vc-bar:nth-of-type(6), .ms-bar:nth-of-type(6) { animation-delay: 125ms; }
-.vc-bar:nth-of-type(7), .ms-bar:nth-of-type(7) { animation-delay: 150ms; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+.demo-role-card:hover { border-color: var(--apima-primary-ring); color: var(--apima-text); }
+.demo-role-card:active { transform: scale(0.98); }
+.demo-role-title { font-size: var(--apima-text-md); line-height: var(--apima-lh-md); font-weight: 700; }
+.demo-role-sub { font-size: var(--apima-text-sm); line-height: var(--apima-lh-sm); color: var(--apima-text-secondary); }
+:root[data-theme="dark"] .login-card,
+:root[data-theme="dark"] .demo-role-card { background: var(--apima-bg-card); }
+:root[data-theme="dark"] .login-input { background: var(--apima-bg-raised); }

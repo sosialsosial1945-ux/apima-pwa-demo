@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · Beranda · retribusi habis</title>
+<title>APIMA · Beranda · belum ada malam terbayar</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -38,7 +39,7 @@
 
   <main class="screen-scroll stack gap-3" style="padding:16px">
 
-    <section class="hero-card tone-warning" aria-label="Status retribusi habis">
+    <section class="hero-card tone-warning" aria-label="Status malam terbayar 0">
       <div class="row between">
         <span class="text-sm text-secondary">Status malam ini</span>
         <span class="pill pill-warning">
@@ -47,20 +48,20 @@
         </span>
       </div>
 
-      <img src="illustrations/retribusi-habis.webp" alt="Ilustrasi sisa retribusi habis" class="illus-hero">
+      <img src="illustrations/retribusi-habis.webp" alt="Ilustrasi belum ada malam terbayar" width="120" height="120" class="illus-hero">
 
       <div class="stack gap-1">
-        <span class="text-lg">Bayar retribusinya sebelum jualan, ya.</span>
-        <span class="text-sm text-secondary">Sisa retribusi Anda sudah habis. Bayar retribusi lewat QRIS agar bisa mulai jualan malam ini.</span>
+        <span class="text-lg">Buka lapak malam ini?</span>
+        <span class="text-sm text-secondary">Sudah dibayar untuk 0 malam lagi. Bayar retribusi lewat QRIS untuk langsung melapor jualan malam ini.</span>
       </div>
 
-      <a href="AnggotaPilihHari.dc.html" class="btn btn-primary no-underline">Bayar Retribusi Sekarang</a>
+      <a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary no-underline">Bayar Retribusi</a>
     </section>
 
-    <section class="info-strip" aria-label="Ringkasan retribusi dan penjaga lapak">
+    <section class="info-strip" aria-label="Ringkasan malam terbayar dan penjaga lapak">
       <a href="AnggotaPilihHari.dc.html" class="info-cell no-underline">
         <div class="row between gap-1">
-          <span class="text-sm text-secondary">Sisa retribusi</span>
+          <span class="text-sm text-secondary">Malam terbayar</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--apima-text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
         </div>
         <span class="text-md fw-700 tnum text-warning">0 malam</span>

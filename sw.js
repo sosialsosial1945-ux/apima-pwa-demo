@@ -1,8 +1,7 @@
-const CACHE_NAME = 'apima-pwa-demo-v10';
+const CACHE_NAME = 'apima-pwa-demo-v12';
 const CORE_ASSETS = [
   './',
   './index.html',
-  './feedback.html',
   './MasukId.dc.html',
   './Main.dc.html',
   './AnggotaRiwayat.dc.html',
@@ -12,6 +11,7 @@ const CORE_ASSETS = [
   './AnggotaQrIdentitas.dc.html',
   './SatgasDaftar.dc.html',
   './SatgasScan.dc.html',
+  './SatgasBerhasil.dc.html',
   './SatgasTemuan.dc.html',
   './AdminRingkasan.dc.html',
   './AdminLaporan.dc.html',
@@ -21,8 +21,11 @@ const CORE_ASSETS = [
   './styles.css',
   './admin.css',
   './support.js',
+  './apima-store.js',
   './admin-charts.js',
   './interactions.js',
+  './lib/qrcode.js',
+  './lib/jsQR.js',
   './pwa.js',
   './manifest.webmanifest',
   './icons/icon-192.png',

@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./admin.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./admin-charts.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
@@ -100,9 +101,6 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           Menu
         </button>
-        <a href="MasukId.dc.html" class="btn-icon no-underline" aria-label="Keluar akun" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </a>
       </div>
     </div>
 
@@ -110,7 +108,10 @@
 
       <header class="admin-page-head">
         <div class="stack gap-1">
-          <h1 class="text-lg m-0">Laporan retribusi</h1>
+          <div class="row gap-2 items-center wrap">
+            <h1 class="text-lg m-0">Laporan retribusi</h1>
+            <span class="sample-data-badge">Data contoh</span>
+          </div>
           <span class="text-sm text-secondary" id="lap-subtitle">Rekap mingguan · 8 – 14 Nov 2026</span>
         </div>
 
@@ -384,13 +385,24 @@
 
   var currentKey = 'mingguan';
 
+  var BASE_LAP_TOTALS = {
+    mingguan: 11340000,
+    bulanan: 45840000,
+    tahunan: 518760000
+  };
+
   function renderPeriod(key) {
     var d = DATA[key] || DATA.mingguan;
     currentKey = key;
+    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
+    var delta = st ? (Number(st.budiPaidTonightDelta) || 0) : 0;
+    var heroTotal = (window.APIMA_STORE && BASE_LAP_TOTALS[key])
+      ? window.APIMA_STORE.formatRupiah(BASE_LAP_TOTALS[key] + delta)
+      : d.heroTotal;
     document.getElementById('lap-subtitle').textContent = d.subtitle;
     document.getElementById('lap-badge').textContent = d.badge;
     document.getElementById('lap-hero-label').textContent = d.heroLabel;
-    document.getElementById('lap-hero-total').textContent = d.heroTotal;
+    document.getElementById('lap-hero-total').textContent = heroTotal;
     document.getElementById('lap-hero-note').textContent = d.heroNote;
     document.getElementById('lap-m-nights').textContent = d.nights;
     document.getElementById('lap-m-compliance').textContent = d.compliance;

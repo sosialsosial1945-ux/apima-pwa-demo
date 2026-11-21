@@ -117,9 +117,10 @@
       var visible = 0;
 
       items.forEach(function (li) {
-        var st = li.dataset.status || '';
+        var st = (li.dataset.status || '').trim();
+        var tokens = st ? st.split(/\s+/) : [];
         var hay = (li.dataset.search || li.textContent || '').toLowerCase();
-        var matchFilter = (filterVal === 'semua') || (st === filterVal);
+        var matchFilter = (filterVal === 'semua') || (tokens.indexOf(filterVal) !== -1);
         var matchQuery = !q || hay.indexOf(q) !== -1;
         var show = matchFilter && matchQuery;
         li.hidden = !show;
@@ -170,10 +171,11 @@
       });
     });
 
-    /* Selectable card (pilih malam + update harga, sisa retribusi baru, dan CTA) */
+    /* Selectable card (delegasikan ke skrip halaman jika dikelola oleh APIMA_STORE) */
     document.querySelectorAll('[data-selectable-group]').forEach(function (group) {
+      if (group.dataset.managedBy === 'pilih-hari') return;
       var cards = group.querySelectorAll('.selectable-card');
-      var baseQuota = parseInt(group.dataset.baseQuota || '7', 10);
+      var baseQuota = parseInt(group.dataset.baseQuota || '4', 10);
       function applySelection(card) {
         cards.forEach(function (c) {
           c.classList.remove('selected');
@@ -181,7 +183,7 @@
         });
         card.classList.add('selected');
         card.setAttribute('aria-pressed', 'true');
-        var val = parseInt(card.dataset.value || '7', 10);
+        var val = parseInt(card.dataset.value || '1', 10);
         var price = 'Rp' + (val * 3000).toLocaleString('id-ID');
         var output = document.querySelector('[data-selectable-output]');
         if (output) output.textContent = price;
@@ -286,6 +288,7 @@
         if (secs <= 0) {
           if (loop) {
             secs = initial;
+            window.dispatchEvent(new CustomEvent('apima:qr-rotate'));
           } else {
             el.textContent = '00:00';
             return;
@@ -370,10 +373,56 @@
       });
     }
 
-    /* Bagikan QR dan nonaktifkan akses penjaga (AnggotaQrIdentitas) */
+    /* Bagikan QR Identitas ke Penjaga lewat Web Share / WhatsApp (AnggotaQrIdentitas) */
     document.querySelectorAll('[data-share-wa]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        showToast('QR penjaga siap dibagikan lewat WhatsApp.');
+        var member = window.APIMA_STORE ? window.APIMA_STORE.getActiveMember() : {
+          id: '0123',
+          name: 'Budi Santoso',
+          blok: 'Blok C-14',
+          penjaga: 'Rahmat',
+          penjagaPhone: '6281298765432'
+        };
+        var penjagaName = (member.penjaga && member.penjaga !== 'Jaga sendiri') ? member.penjaga : 'Rahmat';
+        // GANTI DENGAN TAUTAN ASLI SEBELUM PRODUKSI
+        var shareUrl = new URL('AnggotaQrIdentitas.dc.html?mode=penjaga&id=' + encodeURIComponent(member.id), window.location.href).href;
+        var message = 'Halo ' + penjagaName + ', ini QR identitas lapak ' + member.name + ' (' + member.blok + ') untuk ditunjukkan ke satgas APIMA malam ini: ' + shareUrl + '. QR berganti otomatis, jadi buka tautannya, jangan kirim tangkapan layar.';
+        var cleanPhone = String(member.penjagaPhone || '').replace(/[^0-9]/g, '');
+        var waUrl = cleanPhone
+          ? 'https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(message)
+          : 'https://wa.me/?text=' + encodeURIComponent(message);
+
+        window.__apimaLastShare = { shareUrl: shareUrl, waUrl: waUrl, message: message, method: 'pending' };
+
+        function afterShared(methodName) {
+          window.__apimaLastShare.method = methodName;
+          if (window.APIMA_STORE) window.APIMA_STORE.setPenjagaActive(true, member.id);
+          var revokeTrigger = document.querySelector('[data-sheet-open="sheet-cabut"]');
+          if (revokeTrigger) {
+            revokeTrigger.disabled = false;
+            revokeTrigger.textContent = 'Nonaktifkan Akses Penjaga';
+          }
+          var statusEl = document.getElementById('qr-penjaga-status');
+          if (statusEl) statusEl.textContent = penjagaName + ' · Aktif';
+          showToast('QR dikirim ke ' + penjagaName);
+        }
+
+        if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+          navigator.share({
+            title: 'QR Identitas APIMA · ' + member.name,
+            text: message,
+            url: shareUrl
+          }).then(function () {
+            afterShared('navigator.share');
+          }).catch(function (err) {
+            if (err && err.name === 'AbortError') return;
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+            afterShared('wa.me-fallback');
+          });
+        } else {
+          window.open(waUrl, '_blank', 'noopener,noreferrer');
+          afterShared('wa.me');
+        }
       });
     });
 
@@ -382,11 +431,14 @@
       revokeConfirm.addEventListener('click', function () {
         var sheet = revokeConfirm.closest('.sheet-backdrop');
         closeSheet(sheet);
+        if (window.APIMA_STORE) window.APIMA_STORE.setPenjagaActive(false);
         var trigger = document.querySelector('[data-sheet-open="sheet-cabut"]');
         if (trigger) {
           trigger.textContent = 'Akses Penjaga Dinonaktifkan';
           trigger.disabled = true;
         }
+        var statusEl = document.getElementById('qr-penjaga-status');
+        if (statusEl) statusEl.textContent = 'Rahmat · Nonaktif';
         showToast('Akses QR penjaga lapak sudah dinonaktifkan.');
       });
     }
@@ -426,6 +478,28 @@
         if (photoSend.disabled) return;
         photoSend.disabled = true;
         photoSend.textContent = 'Tersimpan di HP';
+        if (window.APIMA_STORE) {
+          var checkedRadio = document.querySelector('input[name="hasil"]:checked');
+          var cardSpan = checkedRadio && checkedRadio.closest('.radio-card')
+            ? checkedRadio.closest('.radio-card').querySelector('[data-radio-title], span')
+            : null;
+          var temuanText = cardSpan ? cardSpan.textContent.trim() : 'Catatan lapangan';
+          var anggotaVal = memberInput ? memberInput.value.trim() : 'Anggota';
+          var tone = checkedRadio && checkedRadio.closest('.radio-card') && checkedRadio.closest('.radio-card').dataset.danger !== undefined
+            ? 'danger'
+            : 'warning';
+          if (temuanText.toLowerCase().indexOf('sesuai') === -1) {
+            window.APIMA_STORE.addFinding({
+              temuan: temuanText,
+              anggota: anggotaVal,
+              satgas: 'Satgas A',
+              satgasCode: 'S-01',
+              lokasi: 'Pasar Ikan Muara Angke',
+              metode: 'Manual + Foto',
+              tone: tone
+            });
+          }
+        }
         showToast('Temuan disimpan di HP dan otomatis terkirim saat sinyal kembali.');
       });
     }
@@ -496,24 +570,24 @@
       });
     });
 
-    /* Tinjau bukti temuan Admin */
+    /* Tinjau bukti temuan Admin (delegasi agar baris dinamis ikut berfungsi) */
     var currentEvidenceRow = null;
-    document.querySelectorAll('[data-evidence-open]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        currentEvidenceRow = btn.closest('tr');
-        var sheet = document.getElementById('sheet-bukti');
-        if (!sheet) return;
-        activeTrigger = btn;
-        var titleEl = document.getElementById('bukti-judul');
-        var metaEl = document.getElementById('bukti-meta');
-        var locEl = document.getElementById('bukti-lokasi');
-        if (titleEl) titleEl.textContent = btn.dataset.temuan || 'Temuan lapangan';
-        if (metaEl) metaEl.textContent = (btn.dataset.anggota || '') + ' \u00b7 ' + (btn.dataset.satgas || '') + ' \u00b7 ' + (btn.dataset.jam || '');
-        if (locEl) locEl.textContent = btn.dataset.lokasi || 'Blok pasar Muara Angke';
-        sheet.hidden = false;
-        var closeBtn = sheet.querySelector('[data-sheet-close]');
-        if (closeBtn) closeBtn.focus();
-      });
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-evidence-open]');
+      if (!btn) return;
+      currentEvidenceRow = btn.closest('tr');
+      var sheet = document.getElementById('sheet-bukti');
+      if (!sheet) return;
+      activeTrigger = btn;
+      var titleEl = document.getElementById('bukti-judul');
+      var metaEl = document.getElementById('bukti-meta');
+      var locEl = document.getElementById('bukti-lokasi');
+      if (titleEl) titleEl.textContent = btn.dataset.temuan || 'Temuan lapangan';
+      if (metaEl) metaEl.textContent = (btn.dataset.anggota || '') + ' \u00b7 ' + (btn.dataset.satgas || '') + ' \u00b7 ' + (btn.dataset.jam || '');
+      if (locEl) locEl.textContent = btn.dataset.lokasi || 'Blok pasar Muara Angke';
+      sheet.hidden = false;
+      var closeBtn = sheet.querySelector('[data-sheet-close]');
+      if (closeBtn) closeBtn.focus();
     });
 
     var markReviewedBtn = document.querySelector('[data-mark-reviewed]');
@@ -521,6 +595,10 @@
       markReviewedBtn.addEventListener('click', function () {
         if (currentEvidenceRow && currentEvidenceRow.dataset.reviewed !== 'true') {
           currentEvidenceRow.dataset.reviewed = 'true';
+          var fid = currentEvidenceRow.dataset.findingId;
+          if (fid && window.APIMA_STORE) {
+            window.APIMA_STORE.markFindingReviewed(fid);
+          }
           var statusCell = currentEvidenceRow.querySelector('[data-row-status]');
           if (statusCell) {
             statusCell.className = 'badge badge-success';

@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · Bayar QRIS</title>
+<title>APIMA · QR Pembayaran</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
+<script src="./lib/qrcode.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -24,9 +26,9 @@
       <a href="AnggotaPilihHari.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke pilih malam">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
       </a>
-      <h1 class="text-md m-0 fw-700">Bayar QRIS</h1>
+      <h1 class="text-md m-0 fw-700">QR Pembayaran</h1>
     </div>
-    <span class="pill pill-warning tnum" aria-label="Sisa waktu QRIS">
+    <span class="pill pill-warning tnum" aria-label="Sisa waktu bayar QRIS">
       <span class="status-dot dot-warning" aria-hidden="true"></span>
       <span data-countdown="892">14:52</span>
     </span>
@@ -34,54 +36,35 @@
 
   <main class="screen-scroll stack gap-3" style="padding:16px">
 
-    <section class="hero-card items-center text-center" aria-label="Kode QR pembayaran">
+    <!-- QR Pembayaran: latar putih polos, nominal besar di atas QR, logo QRIS, hitung mundur batas bayar -->
+    <section class="qr-pay-card" aria-label="QR Pembayaran QRIS">
+      <span class="qr-pay-tag">QR Pembayaran</span>
+
       <div class="stack gap-1 items-center">
-        <span class="text-sm text-secondary">Total bayar</span>
-        <span class="text-xl tnum">Rp21.000</span>
-        <span class="text-sm text-secondary tnum">7 malam × Rp3.000 · Batas bayar 03:00 WIB</span>
+        <span class="qr-pay-nominal tnum" id="qris-amount">Rp3.000</span>
+        <span class="qr-pay-meta tnum" id="qris-breakdown">1 malam × Rp3.000</span>
       </div>
 
-      <div class="qr-stage">
-        <span class="qr-stage-title">APIMA · Retribusi Pasar</span>
-        <svg id="qris-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 230" width="212" height="212" role="img" aria-label="Kode QRIS untuk pembayaran Rp21.000">
-          <rect width="230" height="230" fill="#FFFFFF"/>
-          <path d="M10,10h70v70h-70z M20,20h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
-          <rect x="30" y="30" width="30" height="30" fill="#0F172A"/>
-          <path d="M150,10h70v70h-70z M160,20h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
-          <rect x="170" y="30" width="30" height="30" fill="#0F172A"/>
-          <path d="M10,150h70v70h-70z M20,160h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
-          <rect x="30" y="170" width="30" height="30" fill="#0F172A"/>
-          <rect x="90" y="20" width="10" height="10" fill="#0F172A"/>
-          <rect x="110" y="20" width="20" height="10" fill="#0F172A"/>
-          <rect x="100" y="40" width="10" height="20" fill="#0F172A"/>
-          <rect x="120" y="50" width="20" height="10" fill="#0F172A"/>
-          <rect x="90" y="70" width="10" height="10" fill="#0F172A"/>
-          <rect x="110" y="70" width="10" height="10" fill="#0F172A"/>
-          <rect x="130" y="70" width="10" height="10" fill="#0F172A"/>
-          <rect x="20" y="90" width="20" height="10" fill="#0F172A"/>
-          <rect x="50" y="100" width="20" height="10" fill="#0F172A"/>
-          <rect x="20" y="120" width="30" height="10" fill="#0F172A"/>
-          <rect x="70" y="90" width="10" height="10" fill="#0F172A"/>
-          <rect x="90" y="90" width="20" height="10" fill="#0F172A"/>
-          <rect x="120" y="90" width="10" height="20" fill="#0F172A"/>
-          <rect x="140" y="100" width="20" height="10" fill="#0F172A"/>
-          <rect x="170" y="90" width="20" height="10" fill="#0F172A"/>
-          <rect x="200" y="100" width="20" height="20" fill="#0F172A"/>
-          <rect x="90" y="110" width="10" height="20" fill="#0F172A"/>
-          <rect x="110" y="120" width="20" height="10" fill="#0F172A"/>
-          <rect x="150" y="120" width="10" height="20" fill="#0F172A"/>
-          <rect x="180" y="130" width="20" height="10" fill="#0F172A"/>
-          <rect x="90" y="150" width="20" height="10" fill="#0F172A"/>
-          <rect x="130" y="150" width="20" height="10" fill="#0F172A"/>
-          <rect x="170" y="160" width="20" height="20" fill="#0F172A"/>
-          <rect x="200" y="150" width="20" height="10" fill="#0F172A"/>
-          <rect x="100" y="170" width="20" height="10" fill="#0F172A"/>
-          <rect x="140" y="180" width="20" height="20" fill="#0F172A"/>
-          <rect x="90" y="190" width="10" height="20" fill="#0F172A"/>
-          <rect x="110" y="200" width="20" height="10" fill="#0F172A"/>
-          <rect x="180" y="200" width="30" height="10" fill="#0F172A"/>
+      <div class="qr-pay-qris-row">
+        <svg width="72" height="24" viewBox="0 0 120 40" role="img" aria-label="Logo QRIS" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="4" width="12" height="12" rx="2" fill="none" stroke="#0F172A" stroke-width="2.5"/>
+          <rect x="4.5" y="7.5" width="5" height="5" fill="#0F172A"/>
+          <rect x="1" y="22" width="12" height="12" rx="2" fill="none" stroke="#0F172A" stroke-width="2.5"/>
+          <rect x="4.5" y="25.5" width="5" height="5" fill="#0F172A"/>
+          <text x="22" y="28" fill="#0F172A" font-family="Inter, sans-serif" font-size="24" font-weight="700" letter-spacing="1">QRIS</text>
         </svg>
-        <span class="qr-stage-caption">Scan lewat dompet digital atau m-banking</span>
+        <span class="text-xs fw-700" style="color:#475569">APIMA · Retribusi</span>
+      </div>
+
+      <div class="qr-pay-frame" id="qris-svg-host">
+        <svg id="qris-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212" width="212" height="212" role="img" aria-label="Kode QRIS untuk pembayaran Rp3.000">
+          <rect width="212" height="212" fill="#FFFFFF"/>
+        </svg>
+      </div>
+
+      <div class="qr-pay-timer tnum">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>Batas bayar <span data-countdown="892">14:52</span> · s.d. 03:00 WIB</span>
       </div>
     </section>
 
@@ -98,7 +81,7 @@
         </li>
         <li class="step-item">
           <span class="step-num tnum">3</span>
-          <span>Pastikan tujuan <strong class="text-main">APIMA</strong> dan nominal <strong class="text-main">Rp21.000</strong>, lalu bayar.</span>
+          <span>Pastikan tujuan <strong class="text-main">APIMA</strong> dan nominal <strong class="text-main tnum" id="qris-step-amount">Rp3.000</strong>, lalu bayar.</span>
         </li>
       </ol>
     </section>
@@ -118,7 +101,7 @@
         Cara Bayar
       </button>
     </div>
-    <a href="AnggotaBerhasil.dc.html" class="btn btn-primary">Saya Sudah Bayar</a>
+    <button type="button" id="btn-confirm-pay" class="btn btn-primary">Saya Sudah Bayar</button>
   </div>
 
   <div id="ewallet-sheet" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="ewallet-title" hidden>
@@ -146,6 +129,75 @@
 
 </div>
 </x-dc>
+<script>
+(function () {
+  function renderQrisSvg(payload, priceStr) {
+    var host = document.getElementById('qris-svg-host');
+    if (!host || typeof window.qrcode !== 'function') return;
+    try {
+      var qr = window.qrcode(0, 'M');
+      qr.addData(payload);
+      qr.make();
+      var count = qr.getModuleCount();
+      var pad = 2;
+      var total = count + pad * 2;
+      var rects = ['<rect width="' + total + '" height="' + total + '" fill="#FFFFFF"/>'];
+      for (var r = 0; r < count; r++) {
+        for (var c = 0; c < count; c++) {
+          if (qr.isDark(r, c)) {
+            rects.push('<rect x="' + (c + pad) + '" y="' + (r + pad) + '" width="1" height="1" fill="#0F172A"/>');
+          }
+        }
+      }
+      host.innerHTML =
+        '<svg id="qris-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + total + ' ' + total + '" width="212" height="212" shape-rendering="crispEdges" role="img" aria-label="Kode QRIS untuk pembayaran ' + priceStr + '">' +
+        rects.join('') +
+        '</svg>';
+    } catch (e) {}
+  }
+
+  function boot() {
+    var store = window.APIMA_STORE;
+    var params = new URLSearchParams(window.location.search || '');
+    var qNights = parseInt(params.get('nights'), 10);
+    var pending = store ? store.getPendingOrder() : { nights: 1 };
+    var nights = (!isNaN(qNights) && qNights >= 1 && qNights <= 30) ? qNights : (pending.nights || 1);
+    if (store) store.setPendingOrder(nights, pending.fromBeranda);
+
+    var amount = nights * 3000;
+    var priceStr = store ? store.formatRupiah(amount) : ('Rp' + amount.toLocaleString('id-ID'));
+
+    var amtEl = document.getElementById('qris-amount');
+    var brkEl = document.getElementById('qris-breakdown');
+    var stepEl = document.getElementById('qris-step-amount');
+    if (amtEl) amtEl.textContent = priceStr;
+    if (brkEl) brkEl.textContent = nights + ' malam × Rp3.000';
+    if (stepEl) stepEl.textContent = priceStr;
+
+    var member = store ? store.getActiveMember() : { id: '0123' };
+    var payload = '00020101021226380014ID.APIMA.QRIS0204' + member.id + '5406' + String(amount) + '5802ID5905APIMA6304' + String(nights).padStart(2, '0');
+    renderQrisSvg(payload, priceStr);
+
+    var payBtn = document.getElementById('btn-confirm-pay');
+    if (payBtn && !payBtn.dataset.boundPay) {
+      payBtn.dataset.boundPay = '1';
+      payBtn.addEventListener('click', function () {
+        if (store) {
+          store.confirmPayment(nights);
+        }
+        window.location.href = 'AnggotaBerhasil.dc.html?nights=' + nights;
+      });
+    }
+  }
+
+  window.addEventListener('apima:ready', boot);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 40); });
+  } else {
+    setTimeout(boot, 40);
+  }
+})();
+</script>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>

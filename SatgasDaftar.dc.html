@@ -6,6 +6,7 @@
 <title>APIMA · Satgas Malam Ini</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -29,17 +30,14 @@
         <span class="header-eyebrow fw-700">Satgas</span>
       </div>
       <div class="row gap-1 items-center shrink-0">
-        <span class="pill pill-warning" aria-label="Temuan belum terkirim">
+        <span id="satgas-pending-pill" class="pill pill-warning" aria-label="Temuan belum ditinjau">
           <span class="status-dot dot-warning" aria-hidden="true"></span>
-          3 Belum Terkirim
+          <span id="satgas-pending-text">3 Catatan</span>
         </span>
         <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
           <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         </button>
-        <a href="MasukId.dc.html" class="btn-icon no-underline" aria-label="Keluar akun petugas" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </a>
       </div>
     </div>
     <h1 class="text-lg m-0" style="white-space:nowrap">Cek lapak malam ini</h1>
@@ -47,15 +45,15 @@
 
   <section class="metric-strip" aria-label="Ringkasan status malam ini">
     <div class="metric-item">
-      <span class="metric-num text-danger">38</span>
+      <span id="satgas-metric-belum" class="metric-num text-danger">38</span>
       <span class="metric-label">Belum bayar</span>
     </div>
     <div class="metric-item">
-      <span class="metric-num text-main">214</span>
+      <span id="satgas-metric-jualan" class="metric-num text-main">214</span>
       <span class="metric-label">Jualan</span>
     </div>
     <div class="metric-item">
-      <span class="metric-num text-success">97</span>
+      <span id="satgas-metric-checked" class="metric-num text-success">97</span>
       <span class="metric-label">Sudah dicek</span>
     </div>
   </section>
@@ -67,30 +65,18 @@
       <input id="cari" type="search" placeholder="Cari nama atau ID (mis. 0123)" class="input">
     </div>
     <div class="seg-control" data-seg-group="satgas-filter" role="group" aria-label="Filter status anggota">
-      <button type="button" class="seg-btn active" data-seg="belum" aria-pressed="true">Belum Bayar</button>
+      <button type="button" class="seg-btn active" data-seg="semua" aria-pressed="true">Semua</button>
+      <button type="button" class="seg-btn" data-seg="belum" aria-pressed="false">Belum Bayar</button>
       <button type="button" class="seg-btn" data-seg="belum-dicek" aria-pressed="false">Belum Dicek</button>
-      <button type="button" class="seg-btn" data-seg="semua" aria-pressed="false">Semua</button>
     </div>
     <div class="row between">
-      <span id="satgas-visible-count" class="text-sm text-secondary" aria-live="polite">5 anggota ditampilkan</span>
-      <span class="text-sm text-secondary">Sab, 14 Nov</span>
+      <span id="satgas-visible-count" class="text-sm text-secondary" aria-live="polite">7 anggota ditampilkan</span>
+      <span id="satgas-today-date" class="text-sm text-secondary">Sab, 14 Nov</span>
     </div>
   </section>
 
   <main class="screen-scroll">
-    <ul id="satgas-list" class="m-0 p-0" style="list-style:none">
-      <sc-for list="{{rows}}" as="row" hint-placeholder-count="7">
-        <li data-status="{{row.status}}" data-search="{{row.name}} {{row.id}}">
-          <a href="SatgasScan.dc.html" class="list-row">
-            <div class="stack gap-1 flex-1" style="min-width:0">
-              <span class="text-base fw-700 text-main overflow-hidden" style="white-space:nowrap;text-overflow:ellipsis">{{row.name}}</span>
-              <span class="text-sm text-secondary tnum">ID {{row.id}} · {{row.note}}</span>
-            </div>
-            <span class="badge {{row.badgeClass}} shrink-0">{{row.label}}</span>
-          </a>
-        </li>
-      </sc-for>
-    </ul>
+    <ul id="satgas-list" class="m-0 p-0" style="list-style:none"></ul>
 
     <div id="satgas-empty" class="empty-state" hidden>
       <img src="illustrations/tidak-ditemukan.webp" alt="Ilustrasi pencarian tidak ditemukan" class="illus-sm">
@@ -101,31 +87,103 @@
   </main>
 
   <div class="screen-footer" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-    <a href="SatgasScan.dc.html" class="btn btn-primary" style="white-space:nowrap;padding:0 12px">
+    <a href="SatgasScan.dc.html?scan=1" class="btn btn-primary no-underline" style="white-space:nowrap;padding:0 12px">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 20h3"/></svg>
       Scan QR
     </a>
-    <a href="SatgasTemuan.dc.html" class="btn btn-secondary" style="white-space:nowrap;padding:0 12px">Catat Manual</a>
+    <a href="SatgasTemuan.dc.html" class="btn btn-secondary no-underline" style="white-space:nowrap;padding:0 12px">Catat Manual</a>
   </div>
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
-class Component extends DCLogic {
-  renderVals() {
-    return {
-      rows: [
-        { name: 'Budi Santoso', id: '0123', status: 'belum', label: 'Belum Bayar', badgeClass: 'badge-danger', note: 'Aktif kemarin' },
-        { name: 'Siti Aminah', id: '0456', status: 'belum', label: 'Belum Bayar', badgeClass: 'badge-danger', note: 'Terakhir 2 hari lalu' },
-        { name: 'Rahmat Hidayat', id: '0078', status: 'belum', label: 'Belum Bayar', badgeClass: 'badge-danger', note: 'Aktif kemarin' },
-        { name: 'Dewi Lestari', id: '0311', status: 'belum-dicek', label: 'Jualan', badgeClass: 'badge-success', note: 'Bayar 21:14' },
-        { name: 'Agus Salim', id: '0592', status: 'belum-dicek', label: 'Jualan', badgeClass: 'badge-success', note: 'Retribusi aktif' },
-        { name: 'Hendra Wijaya', id: '0204', status: 'belum-dicek', label: 'Jualan', badgeClass: 'badge-success', note: 'Bayar 22:05' },
-        { name: 'Nurmala Sari', id: '0640', status: 'sudah', label: 'Terverifikasi', badgeClass: 'badge-neutral', note: 'Dicek 22:40' }
-      ]
-    };
+<script>
+(function () {
+  function escHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
   }
-}
+
+  function renderSatgasDaftar() {
+    var store = window.APIMA_STORE;
+    if (!store) return;
+    var st = store.reload();
+    var listEl = document.getElementById('satgas-list');
+    var dateEl = document.getElementById('satgas-today-date');
+    var metricBelum = document.getElementById('satgas-metric-belum');
+    var metricJualan = document.getElementById('satgas-metric-jualan');
+    var metricChecked = document.getElementById('satgas-metric-checked');
+    var pendingText = document.getElementById('satgas-pending-text');
+
+    var dateInfo = store.formatDateInfo(st.dayOffset);
+    if (dateEl) dateEl.textContent = dateInfo.short;
+
+    var checkedIds = Array.isArray(st.checkedMemberIds) ? st.checkedMemberIds : [];
+    var belumCount = 0;
+    var sudahCount = 0;
+    st.members.forEach(function (m) {
+      if (m.tonightStatus === 'belum_bayar') belumCount++;
+      if (m.tonightStatus === 'sudah_bayar') sudahCount++;
+    });
+
+    if (metricBelum) metricBelum.textContent = String(36 + belumCount);
+    if (metricJualan) metricJualan.textContent = String(211 + sudahCount);
+    if (metricChecked) metricChecked.textContent = String(96 + checkedIds.length);
+
+    var openFindings = (st.findings || []).filter(function (f) { return !f.reviewed; }).length;
+    if (pendingText) pendingText.textContent = openFindings + ' Catatan';
+
+    if (listEl) {
+      listEl.innerHTML = st.members.map(function (m) {
+        var meta = store.getStatusMeta(m.tonightStatus);
+        var isChecked = checkedIds.indexOf(m.id) !== -1;
+        var tokens = [];
+        if (m.tonightStatus === 'belum_bayar') tokens.push('belum');
+        if (!isChecked) tokens.push('belum-dicek');
+        if (isChecked) tokens.push('sudah-dicek');
+
+        var subParts = ['ID ' + m.id, m.blok];
+        if (isChecked) {
+          subParts.push('Sudah dicek');
+        } else if (m.note) {
+          subParts.push(m.note);
+        }
+
+        return (
+          '<li data-status="' + escHtml(tokens.join(' ')) + '" data-member-id="' + escHtml(m.id) + '" data-checked="' + (isChecked ? 'true' : 'false') + '" data-search="' + escHtml(m.name + ' ' + m.id + ' ' + m.blok) + '">' +
+            '<a href="SatgasScan.dc.html?id=' + encodeURIComponent(m.id) + '" class="list-row">' +
+              '<span class="member-avatar-scan" style="width:40px;height:40px;min-width:40px;font-size:14px" aria-hidden="true">' + escHtml(m.initials || 'AP') + '</span>' +
+              '<div class="stack gap-1 flex-1" style="min-width:0">' +
+                '<span class="text-base fw-700 text-main overflow-hidden" style="white-space:nowrap;text-overflow:ellipsis">' + escHtml(m.name) + '</span>' +
+                '<span class="text-sm text-secondary tnum overflow-hidden" style="white-space:nowrap;text-overflow:ellipsis">' + escHtml(subParts.join(' \u00b7 ')) + '</span>' +
+              '</div>' +
+              '<div class="stack items-end gap-1 shrink-0">' +
+                '<span class="badge ' + meta.badgeClass + '">' + escHtml(meta.label) + '</span>' +
+                (isChecked ? '<span class="text-xs fw-700 text-success">Sudah dicek</span>' : '') +
+              '</div>' +
+            '</a>' +
+          '</li>'
+        );
+      }).join('');
+    }
+
+    var searchInput = document.getElementById('cari');
+    if (searchInput) {
+      searchInput.dispatchEvent(new Event('input'));
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderSatgasDaftar);
+  } else {
+    renderSatgasDaftar();
+  }
+  window.addEventListener('apima:state-change', renderSatgasDaftar);
+  window.addEventListener('storage', renderSatgasDaftar);
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
 </script>
 </body>
 </html>

@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="./styles.css">
 <link rel="stylesheet" href="./admin.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./admin-charts.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
@@ -127,9 +128,6 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           Menu
         </button>
-        <a href="MasukId.dc.html" class="btn-icon no-underline" aria-label="Keluar akun" title="Keluar ke halaman masuk">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </a>
       </div>
     </div>
 
@@ -137,7 +135,10 @@
 
       <header id="ringkasan" class="admin-page-head">
         <div class="stack gap-1">
-          <h1 class="text-lg m-0">Ringkasan pasar</h1>
+          <div class="row gap-2 items-center wrap">
+            <h1 class="text-lg m-0">Ringkasan pasar</h1>
+            <span class="sample-data-badge">Data contoh</span>
+          </div>
           <span class="text-sm text-secondary tnum" id="dash-updated">Sab, 14 Nov 2026 · Diperbarui 23:42 WIB</span>
         </div>
         <div class="admin-actions">
@@ -651,31 +652,50 @@
     }
   };
 
-  var LIVE_FEED = [
-    { id: '0123', initials: 'BS', name: 'Budi Santoso', blok: 'Blok C-14', nights: '7 malam', time: '23:38 WIB', amount: 'Rp21.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0842' },
-    { id: '0012', initials: 'SR', name: 'H. Slamet Raharjo', blok: 'Blok A-02', nights: '30 malam', time: '22:54 WIB', amount: 'Rp90.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0831' },
-    { id: '0219', initials: 'DL', name: 'Dewi Lestari', blok: 'Blok B-08', nights: '1 malam', time: '22:15 WIB', amount: 'Rp3.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0819' },
-    { id: '0344', initials: 'HW', name: 'Hendra Wijaya', blok: 'Blok D-11', nights: '7 malam', time: '21:48 WIB', amount: 'Rp21.000', status: 'Menunggu', badge: 'badge-warning', tone: 'tone-warning', ref: 'QRIS-20261114-0794' },
-    { id: '0089', initials: 'HR', name: 'Hj. Rohimah', blok: 'Blok B-05', nights: '14 malam', time: '21:12 WIB', amount: 'Rp42.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0762' }
+  var BASE_LIVE_FEED = [
+    { id: '0014', initials: 'SR', name: 'H. Slamet Raharjo', blok: 'Blok A-02', nights: '30 malam', time: '22:54 WIB', amount: 'Rp90.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0831' },
+    { id: '0311', initials: 'DL', name: 'Dewi Lestari', blok: 'Blok B-08', nights: '1 malam', time: '22:15 WIB', amount: 'Rp3.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0819' },
+    { id: '0310', initials: 'YM', name: 'Yusuf Maulana', blok: 'Blok A-18', nights: '7 malam', time: '21:48 WIB', amount: 'Rp21.000', status: 'Menunggu', badge: 'badge-warning', tone: 'tone-warning', ref: 'QRIS-20261114-0794' },
+    { id: '0089', initials: 'HR', name: 'Hj. Rohimah', blok: 'Blok B-05', nights: '14 malam', time: '21:12 WIB', amount: 'Rp42.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0762' },
+    { id: '0241', initials: 'DP', name: 'Darmawan Putra', blok: 'Blok C-09', nights: '7 malam', time: '20:58 WIB', amount: 'Rp21.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0751' }
   ];
+
+  function getLiveFeed() {
+    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
+    var live = (st && Array.isArray(st.adminLivePayments)) ? st.adminLivePayments : [];
+    return live.concat(BASE_LIVE_FEED);
+  }
 
   var HIGHLIGHTS = {
     rajin: [
-      { initials: 'SR', name: 'H. Slamet Raharjo', meta: 'Blok A-02 · 100% tertib', nights: '304 malam', pct: 100, tone: 'tone-success' },
-      { initials: 'BS', name: 'Budi Santoso', meta: 'Blok C-14 · 100% tertib', nights: '296 malam', pct: 97, tone: 'tone-success' },
-      { initials: 'HR', name: 'Hj. Rohimah', meta: 'Blok B-05 · 99,3% tertib', nights: '289 malam', pct: 95, tone: 'tone-success' },
-      { initials: 'DP', name: 'Darmawan Putra', meta: 'Blok C-09 · 98,9% tertib', nights: '274 malam', pct: 90, tone: 'tone-success' }
+      { initials: 'SR', name: 'H. Slamet Raharjo', meta: 'Blok A-02 \u00b7 100% tertib', nights: '304 malam', pct: 100, tone: 'tone-success' },
+      { initials: 'SH', name: 'Suherman', meta: 'Blok A-07 \u00b7 100% tertib', nights: '296 malam', pct: 97, tone: 'tone-success' },
+      { initials: 'HR', name: 'Hj. Rohimah', meta: 'Blok B-05 \u00b7 99,3% tertib', nights: '289 malam', pct: 95, tone: 'tone-success' },
+      { initials: 'DP', name: 'Darmawan Putra', meta: 'Blok C-09 \u00b7 98,9% tertib', nights: '274 malam', pct: 90, tone: 'tone-success' }
     ],
     jarang: [
-      { initials: 'WY', name: 'Wahyudi', meta: 'Blok D-12 · Hanya 3 malam bulan ini', nights: '3 malam/bln', pct: 12, tone: 'tone-warning' },
-      { initials: 'SL', name: 'Slamet Riyadi', meta: 'Blok E-04 · Hanya 4 malam bulan ini', nights: '4 malam/bln', pct: 16, tone: 'tone-warning' },
-      { initials: 'ML', name: 'Mulyadi', meta: 'Blok E-11 · Terakhir 35 hari lalu', nights: '0 malam/bln', pct: 4, tone: 'tone-danger' },
-      { initials: 'HW', name: 'Hendra Wijaya', meta: 'Blok D-07 · Terakhir 42 hari lalu', nights: '0 malam/bln', pct: 4, tone: 'tone-danger' }
+      { initials: 'WY', name: 'Wahyudi', meta: 'Blok D-07 \u00b7 Hanya 3 malam bulan ini', nights: '3 malam/bln', pct: 12, tone: 'tone-warning' },
+      { initials: 'SL', name: 'Slamet Riyadi', meta: 'Blok E-04 \u00b7 Hanya 4 malam bulan ini', nights: '4 malam/bln', pct: 16, tone: 'tone-warning' },
+      { initials: 'ML', name: 'Mulyadi', meta: 'Blok E-09 \u00b7 Terakhir 35 hari lalu', nights: '0 malam/bln', pct: 4, tone: 'tone-danger' },
+      { initials: 'HW', name: 'Hendra Wijaya', meta: 'Blok D-11 \u00b7 Terakhir 42 hari lalu', nights: '0 malam/bln', pct: 4, tone: 'tone-danger' }
     ]
   };
 
+  var BASE_TOTALS = {
+    harian: 1740000,
+    mingguan: 11340000,
+    bulanan: 45840000,
+    tahunan: 518760000
+  };
+
   var currentPeriod = 'mingguan';
-  var activeReceipt = LIVE_FEED[0];
+  var activeReceipt = BASE_LIVE_FEED[0];
+
+  function escHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
 
   function openReceiptDrawer(item) {
     activeReceipt = item;
@@ -683,13 +703,13 @@
     if (!drawer) return;
     document.getElementById('drawer-ref').textContent = item.ref;
     var av = document.getElementById('drawer-avatar');
-    av.textContent = item.initials;
-    av.className = 'avatar-initials ' + item.tone;
+    av.textContent = item.initials || item.init || 'AP';
+    av.className = 'avatar-initials ' + (item.tone || 'tone-success');
     document.getElementById('drawer-name').textContent = item.name;
-    document.getElementById('drawer-id').textContent = 'ID ' + item.id + ' · ' + item.blok;
+    document.getElementById('drawer-id').textContent = 'ID ' + item.id + ' \u00b7 ' + item.blok;
     var st = document.getElementById('drawer-status');
     st.textContent = item.status;
-    st.className = 'badge ' + item.badge;
+    st.className = 'badge ' + (item.badge || 'badge-success');
     document.getElementById('drawer-amount').textContent = item.amount;
     document.getElementById('drawer-nights').textContent = item.nights;
     document.getElementById('drawer-time').textContent = item.time;
@@ -704,8 +724,9 @@
   function renderLiveFeed(query) {
     var listEl = document.getElementById('live-feed-list');
     if (!listEl) return;
+    var feed = getLiveFeed();
     var q = (query || '').trim().toLowerCase();
-    var filtered = LIVE_FEED.filter(function (item) {
+    var filtered = feed.filter(function (item) {
       if (!q) return true;
       return (item.name + ' ' + item.blok + ' ' + item.id + ' ' + item.status).toLowerCase().indexOf(q) !== -1;
     });
@@ -713,19 +734,20 @@
       listEl.innerHTML = '<li class="text-sm text-secondary" style="padding:16px 0;text-align:center">Tidak ada setoran yang cocok dengan pencarian.</li>';
       return;
     }
-    listEl.innerHTML = filtered.map(function (item, idx) {
+    listEl.innerHTML = filtered.slice(0, 6).map(function (item) {
+      var idx = feed.indexOf(item);
       return '<li>' +
-        '<button type="button" class="live-feed-btn" data-feed-idx="' + LIVE_FEED.indexOf(item) + '">' +
+        '<button type="button" class="live-feed-btn" data-feed-idx="' + idx + '">' +
           '<div class="row gap-3 items-center" style="min-width:0">' +
-            '<span class="avatar-initials ' + item.tone + '" aria-hidden="true">' + item.initials + '</span>' +
+            '<span class="avatar-initials ' + (item.tone || 'tone-success') + '" aria-hidden="true">' + escHtml(item.initials || item.init || 'AP') + '</span>' +
             '<div class="stack" style="min-width:0">' +
-              '<span class="text-sm fw-700 text-main">' + item.name + '</span>' +
-              '<span class="text-xs text-secondary tnum">' + item.blok + ' · ' + item.nights + ' · ' + item.time + '</span>' +
+              '<span class="text-sm fw-700 text-main">' + escHtml(item.name) + '</span>' +
+              '<span class="text-xs text-secondary tnum">' + escHtml(item.blok + ' \u00b7 ' + item.nights + ' \u00b7 ' + item.time) + '</span>' +
             '</div>' +
           '</div>' +
           '<div class="stack items-end shrink-0">' +
-            '<span class="text-sm fw-700 tnum text-main">' + item.amount + '</span>' +
-            '<span class="badge ' + item.badge + '">' + item.status + '</span>' +
+            '<span class="text-sm fw-700 tnum text-main">' + escHtml(item.amount) + '</span>' +
+            '<span class="badge ' + (item.badge || 'badge-success') + '">' + escHtml(item.status) + '</span>' +
           '</div>' +
         '</button>' +
       '</li>';
@@ -733,22 +755,61 @@
     listEl.querySelectorAll('[data-feed-idx]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var idx = parseInt(btn.dataset.feedIdx, 10);
-        if (LIVE_FEED[idx]) openReceiptDrawer(LIVE_FEED[idx]);
+        if (feed[idx]) openReceiptDrawer(feed[idx]);
       });
     });
+  }
+
+  function renderFindings() {
+    var tbody = document.getElementById('temuan-tbody');
+    var pendingEl = document.getElementById('pending-count');
+    var store = window.APIMA_STORE;
+    if (!tbody || !store) return;
+    var st = store.reload();
+    var findings = Array.isArray(st.findings) ? st.findings : [];
+    var pending = findings.filter(function (f) { return !f.reviewed; }).length;
+    if (pendingEl) pendingEl.textContent = String(pending);
+
+    tbody.innerHTML = findings.map(function (f) {
+      var textCls = f.tone === 'danger' ? 'text-danger fw-700' : (f.tone === 'warning' ? 'text-warning fw-700' : 'fw-700');
+      var badgeCls = f.reviewed ? 'badge-success' : (f.tone === 'danger' ? 'badge-danger' : (f.tone === 'warning' ? 'badge-warning' : 'badge-neutral'));
+      var statusText = f.reviewed ? 'Ditinjau' : 'Perlu Tinjau';
+      var anggotaHtml = f.anggota === 'Tidak terdaftar'
+        ? '<td class="text-secondary">Tidak terdaftar</td>'
+        : '<td>' + escHtml(f.anggota) + '</td>';
+      return '<tr>' +
+        '<td><div class="stack"><span class="' + textCls + '">' + escHtml(f.temuan) + '</span><span class="text-xs text-secondary tnum">' + escHtml(f.satgas + ' \u00b7 ' + f.jam) + '</span></div></td>' +
+        anggotaHtml +
+        '<td><span class="badge ' + badgeCls + '" data-row-status>' + statusText + '</span></td>' +
+        '<td><button type="button" class="btn-chip" data-evidence-open data-finding-id="' + escHtml(f.id) + '" data-temuan="' + escHtml(f.temuan) + '" data-anggota="' + escHtml(f.anggota) + '" data-satgas="' + escHtml(f.satgas) + '" data-jam="' + escHtml(f.jam) + '" data-lokasi="' + escHtml(f.lokasi) + '">Lihat Bukti</button></td>' +
+      '</tr>';
+    }).join('');
   }
 
   function renderPeriod(key) {
     var d = PERIODS[key] || PERIODS.mingguan;
     currentPeriod = key;
+    var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
+    var delta = st ? (Number(st.budiPaidTonightDelta) || 0) : 0;
+    var budiActive = st && st.budiReportedTonight ? 1 : 0;
+    var totalVal = (BASE_TOTALS[key] || 11340000) + delta;
+    var formattedTotal = window.APIMA_STORE ? window.APIMA_STORE.formatRupiah(totalVal) : d.total;
+    var ontimeCount = d.ontime + budiActive;
+
+    var updatedEl = document.getElementById('dash-updated');
+    if (updatedEl && window.APIMA_STORE && st) {
+      var dateInfo = window.APIMA_STORE.formatDateInfo(st.dayOffset);
+      updatedEl.textContent = dateInfo.full + ' \u00b7 Diperbarui 23:42 WIB';
+    }
+
     document.getElementById('exec-label').textContent = d.label;
-    document.getElementById('exec-total').textContent = d.total;
+    document.getElementById('exec-total').textContent = formattedTotal;
     document.getElementById('exec-delta').textContent = d.delta;
     document.getElementById('exec-merchants').textContent = d.merchants;
     document.getElementById('exec-nights').textContent = d.nights;
     document.getElementById('kpi-target-pct').textContent = d.targetPct.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
     document.getElementById('kpi-target-fill').style.width = Math.min(100, d.targetPct) + '%';
-    document.getElementById('kpi-ontime').textContent = d.ontime;
+    document.getElementById('kpi-ontime').textContent = ontimeCount;
     document.getElementById('kpi-late').textContent = d.late;
     document.getElementById('kpi-unpaid').textContent = d.unpaid;
     document.getElementById('ai-headline').textContent = d.aiHeadline;
@@ -767,7 +828,7 @@
         centerLbl: 'patuh',
         ariaLabel: 'Tingkat kepatuhan bayar ' + d.rate,
         segments: [
-          { val: d.ontime, color: 'var(--apima-success)' },
+          { val: ontimeCount, color: 'var(--apima-success)' },
           { val: d.late, color: 'var(--apima-warning)' },
           { val: d.unpaid, color: 'var(--apima-danger)' }
         ]
@@ -806,21 +867,22 @@
     function updateDropdown() {
       var q = input.value.trim().toLowerCase();
       if (!q) { drop.hidden = true; return; }
-      var matches = LIVE_FEED.filter(function (item) {
+      var feed = getLiveFeed();
+      var matches = feed.filter(function (item) {
         return (item.name + ' ' + item.blok + ' ' + item.id).toLowerCase().indexOf(q) !== -1;
       });
       if (!matches.length) {
         drop.innerHTML = '<div class="text-xs text-secondary" style="padding:10px">Tidak ditemukan pedagang atau transaksi.</div>';
       } else {
         drop.innerHTML = matches.map(function (item) {
-          return '<button type="button" class="topbar-res-item" data-search-idx="' + LIVE_FEED.indexOf(item) + '">' +
-            '<span><strong class="text-main">' + item.name + '</strong> <span class="text-xs text-secondary">· ' + item.blok + '</span></span>' +
-            '<span class="text-xs fw-700 tnum text-main">' + item.amount + '</span>' +
+          return '<button type="button" class="topbar-res-item" data-search-idx="' + feed.indexOf(item) + '">' +
+            '<span><strong class="text-main">' + escHtml(item.name) + '</strong> <span class="text-xs text-secondary">\u00b7 ' + escHtml(item.blok) + '</span></span>' +
+            '<span class="text-xs fw-700 tnum text-main">' + escHtml(item.amount) + '</span>' +
           '</button>';
         }).join('');
         drop.querySelectorAll('[data-search-idx]').forEach(function (btn) {
           btn.addEventListener('click', function () {
-            var item = LIVE_FEED[parseInt(btn.dataset.searchIdx, 10)];
+            var item = feed[parseInt(btn.dataset.searchIdx, 10)];
             drop.hidden = true;
             input.value = '';
             if (item) openReceiptDrawer(item);
@@ -889,7 +951,7 @@
     var copyReceipt = document.getElementById('drawer-copy-receipt');
     if (copyReceipt) {
       copyReceipt.addEventListener('click', function () {
-        var txt = 'Bukti Retribusi APIMA · ' + activeReceipt.name + ' (' + activeReceipt.blok + ') · ' + activeReceipt.amount + ' · ' + activeReceipt.ref;
+        var txt = 'Bukti Retribusi APIMA \u00b7 ' + activeReceipt.name + ' (' + activeReceipt.blok + ') \u00b7 ' + activeReceipt.amount + ' \u00b7 ' + activeReceipt.ref;
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(txt).catch(function () {});
         }
@@ -914,7 +976,7 @@
     if (copyBtn) {
       copyBtn.addEventListener('click', function () {
         var d = PERIODS[currentPeriod];
-        var msg = 'Ringkasan APIMA (' + currentPeriod.toUpperCase() + '): Total ' + d.total + '. ' + d.aiP1 + ' ' + d.aiP3;
+        var msg = 'Ringkasan APIMA (' + currentPeriod.toUpperCase() + '): Total ' + document.getElementById('exec-total').textContent + '. ' + d.aiP1 + ' ' + d.aiP3;
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(msg).catch(function () {});
         }
@@ -929,7 +991,19 @@
     bindGlobalSearch();
     renderPeriod('mingguan');
     renderLiveFeed('');
+    renderFindings();
     renderHighlights('rajin');
+
+    window.addEventListener('apima:state-change', function () {
+      renderPeriod(currentPeriod);
+      renderLiveFeed(feedSearch ? feedSearch.value : '');
+      renderFindings();
+    });
+    window.addEventListener('storage', function () {
+      renderPeriod(currentPeriod);
+      renderLiveFeed(feedSearch ? feedSearch.value : '');
+      renderFindings();
+    });
   }
 
   if (document.readyState === 'loading') {

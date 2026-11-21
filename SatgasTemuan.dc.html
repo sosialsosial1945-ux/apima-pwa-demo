@@ -6,6 +6,7 @@
 <title>Satgas · Catat temuan</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -51,15 +52,19 @@
     <fieldset class="m-0 stack gap-2" style="border:none;padding:0">
       <legend class="text-bold" style="padding:0;margin-bottom:8px">Hasil temuan</legend>
       <label class="radio-card selected-danger" data-danger>
-        <input type="radio" name="hasil" checked>
+        <input type="radio" name="hasil" value="jualan_tanpa_bayar" checked>
         <span>Jualan tanpa bayar</span>
       </label>
       <label class="radio-card">
-        <input type="radio" name="hasil">
+        <input type="radio" name="hasil" value="penjaga_tidak_dikenal">
         <span>Penjaga tidak dikenal</span>
       </label>
       <label class="radio-card">
-        <input type="radio" name="hasil">
+        <input type="radio" name="hasil" value="bayar_di_tempat">
+        <span>Bayar di tempat, menunggu konfirmasi</span>
+      </label>
+      <label class="radio-card">
+        <input type="radio" name="hasil" value="sesuai">
         <span>Sesuai</span>
       </label>
     </fieldset>

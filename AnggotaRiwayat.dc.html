@@ -6,6 +6,7 @@
 <title>APIMA · Riwayat Retribusi</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -28,7 +29,7 @@
       </span>
     </div>
     <div class="row gap-2 items-center shrink-0">
-      <span class="text-sm fw-700 text-main">Sab, 14 Nov</span>
+      <span class="text-sm fw-700 text-main tnum" id="ag-date">Sab, 14 Nov</span>
       <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
         <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -38,33 +39,37 @@
 
   <main class="screen-scroll stack gap-3" style="padding:16px">
 
-    <section class="hero-card" aria-label="Ringkasan retribusi bulan ini">
+    <section class="hero-card" aria-label="Ringkasan retribusi Anda">
       <div class="row between items-center gap-2">
-        <span class="text-sm text-secondary fw-700">Rekap November 2026</span>
-        <span class="pill pill-success">
+        <span class="text-sm text-secondary fw-700">Total dibayar</span>
+        <span class="pill pill-success" id="ag-paid-pill">
           <span class="status-dot dot-success" aria-hidden="true"></span>
-          100% Tertib
+          <span id="ag-paid-nights-pill">4 malam terbayar</span>
         </span>
       </div>
       <div class="stack gap-1">
-        <span class="text-xl tnum">18 malam jualan</span>
-        <p class="text-sm text-secondary m-0">Total retribusi terbayar Rp54.000. Sisa retribusi aktif Anda saat ini 7 malam.</p>
+        <span class="text-xl tnum" id="ag-total-paid">Rp30.000</span>
+        <p class="text-sm text-secondary m-0" id="ag-summary-desc">Sudah dibayar untuk 4 malam lagi. Total di atas hanya menjumlahkan baris pembayaran QRIS.</p>
       </div>
-      <a href="AnggotaPilihHari.dc.html" class="btn btn-primary no-underline">Bayar Retribusi</a>
+      <a href="AnggotaPilihHari.dc.html" class="btn btn-primary no-underline" id="ag-primary-cta">Tambah Malam Terbayar</a>
     </section>
 
     <div class="seg" role="group" aria-label="Filter jenis riwayat">
       <button type="button" class="seg-btn active" data-ag-filter="semua" aria-pressed="true">Semua</button>
-      <button type="button" class="seg-btn" data-ag-filter="jualan" aria-pressed="false">Jualan</button>
+      <button type="button" class="seg-btn" data-ag-filter="lapor" aria-pressed="false">Lapor</button>
       <button type="button" class="seg-btn" data-ag-filter="bayar" aria-pressed="false">Bayar QRIS</button>
     </div>
 
     <section class="open-section" aria-label="Daftar riwayat lengkap">
       <div class="open-section-head">
-        <h2 class="text-base fw-700 m-0" id="ag-list-title">Semua catatan bulan ini</h2>
+        <h2 class="text-base fw-700 m-0" id="ag-list-title">Semua catatan retribusi</h2>
         <span class="text-xs text-secondary tnum" id="ag-list-count">8 catatan</span>
       </div>
       <ul class="open-list" id="ag-riwayat-list"></ul>
+      <div id="ag-empty" class="empty-state" hidden style="padding:24px 12px">
+        <span class="text-sm fw-700 text-main">Belum ada catatan</span>
+        <span class="text-xs text-secondary">Pembayaran dan laporan jualan Anda akan tampil di sini.</span>
+      </div>
     </section>
 
   </main>
@@ -92,7 +97,7 @@
     <div class="sheet">
       <div class="row between">
         <div class="stack">
-          <span class="text-xs text-secondary tnum" id="ag-trx-ref">REF QRIS-1411-0842</span>
+          <span class="text-xs text-secondary tnum" id="ag-trx-ref">REF QRIS-1011-0412</span>
           <h2 id="ag-sheet-title" class="text-md m-0 fw-700">Bukti pembayaran retribusi</h2>
         </div>
         <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup bukti pembayaran">
@@ -102,11 +107,11 @@
       <ul class="open-list">
         <li class="open-row">
           <span class="text-sm text-secondary">Tanggal</span>
-          <span class="text-sm fw-700 tnum" id="ag-trx-date">Jum, 13 Nov 2026</span>
+          <span class="text-sm fw-700 tnum" id="ag-trx-date">Sel, 10 Nov</span>
         </li>
         <li class="open-row">
           <span class="text-sm text-secondary">Keterangan</span>
-          <span class="text-sm fw-700" id="ag-trx-desc">Bayar retribusi 7 malam</span>
+          <span class="text-sm fw-700" id="ag-trx-desc">Bayar 7 malam</span>
         </li>
         <li class="open-row">
           <span class="text-sm text-secondary">Nominal</span>
@@ -158,28 +163,19 @@
 </x-dc>
 <script>
 (function () {
-  var ITEMS = [
-    { id: 'r1', type: 'bayar', date: 'Jum, 13 Nov · 21:08 WIB', title: 'Bayar retribusi 7 malam', sub: 'Lunas via QRIS · REF 0842', amount: 'Rp21.000', tone: 'text-primary-color', ref: 'QRIS-1311-0842' },
-    { id: 'r2', type: 'jualan', date: 'Jum, 13 Nov', title: 'Jualan malam · Blok C-14', sub: 'Dicek Satgas A · 22:14 WIB', amount: 'Rp3.000', tone: 'text-main' },
-    { id: 'r3', type: 'jualan', date: 'Kam, 12 Nov', title: 'Jualan malam · Blok C-14', sub: 'Lunas dari retribusi aktif', amount: 'Rp3.000', tone: 'text-main' },
-    { id: 'r4', type: 'jualan', date: 'Rab, 11 Nov', title: 'Tidak jualan', sub: 'Retribusi tidak terpotong', amount: 'Rp0', tone: 'text-secondary' },
-    { id: 'r5', type: 'jualan', date: 'Sel, 10 Nov', title: 'Jualan malam · Blok C-14', sub: 'Dicek Satgas A · 23:05 WIB', amount: 'Rp3.000', tone: 'text-main' },
-    { id: 'r6', type: 'jualan', date: 'Sen, 9 Nov', title: 'Jualan malam · Blok C-14', sub: 'Lunas dari retribusi aktif', amount: 'Rp3.000', tone: 'text-main' },
-    { id: 'r7', type: 'bayar', date: 'Sab, 7 Nov · 20:44 WIB', title: 'Bayar retribusi 7 malam', sub: 'Lunas via QRIS · REF 0611', amount: 'Rp21.000', tone: 'text-primary-color', ref: 'QRIS-0711-0611' },
-    { id: 'r8', type: 'jualan', date: 'Sab, 7 Nov', title: 'Jualan malam · Blok C-14', sub: 'Dicek Satgas A · 22:30 WIB', amount: 'Rp3.000', tone: 'text-main' }
-  ];
-
+  var currentFilter = 'semua';
   var TITLES = {
-    semua: 'Semua catatan bulan ini',
-    jualan: 'Riwayat kehadiran jualan',
+    semua: 'Semua catatan retribusi',
+    lapor: 'Riwayat lapor jualan',
     bayar: 'Riwayat pembayaran QRIS'
   };
 
   function openReceipt(item) {
-    document.getElementById('ag-trx-ref').textContent = 'REF ' + item.ref;
-    document.getElementById('ag-trx-date').textContent = item.date;
-    document.getElementById('ag-trx-desc').textContent = item.title;
-    document.getElementById('ag-trx-amt').textContent = item.amount;
+    var store = window.APIMA_STORE;
+    document.getElementById('ag-trx-ref').textContent = 'REF ' + (item.ref || 'QRIS-APIMA');
+    document.getElementById('ag-trx-date').textContent = item.date + (item.time ? ' · ' + item.time : '');
+    document.getElementById('ag-trx-desc').textContent = item.title + (item.sub ? ' · ' + item.sub : '');
+    document.getElementById('ag-trx-amt').textContent = store ? store.formatRupiah(item.amount) : ('Rp' + (item.amount || 0).toLocaleString('id-ID'));
     var sheet = document.getElementById('sheet-bukti-ag');
     sheet.hidden = false;
     var closeBtn = sheet.querySelector('[data-sheet-close]');
@@ -187,20 +183,65 @@
   }
 
   function render(filter) {
-    var list = ITEMS.filter(function (x) {
-      return filter === 'semua' || x.type === filter;
+    currentFilter = filter || currentFilter || 'semua';
+    var store = window.APIMA_STORE;
+    if (!store) return;
+    var st = store.getState();
+    var m = store.getActiveMember();
+    var items = Array.isArray(m.history) ? m.history : [];
+    var totalPaid = store.getHistoryTotal(m);
+    var paid = Math.max(0, parseInt(m.paidNights, 10) || 0);
+
+    var dateEl = document.getElementById('ag-date');
+    if (dateEl) dateEl.textContent = store.formatDateInfo(st.dayOffset).short;
+
+    var totalEl = document.getElementById('ag-total-paid');
+    if (totalEl) totalEl.textContent = store.formatRupiah(totalPaid);
+
+    var pillEl = document.getElementById('ag-paid-nights-pill');
+    if (pillEl) pillEl.textContent = paid + ' malam terbayar';
+
+    var descEl = document.getElementById('ag-summary-desc');
+    if (descEl) {
+      descEl.textContent = 'Sudah dibayar untuk ' + paid + ' malam lagi. Total di atas hanya menjumlahkan baris pembayaran QRIS.';
+    }
+
+    var ctaEl = document.getElementById('ag-primary-cta');
+    if (ctaEl) {
+      ctaEl.textContent = paid > 0 ? 'Tambah Malam Terbayar' : 'Bayar Retribusi';
+    }
+
+    var list = items.filter(function (x) {
+      if (currentFilter === 'semua') return true;
+      if (currentFilter === 'bayar') return x.type === 'bayar';
+      if (currentFilter === 'lapor') return x.type === 'lapor' || x.type === 'tidak_lapor';
+      return true;
     });
-    document.getElementById('ag-list-title').textContent = TITLES[filter] || TITLES.semua;
+
+    document.getElementById('ag-list-title').textContent = TITLES[currentFilter] || TITLES.semua;
     document.getElementById('ag-list-count').textContent = list.length + ' catatan';
     var host = document.getElementById('ag-riwayat-list');
+    var emptyEl = document.getElementById('ag-empty');
+
+    if (!list.length) {
+      host.innerHTML = '';
+      if (emptyEl) emptyEl.hidden = false;
+      return;
+    }
+    if (emptyEl) emptyEl.hidden = true;
+
     host.innerHTML = list.map(function (it) {
-      var right = it.ref
-        ? '<button type="button" class="btn-chip" data-ag-ref="' + it.id + '">' + it.amount + '</button>'
-        : '<span class="text-sm fw-700 tnum ' + it.tone + '">' + it.amount + '</span>';
+      var detail = it.title + (it.sub ? ' · ' + it.sub : '');
+      var detailTone = it.type === 'bayar'
+        ? 'text-primary-color fw-500'
+        : (it.type === 'lapor' ? 'text-success fw-500' : 'text-secondary');
+      var right = (it.type === 'bayar' && typeof it.amount === 'number' && it.amount > 0)
+        ? '<button type="button" class="btn-chip" data-ag-ref="' + it.id + '">' + store.formatRupiah(it.amount) + '</button>'
+        : '<span class="text-sm text-secondary tnum">\u2013</span>';
       return '<li class="open-row">' +
         '<div class="stack gap-1">' +
-          '<span class="text-sm fw-700 text-main">' + it.title + '</span>' +
-          '<span class="text-xs text-secondary tnum">' + it.date + ' · ' + it.sub + '</span>' +
+          '<span class="text-sm fw-700 text-main">' + it.date + '</span>' +
+          '<span class="text-xs ' + detailTone + '">' + detail + '</span>' +
         '</div>' +
         right +
       '</li>';
@@ -208,7 +249,7 @@
 
     host.querySelectorAll('[data-ag-ref]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var found = ITEMS.find(function (x) { return x.id === btn.dataset.agRef; });
+        var found = items.find(function (x) { return x.id === btn.dataset.agRef; });
         if (found) openReceipt(found);
       });
     });
@@ -230,10 +271,12 @@
     render('semua');
   }
 
+  window.addEventListener('apima:ready', boot);
+  window.addEventListener('apima:state-change', function () { render(currentFilter); });
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 30); });
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 40); });
   } else {
-    setTimeout(boot, 30);
+    setTimeout(boot, 40);
   }
 })();
 </script>

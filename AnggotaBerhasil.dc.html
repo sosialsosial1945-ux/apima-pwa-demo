@@ -6,6 +6,7 @@
 <title>APIMA · Pembayaran berhasil</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -24,37 +25,41 @@
       <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
       <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
     </span>
-    <span class="text-sm text-secondary tnum">Sab, 14 Nov</span>
+    <span class="text-sm text-secondary tnum" id="berhasil-date-short">Sab, 14 Nov</span>
   </header>
 
   <main class="screen-scroll stack gap-3" style="padding:16px">
 
     <section class="hero-card tone-success items-center text-center" aria-label="Status pembayaran berhasil">
-      <img src="illustrations/bayar-sukses.webp" alt="Ilustrasi pembayaran retribusi berhasil" class="illus-hero">
+      <img src="illustrations/bayar-sukses.webp" alt="Ilustrasi pembayaran retribusi berhasil" width="120" height="120" class="illus-hero">
       <div class="stack gap-1 items-center">
-        <h1 class="text-lg m-0">Pembayaran berhasil!</h1>
-        <p class="text-sm text-secondary m-0">Retribusi Anda sudah masuk dan status jualan malam ini langsung aktif.</p>
+        <h1 class="text-lg m-0">Pembayaran berhasil</h1>
+        <p class="text-sm text-secondary m-0" id="berhasil-summary">Dibayar 1 malam · Sudah dibayar untuk 5 malam lagi.</p>
       </div>
-      <span class="pill pill-success" style="align-self:center">
+      <span class="pill pill-success" style="align-self:center" id="berhasil-status-pill">
         <span class="status-dot dot-success" aria-hidden="true"></span>
-        Jualan · Sudah Bayar
+        <span id="berhasil-status-text">Jualan · Sudah Bayar</span>
       </span>
     </section>
 
     <section class="open-section" aria-label="Rincian transaksi">
-      <span class="text-bold">Rincian transaksi</span>
+      <h2 class="text-base fw-700 m-0">Rincian transaksi</h2>
       <ul class="open-list">
         <li class="open-row">
           <span class="text-sm text-secondary">Malam ini</span>
-          <span class="text-sm fw-700">Sab, 14 Nov 2026</span>
+          <span class="text-sm fw-700 tnum" id="berhasil-date-full">Sab, 14 Nov 2026</span>
         </li>
         <li class="open-row">
           <span class="text-sm text-secondary">Dibayar</span>
-          <span class="text-sm fw-700 tnum">Rp21.000 · 7 malam</span>
+          <span class="text-sm fw-700 tnum" id="berhasil-paid">Rp3.000 · 1 malam</span>
+        </li>
+        <li class="open-row" id="berhasil-used-row" hidden>
+          <span class="text-sm text-secondary">Terpakai malam ini</span>
+          <span class="text-sm fw-700 tnum">1 malam</span>
         </li>
         <li class="open-row">
-          <span class="text-sm text-secondary">Sisa retribusi</span>
-          <span class="text-md fw-700 text-success tnum">14 malam</span>
+          <span class="text-sm text-secondary">Malam terbayar</span>
+          <span class="text-md fw-700 text-success tnum" id="berhasil-remaining">5 malam</span>
         </li>
       </ul>
     </section>
@@ -63,11 +68,67 @@
 
   <div class="screen-footer">
     <a href="Main.dc.html" class="btn btn-primary no-underline">Kembali ke Beranda</a>
-    <a href="AnggotaQrIdentitas.dc.html" class="btn btn-secondary no-underline">Lihat QR Saya</a>
+    <a href="AnggotaQrIdentitas.dc.html" class="btn btn-secondary no-underline">Lihat QR Identitas</a>
   </div>
 
 </div>
 </x-dc>
+<script>
+(function () {
+  function boot() {
+    var store = window.APIMA_STORE;
+    var st = store ? store.getState() : null;
+    var member = store ? store.getActiveMember() : { paidNights: 4, tonightStatus: 'sudah_bayar' };
+    var lp = st && st.lastPayment ? st.lastPayment : null;
+    var dateInfo = store && st ? store.formatDateInfo(st.dayOffset) : { short: 'Sab, 14 Nov', full: 'Sab, 14 Nov 2026' };
+
+    var params = new URLSearchParams(window.location.search || '');
+    var qNights = parseInt(params.get('nights'), 10);
+    var nights = lp ? lp.nights : ((!isNaN(qNights) && qNights >= 1) ? qNights : 1);
+    var amount = lp ? lp.amount : (nights * 3000);
+    var autoReported = lp ? !!lp.autoReported : false;
+    var remaining = lp ? lp.afterPaidNights : member.paidNights;
+    var tonightStatus = lp ? lp.tonightStatus : member.tonightStatus;
+    var priceStr = store ? store.formatRupiah(amount) : ('Rp' + amount.toLocaleString('id-ID'));
+
+    var dShort = document.getElementById('berhasil-date-short');
+    var dFull = document.getElementById('berhasil-date-full');
+    var sumEl = document.getElementById('berhasil-summary');
+    var paidEl = document.getElementById('berhasil-paid');
+    var usedRow = document.getElementById('berhasil-used-row');
+    var remEl = document.getElementById('berhasil-remaining');
+    var stText = document.getElementById('berhasil-status-text');
+
+    if (dShort) dShort.textContent = (lp && lp.dateShort) || dateInfo.short;
+    if (dFull) dFull.textContent = (lp && lp.dateFull) || dateInfo.full;
+    if (paidEl) paidEl.textContent = priceStr + ' · ' + nights + ' malam';
+    if (remEl) remEl.textContent = remaining + ' malam';
+
+    if (autoReported) {
+      if (sumEl) {
+        sumEl.textContent = 'Dibayar ' + nights + ' malam · Terpakai malam ini 1 · Sudah dibayar untuk ' + remaining + ' malam lagi';
+      }
+      if (usedRow) usedRow.hidden = false;
+      if (stText) stText.textContent = 'Jualan · Sudah Bayar';
+    } else {
+      if (sumEl) {
+        sumEl.textContent = 'Dibayar ' + nights + ' malam · Sudah dibayar untuk ' + remaining + ' malam lagi';
+      }
+      if (usedRow) usedRow.hidden = true;
+      if (stText) {
+        stText.textContent = tonightStatus === 'sudah_bayar' ? 'Jualan · Sudah Bayar' : 'Malam Terbayar Ditambahkan';
+      }
+    }
+  }
+
+  window.addEventListener('apima:ready', boot);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 40); });
+  } else {
+    setTimeout(boot, 40);
+  }
+})();
+</script>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>

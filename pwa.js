@@ -134,6 +134,7 @@
       });
     }
 
+    // HAPUS SEBELUM PRODUKSI (akses cepat demo presentasi)
     document.querySelectorAll('[data-demo-role]').forEach(function (btn) {
       if (btn.dataset.pwaRoleBound) return;
       btn.dataset.pwaRoleBound = '1';
@@ -147,8 +148,10 @@
       });
     });
 
+    /* Tombol mengambang "Beri Masukan" dimatikan sementara agar tidak menutupi tombol Masuk */
+    var SHOW_FEEDBACK = false;
     var isFeedbackPage = /feedback\.html$/i.test(window.location.pathname || '');
-    if (!isFeedbackPage && !document.getElementById('pwa-feedback-fab')) {
+    if (SHOW_FEEDBACK && !isFeedbackPage && !document.getElementById('pwa-feedback-fab')) {
       var fab = document.createElement('a');
       fab.id = 'pwa-feedback-fab';
       fab.href = 'feedback.html';

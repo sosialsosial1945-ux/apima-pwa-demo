@@ -6,6 +6,7 @@
 <title>APIMA · Pilih jumlah malam</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -26,56 +27,162 @@
       </a>
       <h1 class="text-md m-0 fw-700">Bayar retribusi</h1>
     </div>
+    <span class="text-sm text-secondary tnum" id="pilih-date">Sab, 14 Nov</span>
   </header>
 
   <main class="screen-scroll stack gap-3" style="padding:16px">
 
     <div class="row gap-3 items-center">
-      <img src="illustrations/pilih-paket.webp" alt="Ilustrasi pilihan paket retribusi" class="illus-side">
-      <p class="text-sm text-secondary m-0">Pilih jumlah malam retribusi yang ingin Anda bayar. Tarif tetap Rp3.000 per malam dan langsung aktif.</p>
+      <img src="illustrations/pilih-paket.webp" alt="Ilustrasi pilihan jumlah malam retribusi" width="64" height="64" class="illus-side">
+      <p class="text-sm text-secondary m-0">Pilih jumlah malam retribusi bebas dari 1 sampai 30 malam. Tarif tetap Rp3.000 per malam.</p>
     </div>
 
-    <div data-selectable-group data-base-quota="7" class="grid-2" role="group" aria-label="Pilihan jumlah malam">
-      <button type="button" class="selectable-card stack items-center gap-1" data-value="1" aria-pressed="false">
-        <span class="text-lg tnum text-main">1 malam</span>
-        <span class="text-sm text-primary-color fw-700 tnum">Rp3.000</span>
-      </button>
-      <button type="button" class="selectable-card selected stack items-center gap-1" data-value="7" aria-pressed="true">
-        <span class="text-lg tnum text-main">7 malam</span>
-        <span class="text-sm text-primary-color fw-700 tnum">Rp21.000</span>
-      </button>
-      <button type="button" class="selectable-card stack items-center gap-1" data-value="14" aria-pressed="false">
-        <span class="text-lg tnum text-main">14 malam</span>
-        <span class="text-sm text-primary-color fw-700 tnum">Rp42.000</span>
-      </button>
-      <button type="button" class="selectable-card stack items-center gap-1" data-value="30" aria-pressed="false">
-        <span class="text-lg tnum text-main">30 malam</span>
-        <span class="text-sm text-primary-color fw-700 tnum">Rp90.000</span>
-      </button>
+    <section class="night-stepper-card" aria-label="Atur jumlah malam retribusi">
+      <button type="button" class="stepper-btn" id="btn-night-minus" aria-label="Kurangi 1 malam">−</button>
+      <div class="stepper-readout">
+        <span class="text-lg fw-700 text-main tnum" id="stepper-nights">1 malam</span>
+        <span class="text-xs text-secondary tnum" id="stepper-sub">1 × Rp3.000</span>
+      </div>
+      <button type="button" class="stepper-btn" id="btn-night-plus" aria-label="Tambah 1 malam">+</button>
+    </section>
+
+    <div class="stack gap-2">
+      <span class="text-sm fw-700 text-secondary">Pilihan cepat</span>
+      <div data-selectable-group data-managed-by="pilih-hari" class="grid-2" role="group" aria-label="Pilihan cepat jumlah malam">
+        <button type="button" class="selectable-card selected stack items-center gap-1" data-value="1" aria-pressed="true">
+          <span class="text-lg tnum text-main">1 malam</span>
+          <span class="text-sm text-primary-color fw-700 tnum">Rp3.000</span>
+        </button>
+        <button type="button" class="selectable-card stack items-center gap-1" data-value="7" aria-pressed="false">
+          <span class="text-lg tnum text-main">7 malam</span>
+          <span class="text-sm text-primary-color fw-700 tnum">Rp21.000</span>
+        </button>
+        <button type="button" class="selectable-card stack items-center gap-1" data-value="14" aria-pressed="false">
+          <span class="text-lg tnum text-main">14 malam</span>
+          <span class="text-sm text-primary-color fw-700 tnum">Rp42.000</span>
+        </button>
+        <button type="button" class="selectable-card stack items-center gap-1" data-value="30" aria-pressed="false">
+          <span class="text-lg tnum text-main">30 malam</span>
+          <span class="text-sm text-primary-color fw-700 tnum">Rp90.000</span>
+        </button>
+      </div>
     </div>
 
     <section class="hero-card" aria-label="Ringkasan total pembayaran">
       <div class="row between items-end gap-3">
         <div class="stack gap-1">
           <span class="text-sm text-secondary">Total bayar</span>
-          <span class="text-xl tnum" data-selectable-output>Rp21.000</span>
+          <span class="text-xl tnum" data-selectable-output>Rp3.000</span>
         </div>
         <div class="stack gap-1 items-end text-right">
-          <span class="text-sm text-secondary">Sisa retribusi nanti</span>
-          <span class="text-md fw-700 text-success tnum" data-selectable-quota>14 malam</span>
+          <span class="text-sm text-secondary">Malam terbayar</span>
+          <span class="text-md fw-700 text-success tnum" data-selectable-quota>5 malam</span>
         </div>
       </div>
-      <span class="text-sm text-secondary">Pembayaran memakai QRIS. Pastikan saldo dompet digital atau m-banking Anda cukup sebelum lanjut, ya.</span>
+      <p class="text-sm fw-700 text-main m-0 tnum" id="night-equation">Sekarang 4 + dibayar 1 = 5 malam</p>
+      <p class="text-sm text-secondary m-0" id="night-auto-note">Pembayaran memakai QRIS. Pastikan saldo dompet digital atau m-banking Anda cukup sebelum lanjut.</p>
     </section>
 
   </main>
 
   <div class="screen-footer">
-    <a href="AnggotaQris.dc.html" class="btn btn-primary no-underline" data-selectable-cta>Lanjut Bayar Rp21.000</a>
+    <a href="AnggotaQris.dc.html?nights=1" id="btn-lanjut-qris" class="btn btn-primary no-underline" data-selectable-cta>Lanjut Bayar Rp3.000</a>
   </div>
 
 </div>
 </x-dc>
+<script>
+(function () {
+  function boot() {
+    var store = window.APIMA_STORE;
+    var state = store ? store.getState() : null;
+    var member = store ? store.getActiveMember() : { paidNights: 4, tonightStatus: 'belum_lapor' };
+    var params = new URLSearchParams(window.location.search || '');
+    var fromBeranda = params.get('from') === 'beranda';
+
+    var dateEl = document.getElementById('pilih-date');
+    if (dateEl && store && state) {
+      dateEl.textContent = store.formatDateInfo(state.dayOffset).short;
+    }
+
+    var currentPaid = Math.max(0, parseInt(member.paidNights, 10) || 0);
+    var autoReportTonight = (currentPaid === 0 && member.tonightStatus !== 'sudah_bayar');
+    var selectedNights = Math.max(1, Math.min(30, parseInt(params.get('nights'), 10) || (store ? store.getPendingOrder().nights : 1) || 1));
+
+    var minusBtn = document.getElementById('btn-night-minus');
+    var plusBtn = document.getElementById('btn-night-plus');
+    var readoutEl = document.getElementById('stepper-nights');
+    var subEl = document.getElementById('stepper-sub');
+    var outPrice = document.querySelector('[data-selectable-output]');
+    var outQuota = document.querySelector('[data-selectable-quota]');
+    var eqEl = document.getElementById('night-equation');
+    var noteEl = document.getElementById('night-auto-note');
+    var ctaLink = document.getElementById('btn-lanjut-qris');
+    var presetBtns = document.querySelectorAll('[data-selectable-group] .selectable-card');
+
+    function sync(n) {
+      selectedNights = Math.max(1, Math.min(30, parseInt(n, 10) || 1));
+      var total = selectedNights * 3000;
+      var priceStr = store ? store.formatRupiah(total) : ('Rp' + total.toLocaleString('id-ID'));
+      var sumAfterPay = currentPaid + selectedNights;
+      var afterTonight = autoReportTonight ? Math.max(0, sumAfterPay - 1) : sumAfterPay;
+
+      if (readoutEl) readoutEl.textContent = selectedNights + ' malam';
+      if (subEl) subEl.textContent = selectedNights + ' × Rp3.000';
+      if (minusBtn) minusBtn.disabled = selectedNights <= 1;
+      if (plusBtn) plusBtn.disabled = selectedNights >= 30;
+      if (outPrice) outPrice.textContent = priceStr;
+      if (outQuota) outQuota.textContent = afterTonight + ' malam';
+
+      if (eqEl) {
+        eqEl.textContent = 'Sekarang ' + currentPaid + ' + dibayar ' + selectedNights + ' = ' + sumAfterPay + ' malam';
+      }
+      if (noteEl) {
+        if (autoReportTonight) {
+          noteEl.textContent = 'Pembayaran saat malam terbayar 0 otomatis melapor jualan malam ini (terpakai 1, sudah dibayar untuk ' + afterTonight + ' malam lagi).';
+        } else {
+          noteEl.textContent = 'Pembayaran memakai QRIS. Pastikan saldo dompet digital atau m-banking Anda cukup sebelum lanjut.';
+        }
+      }
+
+      if (ctaLink) {
+        ctaLink.textContent = 'Lanjut Bayar ' + priceStr;
+        ctaLink.setAttribute('href', 'AnggotaQris.dc.html?nights=' + selectedNights);
+      }
+
+      presetBtns.forEach(function (btn) {
+        var match = parseInt(btn.dataset.value, 10) === selectedNights;
+        btn.classList.toggle('selected', match);
+        btn.setAttribute('aria-pressed', match ? 'true' : 'false');
+      });
+
+      if (store) store.setPendingOrder(selectedNights, fromBeranda);
+    }
+
+    if (minusBtn) minusBtn.addEventListener('click', function () { sync(selectedNights - 1); });
+    if (plusBtn) plusBtn.addEventListener('click', function () { sync(selectedNights + 1); });
+    presetBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        sync(parseInt(btn.dataset.value, 10));
+      });
+    });
+    if (ctaLink) {
+      ctaLink.addEventListener('click', function () {
+        if (store) store.setPendingOrder(selectedNights, fromBeranda);
+      });
+    }
+
+    sync(selectedNights);
+  }
+
+  window.addEventListener('apima:ready', boot);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 40); });
+  } else {
+    setTimeout(boot, 40);
+  }
+})();
+</script>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>

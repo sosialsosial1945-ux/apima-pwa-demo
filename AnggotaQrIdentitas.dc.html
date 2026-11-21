@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APIMA · QR untuk satgas</title>
+<title>APIMA · QR Identitas Anggota</title>
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
+<script src="./apima-store.js"></script>
+<script src="./lib/qrcode.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -21,63 +23,61 @@
 
   <header class="header-compact between">
     <div class="row gap-2">
-      <a href="Main.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke beranda">
+      <a id="qr-back-btn" href="Main.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke beranda">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
       </a>
-      <h1 class="text-md m-0 fw-700">QR saya</h1>
+      <h1 id="qr-page-title" class="text-md m-0 fw-700">QR Identitas</h1>
     </div>
-    <span class="pill pill-success">
-      <span class="status-dot dot-success" aria-hidden="true"></span>
-      Sudah Bayar
-    </span>
+    <span class="badge badge-neutral">Identitas</span>
   </header>
 
   <main class="screen-scroll stack gap-3" style="padding:16px">
 
-    <section class="hero-card items-center text-center" aria-label="Kode QR pedagang">
-      <div class="stack gap-1 items-center">
-        <span class="text-md fw-700">Budi Santoso</span>
-        <span class="text-sm text-secondary">Lapak Blok C-14</span>
+    <section class="qr-id-card" aria-label="Kartu QR identitas anggota APIMA">
+      <div class="qr-id-head">
+        <span class="qr-id-label">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M15 10h3M15 14h3M7 16c.5-1.5 3.5-1.5 4 0"/></svg>
+          QR Identitas · Tunjukkan ke Satgas
+        </span>
+        <div class="qr-id-profile">
+          <span id="qr-member-avatar" class="member-avatar-photo" aria-hidden="true">BS</span>
+          <div class="stack" style="gap:2px;min-width:0">
+            <span id="qr-member-name" class="text-md fw-700" style="color:#FFFFFF">Budi Santoso</span>
+            <span id="qr-member-sub" class="text-sm tnum" style="color:#DBEAFE">ID 0123 · Blok C-14</span>
+          </div>
+        </div>
       </div>
 
-      <div class="qr-stage">
-        <span class="qr-stage-title">APIMA · QR Pedagang</span>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 230" width="212" height="212" role="img" aria-label="QR pedagang untuk dicek satgas">
-          <rect width="230" height="230" fill="#FFFFFF"/>
-          <path d="M10,10h70v70h-70z M20,20h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
-          <rect x="30" y="30" width="30" height="30" fill="#0F172A"/>
-          <path d="M150,10h70v70h-70z M160,20h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
-          <rect x="170" y="30" width="30" height="30" fill="#0F172A"/>
-          <path d="M10,150h70v70h-70z M20,160h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
-          <rect x="30" y="170" width="30" height="30" fill="#0F172A"/>
-          <rect x="90" y="70" width="10" height="10" fill="#0F172A"/>
-          <rect x="110" y="70" width="10" height="10" fill="#0F172A"/>
-          <rect x="130" y="70" width="10" height="10" fill="#0F172A"/>
-          <rect x="80" y="80" width="10" height="10" fill="#0F172A"/>
-          <rect x="100" y="80" width="10" height="10" fill="#0F172A"/>
-          <rect x="90" y="90" width="10" height="10" fill="#0F172A"/>
-          <rect x="110" y="90" width="10" height="10" fill="#0F172A"/>
-          <rect x="90" y="110" width="10" height="10" fill="#0F172A"/>
-          <rect x="90" y="130" width="10" height="10" fill="#0F172A"/>
-          <rect x="90" y="150" width="10" height="10" fill="#0F172A"/>
-          <rect x="110" y="150" width="10" height="10" fill="#0F172A"/>
-          <rect x="90" y="170" width="10" height="10" fill="#0F172A"/>
-          <rect x="90" y="190" width="10" height="10" fill="#0F172A"/>
-        </svg>
-        <span class="qr-stage-caption">Berganti otomatis setiap 45 detik</span>
+      <div class="qr-id-body" id="qr-id-stage" data-qr-payload="">
+        <canvas id="qr-id-canvas" width="220" height="220" role="img" aria-label="Kode QR identitas anggota APIMA yang berganti setiap 45 detik" style="width:212px;height:212px;display:block;image-rendering:pixelated"></canvas>
+        <div class="qr-id-timer-row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span>QR berganti dalam <strong id="qr-id-countdown" class="tnum" style="color:#0F172A">00:45</strong></span>
+        </div>
+        <span id="qr-id-code-caption" class="text-xs tnum" style="color:#475569">Kode identitas aktif · Berlaku 45 detik</span>
       </div>
 
-      <div class="row gap-2 text-sm text-secondary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        <span>QR berganti dalam <strong class="text-main tnum" data-countdown="45" data-countdown-loop>00:45</strong></span>
+      <div class="qr-id-not-payment">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Bukan untuk pembayaran</span>
       </div>
     </section>
 
-    <p class="text-sm text-secondary m-0 text-center" style="padding:0 8px">Tunjukkan langsung ke satgas saat keliling. Hasil screenshot tidak berlaku karena kode selalu diperbarui.</p>
+    <div id="qr-penjaga-card" class="card card-pad">
+      <div class="row between items-center gap-2">
+        <div class="stack" style="gap:2px">
+          <span class="text-sm fw-700 text-main">Penjaga lapak</span>
+          <span id="qr-penjaga-status" class="text-sm text-secondary">Rahmat · Aktif</span>
+        </div>
+        <a id="qr-test-scan-link" href="SatgasScan.dc.html?id=0123" class="btn-chip no-underline">Coba Scan Satgas</a>
+      </div>
+    </div>
+
+    <p class="text-sm text-secondary m-0 text-center" style="padding:0 8px">Tunjukkan langsung ke satgas saat keliling. Status pembayaran dibaca otomatis saat QR dipindai satgas.</p>
 
   </main>
 
-  <div class="screen-footer">
+  <div id="qr-member-footer" class="screen-footer">
     <button type="button" class="btn btn-primary" data-share-wa>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l2-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>
       Bagikan QR ke Penjaga
@@ -101,6 +101,113 @@
 
 </div>
 </x-dc>
+<script>
+(function () {
+  function drawQrToCanvas(canvas, text) {
+    if (!canvas || typeof window.qrcode !== 'function') return;
+    var qr = window.qrcode(0, 'M');
+    qr.addData(text);
+    qr.make();
+    var count = qr.getModuleCount();
+    var quiet = 4;
+    var totalModules = count + quiet * 2;
+    var scale = Math.max(4, Math.floor(240 / totalModules));
+    var size = totalModules * scale;
+    canvas.width = size;
+    canvas.height = size;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = '#0F172A';
+    for (var r = 0; r < count; r++) {
+      for (var c = 0; c < count; c++) {
+        if (qr.isDark(r, c)) {
+          ctx.fillRect((c + quiet) * scale, (r + quiet) * scale, scale, scale);
+        }
+      }
+    }
+  }
+
+  function initQrIdentitas() {
+    var params = new URLSearchParams(window.location.search || '');
+    var isPenjagaMode = params.get('mode') === 'penjaga';
+    var requestedId = params.get('id');
+    var store = window.APIMA_STORE;
+    var member = store ? store.getMember(requestedId || '0123') : {
+      id: '0123',
+      name: 'Budi Santoso',
+      initials: 'BS',
+      blok: 'Blok C-14',
+      penjaga: 'Rahmat',
+      penjagaActive: true
+    };
+
+    var avatarEl = document.getElementById('qr-member-avatar');
+    var nameEl = document.getElementById('qr-member-name');
+    var subEl = document.getElementById('qr-member-sub');
+    var penjagaStatusEl = document.getElementById('qr-penjaga-status');
+    var testScanLink = document.getElementById('qr-test-scan-link');
+    var backBtn = document.getElementById('qr-back-btn');
+    var titleEl = document.getElementById('qr-page-title');
+    var footerEl = document.getElementById('qr-member-footer');
+    var penjagaCard = document.getElementById('qr-penjaga-card');
+    var revokeBtn = document.querySelector('[data-sheet-open="sheet-cabut"]');
+    var canvas = document.getElementById('qr-id-canvas');
+    var stage = document.getElementById('qr-id-stage');
+    var countdownEl = document.getElementById('qr-id-countdown');
+    var captionEl = document.getElementById('qr-id-code-caption');
+
+    if (avatarEl) avatarEl.textContent = member.initials || 'BS';
+    if (nameEl) nameEl.textContent = member.name;
+    if (subEl) subEl.textContent = 'ID ' + member.id + ' \u00b7 ' + member.blok;
+    if (testScanLink) testScanLink.setAttribute('href', 'SatgasScan.dc.html?id=' + encodeURIComponent(member.id));
+
+    var penjagaName = (member.penjaga && member.penjaga !== 'Jaga sendiri') ? member.penjaga : 'Rahmat';
+    if (penjagaStatusEl) {
+      penjagaStatusEl.textContent = penjagaName + ' \u00b7 ' + (member.penjagaActive ? 'Aktif' : 'Nonaktif');
+    }
+    if (revokeBtn && !member.penjagaActive) {
+      revokeBtn.disabled = true;
+      revokeBtn.textContent = 'Akses Penjaga Dinonaktifkan';
+    }
+
+    /* Tampilan khusus tautan penjaga: tanpa menu anggota & tanpa tombol cabut/bagikan */
+    if (isPenjagaMode) {
+      if (backBtn) backBtn.hidden = true;
+      if (titleEl) titleEl.textContent = 'QR Identitas Lapak';
+      if (footerEl) footerEl.hidden = true;
+      if (penjagaCard) penjagaCard.hidden = true;
+    }
+
+    var lastPeriod = -1;
+    function refreshQr() {
+      var now = Date.now();
+      var period = store ? store.getQrPeriod(now) : Math.floor(now / 45000);
+      var rem = store ? store.getQrSecondsRemaining(now) : (45 - (Math.floor(now / 1000) % 45));
+      var mm = String(Math.floor(rem / 60)).padStart(2, '0');
+      var ss = String(rem % 60).padStart(2, '0');
+      if (countdownEl) countdownEl.textContent = mm + ':' + ss;
+
+      if (period !== lastPeriod) {
+        lastPeriod = period;
+        var payload = store ? store.buildIdentityQrPayload(member.id, now) : ('APIMA:' + member.id + ':' + period);
+        drawQrToCanvas(canvas, payload);
+        if (stage) stage.dataset.qrPayload = payload;
+        if (captionEl) captionEl.textContent = 'ID ' + member.id + ' \u00b7 Periode aktif #' + String(period).slice(-4);
+      }
+    }
+
+    refreshQr();
+    setInterval(refreshQr, 1000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initQrIdentitas);
+  } else {
+    initQrIdentitas();
+  }
+})();
+</script>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic { renderVals() { return {}; } }
 </script>

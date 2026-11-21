@@ -1390,3 +1390,167 @@ body { background: var(--apima-bg-page); }
   .admin-shell .sheet { max-width: none; border-radius: var(--apima-radius-md) var(--apima-radius-md) 0 0; }
   .admin-shell .toast { left: 16px; right: 16px; max-width: none; }
 }
+
+/* =====================================================================
+   Tema Gelap Admin: Navy Maritim (v4.6)
+   Arah: kanvas navy pekat bergradasi statis, sidebar kartu melayang,
+   kartu radius 20px dengan garis tepi tipis, satu biru aksi terang.
+   Tanpa blur, tanpa cahaya beranimasi (DESIGN.md 9.2). Hanya aktif di
+   halaman admin karena admin.css hanya dimuat di sana.
+   ===================================================================== */
+:root[data-theme="dark"] {
+  --apima-bg-page: #0A0E2A;
+  --apima-bg-card: #0D1340;
+  --apima-bg-raised: #151C4F;
+
+  --apima-text: #FFFFFF;
+  --apima-text-secondary: #A0AEC0;
+  --apima-text-caption: #A0AEC0;
+  --apima-text-disabled: #6C7793;
+  --apima-line: rgba(255, 255, 255, 0.09);
+  --apima-line-soft: rgba(255, 255, 255, 0.06);
+  --apima-line-strong: rgba(255, 255, 255, 0.28);
+
+  --apima-primary: #1B6AD4;
+  --apima-primary-hover: #0075FF;
+  --apima-primary-pressed: #155BB8;
+  --apima-primary-tint: rgba(0, 117, 255, 0.16);
+  --apima-primary-ring: rgba(0, 117, 255, 0.42);
+  --apima-accent-text: #6FB1FF;
+  --apima-focus: #7CC0F5;
+  --apima-tile-primary-bg: rgba(0, 117, 255, 0.22);
+
+  --apima-success: #2ED58F;
+  --apima-success-tint: rgba(1, 181, 116, 0.14);
+  --apima-border-success: rgba(1, 181, 116, 0.36);
+  --apima-warning-tint: rgba(251, 191, 36, 0.12);
+  --apima-danger-tint: rgba(248, 113, 113, 0.12);
+  --apima-neutral-tint: rgba(255, 255, 255, 0.06);
+  --apima-meter-track: rgba(255, 255, 255, 0.10);
+  --apima-chart-dim: #56628A;
+  --apima-toast-bg: #151C4F;
+  --apima-toast-border: rgba(255, 255, 255, 0.18);
+  --apima-icon-ring: 0 0 0 1px rgba(255, 255, 255, 0.10);
+
+  --vc-line: #2D8CFF;
+  --vc-bar-top: #0075FF;
+  --vc-bar-bot: rgba(0, 117, 255, 0.10);
+  --vc-peak: #2D8CFF;
+  --vc-avg: #6FB1FF;
+  --vc-grid: rgba(255, 255, 255, 0.08);
+  --vc-halo: rgba(0, 117, 255, 0.28);
+
+  --admin-canvas: linear-gradient(159deg, #0F123B 0%, #090D2E 55%, #040720 100%);
+  --admin-surface: linear-gradient(127deg, rgba(10, 16, 52, 0.96) 0%, rgba(8, 13, 40, 0.80) 100%);
+  --admin-nav-surface: linear-gradient(112deg, rgba(8, 13, 42, 0.98) 55%, rgba(26, 31, 55, 0.55) 100%);
+  --admin-radius: 20px;
+}
+:root[data-theme="dark"] { background: #040720; }
+:root[data-theme="dark"] body { background: var(--admin-canvas); min-height: 100vh; }
+:root[data-theme="dark"] .admin-shell { background: transparent; }
+
+/* Sidebar melayang */
+:root[data-theme="dark"] .admin-nav {
+  margin: 16px 0 16px 16px;
+  height: calc(100vh - 32px);
+  top: 16px;
+  border: 1px solid var(--apima-line);
+  border-radius: var(--admin-radius);
+  background: var(--admin-nav-surface);
+}
+:root[data-theme="dark"] .admin-nav-head { border-bottom-color: var(--apima-line); }
+:root[data-theme="dark"] .admin-nav-link { color: var(--apima-text-secondary); border-radius: 14px; }
+:root[data-theme="dark"] .admin-nav-link:hover { background: rgba(255, 255, 255, 0.05); color: var(--apima-text); }
+:root[data-theme="dark"] .admin-nav-link.active {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--apima-text);
+  box-shadow: inset 0 0 0 1px var(--apima-line);
+}
+:root[data-theme="dark"] .admin-nav-link.active > svg {
+  color: #FFFFFF;
+  background: var(--apima-primary);
+  border-radius: 10px;
+  padding: 6px;
+  width: 30px;
+  height: 30px;
+}
+:root[data-theme="dark"] .admin-nav-link > svg { transition: background var(--apima-transition), color var(--apima-transition); }
+:root[data-theme="dark"] .admin-user-pill,
+:root[data-theme="dark"] .admin-portal-card { background: rgba(255, 255, 255, 0.04); border-color: var(--apima-line); }
+
+/* Topbar menyatu dengan kanvas */
+:root[data-theme="dark"] .admin-topbar {
+  background: transparent;
+  border-bottom: none;
+  padding-top: 16px;
+}
+:root[data-theme="dark"] .topbar-search-input {
+  background: rgba(6, 10, 34, 0.75);
+  border-color: var(--apima-line);
+}
+:root[data-theme="dark"] .topbar-search-input:focus { background: rgba(6, 10, 34, 0.95); }
+:root[data-theme="dark"] .topbar-kbd { background: rgba(255, 255, 255, 0.06); }
+:root[data-theme="dark"] .admin-mobile-bar { background: rgba(8, 13, 42, 0.96); border-bottom-color: var(--apima-line); }
+
+/* Permukaan kartu */
+:root[data-theme="dark"] .admin-card,
+:root[data-theme="dark"] .bento-card,
+:root[data-theme="dark"] .metric-card,
+:root[data-theme="dark"] .admin-hero,
+:root[data-theme="dark"] .ai-panel,
+:root[data-theme="dark"] .admin-main .card,
+:root[data-theme="dark"] .admin-main .info-strip,
+:root[data-theme="dark"] .admin-main .banner,
+:root[data-theme="dark"] .admin-table-wrap {
+  background: var(--admin-surface);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--admin-radius);
+}
+:root[data-theme="dark"] .bento-card:hover { border-color: var(--apima-primary-ring); }
+:root[data-theme="dark"] .admin-main .card .card,
+:root[data-theme="dark"] .admin-card .card,
+:root[data-theme="dark"] .ai-point,
+:root[data-theme="dark"] .exec-stat,
+:root[data-theme="dark"] .admin-toolbar .seg,
+:root[data-theme="dark"] .admin-card .seg,
+:root[data-theme="dark"] .admin-page-head .seg {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--apima-line);
+}
+:root[data-theme="dark"] .admin-table th { color: var(--apima-text-secondary); border-bottom-color: var(--apima-line); }
+:root[data-theme="dark"] .admin-table td { border-bottom-color: var(--apima-line-soft); }
+:root[data-theme="dark"] .admin-table tbody tr:hover { background: rgba(255, 255, 255, 0.03); }
+:root[data-theme="dark"] .merchant-row { border-bottom-color: var(--apima-line-soft); }
+:root[data-theme="dark"] .seg-thumb { background: var(--apima-primary); box-shadow: none; }
+:root[data-theme="dark"] .seg.seg-has-thumb .seg-btn.active,
+:root[data-theme="dark"] .seg-control.seg-has-thumb .seg-btn.active { color: #FFFFFF; }
+
+/* Banner eksekutif: biru aksi bergradasi statis */
+:root[data-theme="dark"] .exec-banner {
+  background: linear-gradient(135deg, #0A4BD1 0%, #0B2466 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--admin-radius);
+}
+:root[data-theme="dark"] .exec-seg-btn.active { background: #FFFFFF; color: #0B2466; }
+:root[data-theme="dark"] .ai-panel { border-color: var(--apima-primary-ring); }
+
+/* Tombol aksi utama dan chip */
+:root[data-theme="dark"] .admin-shell .btn-primary { background: var(--apima-primary); color: #FFFFFF; }
+:root[data-theme="dark"] .admin-shell .btn-primary:hover { background: var(--apima-primary-hover); }
+:root[data-theme="dark"] .admin-shell .btn-chip,
+:root[data-theme="dark"] .admin-shell .btn-secondary,
+:root[data-theme="dark"] .admin-shell .btn-icon {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--apima-line);
+  color: var(--apima-text);
+}
+:root[data-theme="dark"] .admin-shell .btn-chip:hover,
+:root[data-theme="dark"] .admin-shell .btn-secondary:hover,
+:root[data-theme="dark"] .admin-shell .btn-icon:hover { background: rgba(255, 255, 255, 0.08); }
+:root[data-theme="dark"] .sample-data-badge { background: rgba(255, 255, 255, 0.06); border-color: var(--apima-line); }
+:root[data-theme="dark"] .admin-drawer,
+:root[data-theme="dark"] .admin-shell .sheet { background: #0D1340; border-color: var(--apima-line); }
+
+@media (max-width: 720px) {
+  :root[data-theme="dark"] .admin-nav { margin: 0; height: 100vh; top: 0; border-radius: 0; }
+}

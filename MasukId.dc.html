@@ -19,7 +19,7 @@
 <x-dc>
 <div class="screen">
 
-  <header class="header-compact" style="justify-content:space-between">
+  <header class="header-compact login-header">
     <button type="button" id="pwa-install-btn" class="btn-chip" hidden aria-label="Download aplikasi APIMA ke perangkat">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       Download APIMA
@@ -30,53 +30,63 @@
     </button>
   </header>
 
-  <main class="screen-scroll stack gap-4 justify-center" style="padding:16px">
+  <main class="screen-scroll login-main">
 
-    <div class="stack items-center gap-2 text-center">
-      <img src="brand/apima-app-icon-192.webp" width="96" height="96" alt="Ikon aplikasi APIMA, Asosiasi Pedagang Ikan Muara Angke" class="login-logo">
-      <h1 class="text-lg m-0">Masuk ke APIMA</h1>
-      <p class="text-sm text-secondary m-0">Masukkan ID dan password akun Anda.</p>
+    <div class="login-brand">
+      <span class="brand-wordmark login-wordmark">
+        <img src="brand/apima-wordmark-light.webp" width="240" height="85" alt="APIMA" class="wm-light">
+        <img src="brand/apima-wordmark-dark.webp" width="240" height="85" alt="" aria-hidden="true" class="wm-dark">
+      </span>
+      <h1 class="login-tagline m-0">Asosiasi Pedagang Ikan Muara Angke</h1>
     </div>
 
-    <form id="login-form" class="hero-card" data-login-form novalidate aria-label="Formulir masuk APIMA">
+    <form id="login-form" class="login-card" data-login-form novalidate aria-label="Formulir masuk APIMA">
       <div class="stack gap-2">
-        <label for="id" class="text-bold">ID</label>
-        <input id="id" name="id" inputmode="text" autocapitalize="characters" autocomplete="username" placeholder="Masukkan ID Anda" class="input" data-login-id>
+        <label for="id" class="login-label">ID Anggota</label>
+        <input id="id" name="id" inputmode="text" autocapitalize="characters" autocomplete="username" placeholder="Masukkan ID Anda (mis. 0123)" class="input login-input" data-login-id>
       </div>
 
       <div class="stack gap-2">
-        <label for="password" class="text-bold">Password</label>
+        <label for="password" class="login-label">Password</label>
         <div class="password-wrap">
-          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password Anda" class="input" data-login-password>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Masukkan password Anda" class="input login-input" data-login-password>
           <button type="button" class="password-toggle" data-toggle-password="password" aria-label="Tampilkan password" aria-pressed="false">
             <svg class="eye-on" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             <svg class="eye-off" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
           </button>
         </div>
       </div>
-    </form>
 
-    <section class="demo-role-box" aria-label="Masuk cepat demo presentasi">
-      <div class="demo-role-head">
-        <span class="text-xs fw-700 text-main">Masuk cepat presentasi</span>
-        <span class="badge badge-neutral">Data dummy siap</span>
-      </div>
-      <div class="demo-role-grid">
-        <button type="button" class="demo-role-btn" data-demo-role="penjual" data-demo-target="Main.dc.html">Penjual</button>
-        <button type="button" class="demo-role-btn" data-demo-role="petugas" data-demo-target="SatgasDaftar.dc.html">Petugas</button>
-        <button type="button" class="demo-role-btn" data-demo-role="admin" data-demo-target="AdminRingkasan.dc.html">Admin</button>
-      </div>
-    </section>
+      <button type="submit" class="btn btn-primary login-submit" data-login-submit>Masuk</button>
+      <p class="login-help-row m-0 text-sm text-secondary text-center">
+        <span>Lupa ID atau password?</span>
+        <button type="button" class="link-inline" data-sheet-open="sheet-bantuan-id">Hubungi Pengurus</button>
+      </p>
+    </form>
 
   </main>
 
-  <div class="screen-footer">
-    <button type="submit" form="login-form" class="btn btn-primary" data-login-submit>Masuk</button>
-    <p class="login-help-row m-0 text-sm text-secondary text-center">
-      <span>Lupa ID/Password?</span>
-      <button type="button" class="link-inline" data-sheet-open="sheet-bantuan-id">Hubungi Pengurus</button>
-    </p>
-  </div>
+  <!-- // HAPUS SEBELUM PRODUKSI (akses cepat demo presentasi) -->
+  <section class="screen-footer login-demo" aria-label="Masuk cepat untuk demo">
+    <div class="row between items-center gap-2">
+      <span class="text-sm fw-700 text-main">Masuk sebagai (Demo)</span>
+      <span class="text-sm text-secondary">Data siap pakai</span>
+    </div>
+    <div class="demo-role-grid">
+      <a href="Main.dc.html" class="demo-role-card" data-demo-role="penjual" data-demo-target="Main.dc.html">
+        <span class="demo-role-title">Penjual</span>
+        <span class="demo-role-sub">Mobile</span>
+      </a>
+      <a href="SatgasDaftar.dc.html" class="demo-role-card" data-demo-role="petugas" data-demo-target="SatgasDaftar.dc.html">
+        <span class="demo-role-title">Petugas</span>
+        <span class="demo-role-sub">Mobile</span>
+      </a>
+      <a href="AdminRingkasan.dc.html" class="demo-role-card" data-demo-role="admin" data-demo-target="AdminRingkasan.dc.html">
+        <span class="demo-role-title">Admin</span>
+        <span class="demo-role-sub">Desktop</span>
+      </a>
+    </div>
+  </section>
 
   <div id="sheet-bantuan-id" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-id-title">
     <div class="sheet">
