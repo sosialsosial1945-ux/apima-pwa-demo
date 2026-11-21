@@ -619,6 +619,74 @@
       });
     });
 
+    /* Sliding spring pill untuk semua segmented control (.seg & .seg-control) */
+    function initSlidingPills() {
+      var groups = document.querySelectorAll('.seg, .seg-control');
+      groups.forEach(function (group) {
+        if (group.dataset.thumbInit) return;
+        var btns = group.querySelectorAll('.seg-btn');
+        if (btns.length < 2) return;
+        group.dataset.thumbInit = '1';
+        group.classList.add('seg-has-thumb');
+
+        var thumb = document.createElement('span');
+        thumb.className = 'seg-thumb';
+        thumb.setAttribute('aria-hidden', 'true');
+        group.insertBefore(thumb, group.firstChild);
+
+        function moveThumb(instant) {
+          var active = group.querySelector('.seg-btn.active') || btns[0];
+          if (!active) return;
+          if (instant) thumb.style.transition = 'none';
+          thumb.style.width = active.offsetWidth + 'px';
+          thumb.style.height = active.offsetHeight + 'px';
+          thumb.style.transform = 'translate3d(' + active.offsetLeft + 'px,' + active.offsetTop + 'px,0)';
+          if (instant) {
+            thumb.offsetHeight;
+            thumb.style.transition = '';
+          }
+        }
+
+        btns.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            requestAnimationFrame(function () { moveThumb(false); });
+          });
+        });
+
+        requestAnimationFrame(function () { moveThumb(true); });
+        window.addEventListener('resize', function () { moveThumb(true); });
+      });
+    }
+
+    /* Cross-rise animasi lembut saat ganti periode atau tab konten */
+    function pulseSwap(selectors) {
+      selectors.forEach(function (sel) {
+        var el = document.querySelector(sel);
+        if (!el) return;
+        el.classList.remove('apima-swap');
+        el.offsetHeight;
+        el.classList.add('apima-swap');
+      });
+    }
+
+    document.querySelectorAll('[data-dash-period]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        pulseSwap(['#exec-total', '#ai-headline', '.ai-grid']);
+      });
+    });
+    document.querySelectorAll('[data-hl-tab]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        pulseSwap(['#hl-merchant-list']);
+      });
+    });
+    document.querySelectorAll('[data-lap-period]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        pulseSwap(['#lap-hero-total', '#lap-ai-title']);
+      });
+    });
+
+    initSlidingPills();
+
     window.apimaToast = showToast;
     window.__apimaInteractionsReady = true;
   }

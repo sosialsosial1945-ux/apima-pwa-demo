@@ -1559,3 +1559,210 @@ a.info-cell:hover { background: var(--apima-bg-page); color: inherit; }
   .fb-mini-scale { width: 100%; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .fb-mini-btn { width: 100%; }
 }
+
+/* =====================================
+   APIMA Spring & Morph Micro-Interactions (v5.0)
+   Terinspirasi animasi spring, frosted glass, sliding pill, dan morphing sheet
+   ===================================== */
+:root {
+  --apima-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --apima-spring-pop: cubic-bezier(0.34, 1.38, 0.64, 1);
+  --apima-glass-light: rgba(255, 255, 255, 0.86);
+  --apima-glass-dark: rgba(20, 25, 34, 0.84);
+}
+
+/* Frosted glass pada topbar, mobile bar, dan bottom nav */
+.bottom-nav,
+.admin-topbar,
+.admin-mobile-bar {
+  background: var(--apima-glass-light);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+}
+:root[data-theme="dark"] .bottom-nav,
+:root[data-theme="dark"] .admin-topbar,
+:root[data-theme="dark"] .admin-mobile-bar {
+  background: var(--apima-glass-dark);
+}
+
+/* Sliding spring pill untuk semua segmented control (.seg & .seg-control) */
+.seg.seg-has-thumb,
+.seg-control.seg-has-thumb {
+  position: relative;
+  isolation: isolate;
+}
+.seg-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-bg-card);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(15, 23, 42, 0.04);
+  pointer-events: none;
+  transition: transform 320ms var(--apima-spring), width 320ms var(--apima-spring), height 320ms var(--apima-spring), opacity 180ms ease;
+  will-change: transform, width, height;
+}
+:root[data-theme="dark"] .seg-thumb {
+  background: #1C2432;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.seg.seg-has-thumb .seg-btn,
+.seg-control.seg-has-thumb .seg-btn {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  box-shadow: none;
+  transition: color 220ms var(--apima-spring), transform 140ms var(--apima-spring);
+}
+.seg.seg-has-thumb .seg-btn.active,
+.seg-control.seg-has-thumb .seg-btn.active {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Tactile spring press & hover micro-lift */
+.btn,
+.btn-chip,
+.btn-icon,
+.selectable-card,
+.nav-item,
+.list-row,
+.live-feed-btn {
+  transition: background 200ms var(--apima-spring), color 200ms var(--apima-spring), border-color 200ms var(--apima-spring), box-shadow 220ms var(--apima-spring), transform 180ms var(--apima-spring);
+}
+.btn:active,
+.btn-chip:active,
+.btn-icon:active,
+.selectable-card:active,
+.nav-item:active,
+.live-feed-btn:active {
+  transform: scale(0.97);
+}
+.selectable-card.selected {
+  animation: apimaSelectPop 260ms var(--apima-spring-pop);
+}
+.admin-nav-link {
+  transition: background 200ms var(--apima-spring), color 200ms var(--apima-spring), transform 220ms var(--apima-spring);
+}
+.admin-nav-link:hover {
+  transform: translateX(3px);
+}
+.admin-nav.collapsed .admin-nav-link:hover {
+  transform: none;
+}
+
+/* Morphing Frosted Sheet, Popover & Slide-Over Drawer */
+@keyframes apimaFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes apimaSheetMorph {
+  from { opacity: 0; transform: translateY(22px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes apimaDrawerSlide {
+  from { opacity: 0.4; transform: translateX(48px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes apimaPopoverIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes apimaStaggerItem {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes apimaSelectPop {
+  0%   { transform: scale(0.98); }
+  60%  { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+@keyframes apimaSwapRise {
+  from { opacity: 0.35; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes apimaToastPop {
+  from { opacity: 0; transform: translateY(14px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes apimaBarRise {
+  from { opacity: 0.2; transform: scaleY(0.18); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+
+.sheet-backdrop:not([hidden]),
+.admin-drawer-backdrop:not([hidden]) {
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: apimaFadeIn 200ms var(--apima-spring) both;
+}
+.sheet-backdrop:not([hidden]) .sheet {
+  animation: apimaSheetMorph 320ms var(--apima-spring) both;
+}
+.admin-drawer-backdrop:not([hidden]) .admin-drawer {
+  animation: apimaDrawerSlide 320ms var(--apima-spring) both;
+}
+.topbar-dropdown:not([hidden]) {
+  transform-origin: top center;
+  animation: apimaPopoverIn 220ms var(--apima-spring) both;
+}
+
+/* Staggered reveal untuk isi sheet dan drawer saat dibuka */
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link,
+.sheet-backdrop:not([hidden]) .sheet .open-row,
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row {
+  animation: apimaStaggerItem 280ms var(--apima-spring) both;
+}
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(2),
+.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(2),
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(2) { animation-delay: 28ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(3),
+.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(3),
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(3) { animation-delay: 56ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(4),
+.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(4),
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(4) { animation-delay: 84ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(5),
+.sheet-backdrop:not([hidden]) .sheet .open-row:nth-child(5),
+.admin-drawer-backdrop:not([hidden]) .drawer-kv-row:nth-child(5) { animation-delay: 112ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(6) { animation-delay: 140ms; }
+.sheet-backdrop:not([hidden]) .sheet .admin-nav-link:nth-child(7) { animation-delay: 168ms; }
+
+/* Entrance halus untuk kartu bento, KPI, dan toast */
+.bento-card,
+.hero-card,
+.ai-panel {
+  animation: apimaStaggerItem 320ms var(--apima-spring) both;
+}
+.bento-kpi-grid .bento-card:nth-child(2) { animation-delay: 45ms; }
+.bento-kpi-grid .bento-card:nth-child(3) { animation-delay: 90ms; }
+
+.apima-swap {
+  animation: apimaSwapRise 240ms var(--apima-spring) both;
+}
+.toast:not([hidden]) {
+  animation: apimaToastPop 280ms var(--apima-spring-pop) both;
+}
+
+/* Animasi batang grafik Vision & mini sparkbar saat periode berubah */
+.vc-bar,
+.ms-bar {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: apimaBarRise 380ms var(--apima-spring) both;
+}
+.vc-bar:nth-of-type(2), .ms-bar:nth-of-type(2) { animation-delay: 25ms; }
+.vc-bar:nth-of-type(3), .ms-bar:nth-of-type(3) { animation-delay: 50ms; }
+.vc-bar:nth-of-type(4), .ms-bar:nth-of-type(4) { animation-delay: 75ms; }
+.vc-bar:nth-of-type(5), .ms-bar:nth-of-type(5) { animation-delay: 100ms; }
+.vc-bar:nth-of-type(6), .ms-bar:nth-of-type(6) { animation-delay: 125ms; }
+.vc-bar:nth-of-type(7), .ms-bar:nth-of-type(7) { animation-delay: 150ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
