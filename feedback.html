@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Masukan UI/UX</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js"></script>
+</head>
+<body>
+<x-dc>
+<div class="fb-shell">
+  <div class="fb-container">
+
+    <header class="fb-topbar">
+      <a href="index.html" class="btn-chip no-underline" aria-label="Kembali ke aplikasi demo APIMA">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Kembali ke Demo
+      </a>
+      <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </header>
+
+    <main class="stack gap-4">
+
+      <section class="fb-card" aria-label="Pengantar uji coba UI/UX APIMA">
+        <div class="row gap-3 items-center">
+          <img src="brand/apima-app-icon-192.webp" width="56" height="56" alt="Ikon aplikasi APIMA" style="border-radius:14px;flex-shrink:0">
+          <div class="stack gap-1">
+            <span class="badge badge-neutral" style="width:fit-content">Uji Coba Publik · UI/UX</span>
+            <h1 class="text-lg m-0">Beri masukan untuk APIMA</h1>
+          </div>
+        </div>
+        <p class="text-sm text-secondary m-0">Aplikasi retribusi digital Pasar Ikan Muara Angke. Kritik jujur Anda soal tampilan, alur, dan kenyamanan pakai sangat membantu kami menyempurnakan produk ini.</p>
+        <div class="stack gap-2">
+          <span class="text-xs fw-700 text-secondary">Belum sempat coba aplikasinya? Langsung buka salah satu peran:</span>
+          <div class="fb-try-grid">
+            <a href="Main.dc.html" class="demo-role-btn no-underline">Penjual</a>
+            <a href="SatgasDaftar.dc.html" class="demo-role-btn no-underline">Petugas</a>
+            <a href="AdminRingkasan.dc.html" class="demo-role-btn no-underline">Admin</a>
+          </div>
+        </div>
+      </section>
+
+      <form id="fb-form" class="stack gap-4" novalidate aria-label="Formulir masukan UI/UX APIMA">
+
+        <section class="fb-card">
+          <div class="stack gap-1">
+            <h2 class="text-md m-0 fw-700">1. Bagian mana yang Anda coba?</h2>
+            <span class="text-xs text-secondary">Boleh pilih lebih dari satu.</span>
+          </div>
+          <div class="fb-chip-group" data-multi-group="bagian">
+            <button type="button" class="fb-chip active" data-val="Penjual" aria-pressed="true">Penjual</button>
+            <button type="button" class="fb-chip" data-val="Petugas Satgas" aria-pressed="false">Petugas Satgas</button>
+            <button type="button" class="fb-chip" data-val="Dashboard Admin" aria-pressed="false">Dashboard Admin</button>
+            <button type="button" class="fb-chip" data-val="Halaman Masuk" aria-pressed="false">Halaman Masuk</button>
+            <button type="button" class="fb-chip" data-val="Mode Gelap" aria-pressed="false">Mode Gelap</button>
+          </div>
+        </section>
+
+        <section class="fb-card">
+          <div class="row between items-center gap-2 wrap">
+            <h2 class="text-md m-0 fw-700">2. Nilai keseluruhan (1 sampai 5)</h2>
+            <span class="badge badge-success" id="fb-score-label">4 · Bagus dan rapi</span>
+          </div>
+          <div class="fb-score-grid" role="group" aria-label="Skor keseluruhan dari 1 sampai 5">
+            <button type="button" class="fb-score-btn" data-score="1" aria-pressed="false">1</button>
+            <button type="button" class="fb-score-btn" data-score="2" aria-pressed="false">2</button>
+            <button type="button" class="fb-score-btn" data-score="3" aria-pressed="false">3</button>
+            <button type="button" class="fb-score-btn active" data-score="4" aria-pressed="true">4</button>
+            <button type="button" class="fb-score-btn" data-score="5" aria-pressed="false">5</button>
+          </div>
+
+          <div class="stack">
+            <div class="fb-aspect-row">
+              <span class="text-sm fw-700 text-main">Kemudahan navigasi</span>
+              <div class="fb-mini-scale" data-aspect="navigasi">
+                <button type="button" class="fb-mini-btn" data-v="1">1</button>
+                <button type="button" class="fb-mini-btn" data-v="2">2</button>
+                <button type="button" class="fb-mini-btn" data-v="3">3</button>
+                <button type="button" class="fb-mini-btn active" data-v="4">4</button>
+                <button type="button" class="fb-mini-btn" data-v="5">5</button>
+              </div>
+            </div>
+            <div class="fb-aspect-row">
+              <span class="text-sm fw-700 text-main">Kejelasan tampilan dan tulisan</span>
+              <div class="fb-mini-scale" data-aspect="tampilan">
+                <button type="button" class="fb-mini-btn" data-v="1">1</button>
+                <button type="button" class="fb-mini-btn" data-v="2">2</button>
+                <button type="button" class="fb-mini-btn" data-v="3">3</button>
+                <button type="button" class="fb-mini-btn active" data-v="4">4</button>
+                <button type="button" class="fb-mini-btn" data-v="5">5</button>
+              </div>
+            </div>
+            <div class="fb-aspect-row">
+              <span class="text-sm fw-700 text-main">Kenyamanan dipakai di HP</span>
+              <div class="fb-mini-scale" data-aspect="kenyamanan">
+                <button type="button" class="fb-mini-btn" data-v="1">1</button>
+                <button type="button" class="fb-mini-btn" data-v="2">2</button>
+                <button type="button" class="fb-mini-btn" data-v="3">3</button>
+                <button type="button" class="fb-mini-btn active" data-v="4">4</button>
+                <button type="button" class="fb-mini-btn" data-v="5">5</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="fb-card">
+          <div class="stack gap-1">
+            <h2 class="text-md m-0 fw-700">3. Apa yang paling Anda suka?</h2>
+            <span class="text-xs text-secondary">Opsional, pilih cepat hal yang menurut Anda sudah pas.</span>
+          </div>
+          <div class="fb-chip-group" data-multi-group="suka">
+            <button type="button" class="fb-chip" data-val="Warna bersih dan nyaman" aria-pressed="false">Warna bersih</button>
+            <button type="button" class="fb-chip" data-val="Alur bayar QRIS simpel" aria-pressed="false">Alur bayar simpel</button>
+            <button type="button" class="fb-chip" data-val="Dashboard dan grafik jelas" aria-pressed="false">Grafik jelas</button>
+            <button type="button" class="fb-chip" data-val="Bahasa mudah dipahami" aria-pressed="false">Bahasa ramah</button>
+            <button type="button" class="fb-chip" data-val="Mode gelap enak dilihat" aria-pressed="false">Mode gelap enak</button>
+          </div>
+        </section>
+
+        <section class="fb-card">
+          <div class="stack gap-2">
+            <label for="fb-critique" class="text-md fw-700 text-main">4. Bagian mana yang masih bingung atau perlu diperbaiki?</label>
+            <textarea id="fb-critique" name="masukan" class="fb-textarea" placeholder="Tulis sejujurnya di sini, misalnya tombol kurang jelas, alur terlalu panjang, teks kepotong di HP, atau saran fitur" required></textarea>
+            <span id="fb-err" class="text-xs text-danger fw-700" hidden>Tulis masukan singkat dulu sebelum mengirim, ya.</span>
+          </div>
+
+          <div class="stack gap-2">
+            <label for="fb-name" class="text-sm fw-700 text-main">Nama atau akun Instagram (opsional)</label>
+            <input id="fb-name" name="pengirim" type="text" class="input" placeholder="Contoh: @username atau nama Anda">
+          </div>
+
+          <div class="stack gap-2">
+            <span class="text-sm fw-700 text-main">Latar belakang Anda (opsional)</span>
+            <div class="fb-chip-group" data-single-group="latar">
+              <button type="button" class="fb-chip active" data-val="UI/UX Designer" aria-pressed="true">UI/UX Designer</button>
+              <button type="button" class="fb-chip" data-val="Developer" aria-pressed="false">Developer</button>
+              <button type="button" class="fb-chip" data-val="Product / Bisnis" aria-pressed="false">Product / Bisnis</button>
+              <button type="button" class="fb-chip" data-val="Pengguna Umum" aria-pressed="false">Pengguna Umum</button>
+            </div>
+          </div>
+
+          <input type="text" name="_honey" id="fb-honey" style="display:none" tabindex="-1" autocomplete="off">
+
+          <button type="submit" id="fb-submit-btn" class="btn btn-primary">Kirim Masukan Sekarang</button>
+        </section>
+
+      </form>
+
+      <section id="fb-success" class="fb-card items-center text-center" hidden aria-live="polite">
+        <img src="illustrations/selesai-aktivasi.webp" alt="Ilustrasi masukan berhasil dikirim" class="illus-sm">
+        <h2 class="text-lg m-0 fw-700">Terima kasih atas masukannya</h2>
+        <p class="text-sm text-secondary m-0">Masukan UI/UX Anda sudah kami terima dan akan langsung dipakai untuk menyempurnakan aplikasi APIMA.</p>
+        <div class="stack gap-2" style="width:100%">
+          <a href="index.html" class="btn btn-primary no-underline">Kembali ke Aplikasi APIMA</a>
+          <button type="button" id="fb-another" class="btn btn-secondary">Kirim Masukan Tambahan</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+</x-dc>
+<script>
+(function () {
+  var ENDPOINT = 'https://formsubmit.co/ajax/sosial.sosial1945@gmail.com';
+  var SCORE_LABELS = {
+    '1': '1 · Perlu banyak perbaikan',
+    '2': '2 · Kurang nyaman',
+    '3': '3 · Cukup jelas',
+    '4': '4 · Bagus dan rapi',
+    '5': '5 · Keren, siap pakai'
+  };
+
+  var state = {
+    score: '4',
+    navigasi: '4',
+    tampilan: '4',
+    kenyamanan: '4',
+    latar: 'UI/UX Designer'
+  };
+
+  function bindFeedback() {
+    var form = document.getElementById('fb-form');
+    if (!form || form.dataset.fbBound) return;
+    form.dataset.fbBound = '1';
+
+    document.querySelectorAll('[data-multi-group] .fb-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var active = !chip.classList.contains('active');
+        chip.classList.toggle('active', active);
+        chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    });
+
+    document.querySelectorAll('[data-single-group] .fb-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var group = chip.closest('[data-single-group]');
+        group.querySelectorAll('.fb-chip').forEach(function (c) {
+          var on = c === chip;
+          c.classList.toggle('active', on);
+          c.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        state.latar = chip.dataset.val;
+      });
+    });
+
+    document.querySelectorAll('[data-score]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-score]').forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        state.score = btn.dataset.score;
+        var lbl = document.getElementById('fb-score-label');
+        if (lbl) lbl.textContent = SCORE_LABELS[state.score] || state.score;
+      });
+    });
+
+    document.querySelectorAll('[data-aspect]').forEach(function (row) {
+      var key = row.dataset.aspect;
+      row.querySelectorAll('.fb-mini-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          row.querySelectorAll('.fb-mini-btn').forEach(function (b) {
+            b.classList.toggle('active', b === btn);
+          });
+          state[key] = btn.dataset.v;
+        });
+      });
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var critiqueEl = document.getElementById('fb-critique');
+      var errEl = document.getElementById('fb-err');
+      var submitBtn = document.getElementById('fb-submit-btn');
+      var critique = (critiqueEl.value || '').trim();
+
+      if (!critique) {
+        errEl.hidden = false;
+        critiqueEl.focus();
+        return;
+      }
+      errEl.hidden = true;
+
+      var bagian = Array.from(document.querySelectorAll('[data-multi-group="bagian"] .fb-chip.active')).map(function (c) { return c.dataset.val; });
+      var suka = Array.from(document.querySelectorAll('[data-multi-group="suka"] .fb-chip.active')).map(function (c) { return c.dataset.val; });
+      var pengirim = (document.getElementById('fb-name').value || '').trim() || 'Anonim';
+
+      var payload = {
+        _subject: 'Masukan UI/UX APIMA (' + state.score + '/5) dari ' + pengirim,
+        _template: 'table',
+        _captcha: 'false',
+        _honey: document.getElementById('fb-honey').value || '',
+        Pengirim: pengirim,
+        Latar_Belakang: state.latar,
+        Skor_Keseluruhan: state.score + ' / 5',
+        Skor_Navigasi: state.navigasi + ' / 5',
+        Skor_Tampilan: state.tampilan + ' / 5',
+        Skor_Kenyamanan_HP: state.kenyamanan + ' / 5',
+        Bagian_Dicoba: bagian.length ? bagian.join(', ') : 'Tidak dipilih',
+        Yang_Disukai: suka.length ? suka.join(', ') : '-',
+        Masukan_dan_Perbaikan: critique,
+        Info_Layar: window.innerWidth + 'x' + window.innerHeight + ' (' + (document.documentElement.dataset.theme || 'light') + ')'
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Mengirim masukan';
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function () {
+        form.hidden = true;
+        document.getElementById('fb-success').hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Kirim Masukan Sekarang';
+        if (window.apimaToast) window.apimaToast('Koneksi terganggu. Coba kirim ulang sebentar lagi.');
+      });
+    });
+
+    var anotherBtn = document.getElementById('fb-another');
+    if (anotherBtn) {
+      anotherBtn.addEventListener('click', function () {
+        document.getElementById('fb-critique').value = '';
+        document.getElementById('fb-submit-btn').disabled = false;
+        document.getElementById('fb-submit-btn').textContent = 'Kirim Masukan Sekarang';
+        document.getElementById('fb-success').hidden = true;
+        form.hidden = false;
+      });
+    }
+  }
+
+  window.addEventListener('apima:ready', bindFeedback);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(bindFeedback, 40); });
+  } else {
+    setTimeout(bindFeedback, 40);
+  }
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

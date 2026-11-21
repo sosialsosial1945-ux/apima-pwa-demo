@@ -1,7 +1,8 @@
-const CACHE_NAME = 'apima-pwa-demo-v6';
+const CACHE_NAME = 'apima-pwa-demo-v7';
 const CORE_ASSETS = [
   './',
   './index.html',
+  './feedback.html',
   './MasukId.dc.html',
   './Main.dc.html',
   './AnggotaRiwayat.dc.html',

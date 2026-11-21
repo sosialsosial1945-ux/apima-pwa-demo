@@ -132,6 +132,19 @@
         if (target) window.location.href = target;
       });
     });
+
+    var isFeedbackPage = /feedback\.html$/i.test(window.location.pathname || '');
+    if (!isFeedbackPage && !document.getElementById('pwa-feedback-fab')) {
+      var fab = document.createElement('a');
+      fab.id = 'pwa-feedback-fab';
+      fab.href = 'feedback.html';
+      fab.className = 'pwa-feedback-fab';
+      fab.setAttribute('aria-label', 'Beri masukan UI/UX aplikasi APIMA');
+      fab.innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' +
+        '<span>Beri Masukan</span>';
+      document.body.appendChild(fab);
+    }
   }
 
   window.addEventListener('apima:ready', bindPwaControls);
