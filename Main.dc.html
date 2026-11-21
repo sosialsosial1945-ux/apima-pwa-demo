@@ -50,7 +50,7 @@
     <div class="v5-seg v5-demo-seg ag-seg" role="group" aria-label="Pilih keadaan beranda untuk demo">
       <button type="button" data-ag-view="normal" aria-pressed="true">Normal</button>
       <button type="button" data-ag-view="tutup" aria-pressed="false">Tutup</button>
-      <button type="button" data-ag-view="kuota0" aria-pressed="false">Kuota 0</button>
+      <button type="button" data-ag-view="kuota0" aria-pressed="false">Belum Lunas</button>
       <button type="button" data-ag-view="memuat" aria-pressed="false">Memuat</button>
       <button type="button" data-ag-view="nonaktif" aria-pressed="false">Nonaktif</button>
     </div>
@@ -104,7 +104,7 @@
   }
 
   function heroCard(o) {
-    return '<section class="v5-card ag-card" aria-label="Status malam ini">' +
+    return '<section class="v5-card ag-card' + (o.tone ? ' ag-card-' + o.tone : '') + '" aria-label="Status malam ini">' +
       '<div class="ag-hero-top"><span class="ag-status ' + o.statusClass + '">' + o.status + '</span>' +
         '<span class="ag-rate mono">' + o.right + '</span></div>' +
       '<div class="ag-hero-body">' +
@@ -115,19 +115,21 @@
     '</section>';
   }
 
-  function tiles(paid, m, linked) {
+  /* Ubin ringkas: tanggal lunas + penjaga lapak (v2: tidak ada saldo malam) */
+  function tiles(m, linked) {
     var penjagaName = (m.penjaga && m.penjaga !== 'Jaga sendiri') ? m.penjaga : 'Jaga sendiri';
     var activeTxt = m.penjagaActive ? 'Aktif' : 'Nonaktif';
-    var nightsVal = '<span class="ag-tile-value' + (paid === 0 ? ' is-zero' : '') + '" id="main-paid-nights">' + paid + ' malam</span>';
+    var lunasTxt = m.lunas ? m.paidUntilLabel : 'Belum lunas';
+    var lunasVal = '<span class="ag-tile-value' + (m.lunas ? '' : ' is-zero') + '" id="main-paid-until">' + esc(lunasTxt) + '</span>';
     if (!linked) {
       return '<div class="ag-tiles">' +
-        '<div class="v5-tile ag-tile"><span class="ag-tile-head">Malam terbayar</span>' + nightsVal + '</div>' +
+        '<div class="v5-tile ag-tile"><span class="ag-tile-head">Lunas sampai</span>' + lunasVal + '</div>' +
         '<div class="v5-tile ag-tile"><span class="ag-tile-head">Penjaga lapak</span><span class="ag-tile-value" id="main-penjaga-status">' + esc(penjagaName) + ' · ' + activeTxt + '</span></div>' +
       '</div>';
     }
     return '<div class="ag-tiles">' +
-      '<a href="AnggotaPilihHari.dc.html" class="v5-tile ag-tile" aria-label="Malam terbayar ' + paid + ' malam. Tambah malam terbayar">' +
-        '<span class="ag-tile-head">Malam terbayar' + ICON_CHEVRON + '</span>' + nightsVal + '</a>' +
+      '<a href="AnggotaPilihHari.dc.html" class="v5-tile ag-tile" aria-label="' + (m.lunas ? 'Lunas sampai ' + esc(lunasTxt) : 'Malam ini belum lunas') + '. Perpanjang">' +
+        '<span class="ag-tile-head">Lunas sampai' + ICON_CHEVRON + '</span>' + lunasVal + '</a>' +
       '<a href="AnggotaQrIdentitas.dc.html" class="v5-tile ag-tile" aria-label="Penjaga lapak ' + esc(penjagaName) + ', ' + activeTxt + '. Buka QR identitas">' +
         '<span class="ag-tile-head">Penjaga lapak' + ICON_CHEVRON + '</span>' +
         '<span class="stack" style="gap:2px"><span class="ag-tile-value" id="main-penjaga-status">' + esc(penjagaName) + '</span>' +
@@ -159,10 +161,11 @@
     var m = real;
     if (view === 'kuota0') {
       m = JSON.parse(JSON.stringify(real));
-      m.paidNights = 0;
+      m.paidUntil = null;
+      m.lunas = false;
+      m.reportedTonight = false;
       m.tonightStatus = 'belum_bayar';
     }
-    var paid = Math.max(0, parseInt(m.paidNights, 10) || 0);
     var html = '';
 
     if (view === 'memuat') {
@@ -194,43 +197,46 @@
         status: 'Pasar Tutup', statusClass: '', right: '16:00 – 03:00 WIB',
         illus: 'tutup-offline.webp', illusH: 324,
         title: 'Lapak dibuka pukul 16:00 WIB',
-        desc: 'Sekarang di luar jam pasar. Malam terbayar Anda tetap aman dan tidak berkurang.',
-        actions: '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Tambah Malam Terbayar</a>'
-      }) + tiles(paid, m, false);
+        desc: m.lunas
+          ? 'Sekarang di luar jam pasar. Retribusi Anda lunas sampai <strong>' + esc(m.paidUntilLabel) + '</strong>.'
+          : 'Sekarang di luar jam pasar. Bayar retribusi sebelum lapak buka supaya malam ini lunas.',
+        actions: '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">' + (m.lunas ? 'Perpanjang' : 'Bayar Retribusi') + '</a>'
+      }) + tiles(m, false);
     } else {
       var hero;
-      if (m.tonightStatus === 'sudah_bayar') {
+      if (m.lunas && m.reportedTonight) {
         hero = heroCard({
-          status: 'Jualan · Sudah Bayar', statusClass: 'st-success', right: 'Rp3.000/mlm',
+          tone: 'lunas',
+          status: 'Sudah Lapor Malam Ini', statusClass: 'st-success', right: 'Rp3.000/mlm',
           illus: 'cek-satgas.webp', illusH: 304,
-          title: 'Lapak tercatat buka malam ini',
-          desc: paid > 0
-            ? 'Sudah dibayar untuk <strong>' + paid + ' malam</strong> lagi. Siapkan QR saat satgas keliling.'
-            : 'Malam terbayar sudah terpakai semua. Siapkan QR saat satgas keliling.',
+          title: 'Lunas sampai ' + esc(m.paidUntilLabel),
+          desc: 'Lapak tercatat buka malam ini. Siapkan QR saat satgas keliling.',
           actions: '<a href="AnggotaQrIdentitas.dc.html" class="btn ag-btn-tonal">Tunjukkan QR ke Satgas</a>' +
-            '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Tambah Malam Terbayar</a>'
+            '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Perpanjang</a>'
         });
-      } else if (paid > 0) {
+      } else if (m.lunas) {
         hero = heroCard({
+          tone: 'lunas',
           status: 'Belum Lapor Malam Ini', statusClass: 'st-warning', right: 'Rp3.000/mlm',
           illus: 'pasang-hp.webp', illusH: 343,
-          title: 'Buka lapak malam ini?',
-          desc: 'Sudah dibayar untuk <strong>' + paid + ' malam</strong> lagi. Lapor jualan memakai 1 malam terbayar.',
+          title: 'Lunas sampai ' + esc(m.paidUntilLabel),
+          desc: 'Buka lapak malam ini? Lapor jualan hanya mencatat kehadiran dan tidak mengubah tanggal lunas.',
           actions: (view === 'normal'
             ? '<button type="button" id="btn-lapor-jualan" class="btn btn-primary">Lapor Jualan Malam Ini</button>'
             : '') +
-            '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Bayar Retribusi (Tambah Malam)</a>'
+            '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Perpanjang</a>'
         });
       } else {
         hero = heroCard({
-          status: 'Belum Bayar', statusClass: 'st-danger', right: 'Rp3.000/mlm',
+          tone: 'belum',
+          status: 'Belum Lunas', statusClass: 'st-warning', right: 'Rp3.000/mlm',
           illus: 'bayar-sukses.webp', illusH: 255,
-          title: 'Buka lapak malam ini?',
-          desc: 'Belum ada malam terbayar. Bayar retribusi lewat QRIS untuk langsung melapor jualan malam ini.',
+          title: 'Malam ini belum lunas',
+          desc: (m.paidUntilLabel ? 'Lunas terakhir sampai ' + esc(m.paidUntilLabel) + '. ' : '') + 'Bayar retribusi lewat QRIS supaya lapak Anda lunas malam ini.',
           actions: '<a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary">Bayar Retribusi</a>'
         });
       }
-      html = hero + tiles(paid, m, true) + historySection(m, store, todayShort);
+      html = hero + tiles(m, true) + historySection(m, store, todayShort);
     }
 
     host.innerHTML = html;
@@ -242,7 +248,7 @@
         var res = store.reportSellingTonight(real.id);
         if (res && res.ok) {
           render();
-          if (window.apimaToast) window.apimaToast('Lapak tercatat buka malam ini (1 malam terbayar digunakan).');
+          if (window.apimaToast) window.apimaToast('Lapak tercatat buka malam ini.');
         } else {
           laporBtn.disabled = false;
         }

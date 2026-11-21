@@ -365,3 +365,18 @@ body:has(.v5-nav) .test-mode-panel { bottom: calc(152px + env(safe-area-inset-bo
 .ag-ok-label { font-size: 13px; }
 #qris-breakdown { font-size: 13px; }
 .ag-qr-box > .ag-muted { font-size: 13px !important; }
+
+/* v2 "lunas sampai": kartu status beranda hijau (lunas) / kuning (belum lunas) */
+.ag-card-lunas { background: var(--apima-success-tint); border-color: var(--apima-border-success); }
+.ag-card-belum { background: var(--apima-warning-tint); border-color: var(--apima-border-warning); }
+:root[data-theme="dark"] .ag-card-lunas { background: linear-gradient(180deg, rgba(52, 211, 153, 0.10), rgba(5, 11, 26, 0.6)); }
+:root[data-theme="dark"] .ag-card-belum { background: linear-gradient(180deg, rgba(251, 191, 36, 0.10), rgba(5, 11, 26, 0.6)); }
+.ag-card-lunas .ag-hero-title { color: var(--apima-success); }
+.ag-pick-note { margin: 0; }
+.ag-extend-note {
+  margin: 0; padding: 12px 14px; border-radius: 14px; font-size: 13px; line-height: 1.45;
+  background: var(--apima-success-tint); border: 1px solid var(--apima-border-success); color: var(--apima-text);
+}
+.ag-sum-date { font-size: 17px !important; line-height: 1.25; text-align: right; }
+.ag-qris-until { font-size: 14px; font-weight: 700; }
+.ag-tile-value.is-zero { color: var(--apima-warning); }

@@ -319,8 +319,8 @@
 
     var tone = 'tone-success';
     var title = 'Sudah bayar';
-    if (m.tonightStatus === 'belum_bayar') { tone = 'tone-danger'; title = 'Belum bayar'; }
-    else if (m.tonightStatus === 'belum_lapor') { tone = 'tone-warning'; title = 'Belum lapor jualan'; }
+    /* v2: hasil hanya dari tanggal lunas */
+    if (!m.lunas) { tone = 'tone-danger'; title = 'Belum bayar'; }
 
     if (hero) {
       hero.classList.remove('tone-success', 'tone-warning', 'tone-danger');

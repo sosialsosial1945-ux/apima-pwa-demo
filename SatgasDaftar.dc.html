@@ -126,8 +126,9 @@
 
     var belum = 0, sudah = 0;
     st.members.forEach(function (m) {
-      if (m.tonightStatus === 'belum_bayar') belum++;
-      if (m.tonightStatus === 'sudah_bayar') sudah++;
+      /* v2: status dari tanggal lunas */
+      if (!m.lunas) belum++;
+      if (m.lunas && m.reportedTonight) sudah++;
     });
     /* Angka dasar zona + data uji; pemeriksaan baru menambah "Sudah dicek" */
     document.getElementById('sg-metric-belum').textContent = String(36 + belum);
@@ -142,7 +143,7 @@
     var q = document.getElementById('sg-cari').value.trim().toLowerCase();
     var rows = st.members.filter(function (m) {
       var isChecked = checked.indexOf(m.id) !== -1;
-      if (filter === 'belum-bayar' && m.tonightStatus === 'sudah_bayar') return false;
+      if (filter === 'belum-bayar' && m.lunas) return false;
       if (filter === 'belum-dicek' && isChecked) return false;
       if (!q) return true;
       return (m.name + ' ' + m.id + ' ' + m.blok + ' ' + m.blok.replace('Blok ', '')).toLowerCase().indexOf(q) !== -1;
@@ -151,8 +152,7 @@
     document.getElementById('sg-list').innerHTML = rows.map(function (m) {
       var isChecked = checked.indexOf(m.id) !== -1;
       var statusText = 'Belum Bayar', statusCls = 'st-danger';
-      if (m.tonightStatus === 'belum_lapor') { statusText = 'Belum Lapor'; statusCls = 'st-warning'; }
-      else if (m.tonightStatus === 'sudah_bayar') { statusText = isChecked ? 'Terverifikasi' : 'Sudah Bayar'; statusCls = 'st-success'; }
+      if (m.lunas) { statusText = isChecked ? 'Terverifikasi' : 'Sudah Bayar'; statusCls = 'st-success'; }
       var note = m.note || '';
       if (isChecked) {
         var t = checkedTime(st, m);

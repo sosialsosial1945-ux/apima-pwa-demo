@@ -29,7 +29,7 @@
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
     </a>
     <h1 class="ag-sub-title">Bayar QRIS</h1>
-    <span class="ag-timer" role="timer" aria-label="Sisa waktu bayar QRIS">
+    <span class="ag-timer" role="timer" aria-label="Batas waktu bayar QRIS">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       <span class="mono" data-countdown="892">14:52</span>
     </span>
@@ -44,6 +44,7 @@
           <span class="ag-muted" style="font-size:15px">Total bayar</span>
           <span class="ag-pay-amt" id="qris-amount">Rp3.000</span>
           <span class="ag-muted" style="font-size:14px" id="qris-breakdown">1 malam × Rp3.000 · Batas 03:00 WIB</span>
+          <span class="ag-qris-until st-success" id="qris-until">Lunas sampai Sabtu, 14 Nov</span>
         </div>
       </div>
 
@@ -121,6 +122,8 @@
 
     document.getElementById('qris-amount').textContent = priceStr;
     document.getElementById('qris-breakdown').textContent = nights + ' malam × Rp3.000 · Batas 03:00 WIB';
+    var untilEl = document.getElementById('qris-until');
+    if (untilEl && store) untilEl.textContent = 'Lunas sampai ' + store.previewPaidUntil(nights).untilLabel;
     document.getElementById('sim-expired').setAttribute('href', 'AnggotaGagal.dc.html?nights=' + nights);
     document.getElementById('sim-gangguan').setAttribute('href', 'AnggotaGangguan.dc.html?nights=' + nights);
 

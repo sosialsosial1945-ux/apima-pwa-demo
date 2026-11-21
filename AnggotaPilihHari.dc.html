@@ -65,7 +65,10 @@
         <button type="button" class="ag-pick" data-value="14" aria-pressed="false"><span class="ag-pick-label">Dua pekan</span><span class="ag-pick-nights">14 malam</span><span class="ag-pick-price mono">Rp42.000</span><span class="ag-pick-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
         <button type="button" class="ag-pick" data-value="30" aria-pressed="false"><span class="ag-pick-label">Satu bulan</span><span class="ag-pick-nights">30 malam</span><span class="ag-pick-price mono">Rp90.000</span><span class="ag-pick-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span></button>
       </div>
+      <p class="ag-note ag-pick-note">Berlaku untuk malam berturut-turut, termasuk malam libur. Kalau jualan tidak rutin, pilih 1 malam.</p>
     </section>
+
+    <p class="ag-extend-note" id="pilih-lunas-note" role="status" hidden></p>
 
     <section class="v5-card ag-card" aria-label="Ringkasan pembayaran">
       <div class="ag-sum">
@@ -74,8 +77,8 @@
           <span class="ag-sum-amt" id="pilih-total">Rp3.000</span>
         </div>
         <div class="stack" style="gap:4px;align-items:flex-end">
-          <span class="ag-muted" style="font-size:15px;text-align:right">Malam terbayar nanti</span>
-          <span class="ag-sum-after" id="pilih-after">5 malam</span>
+          <span class="ag-muted" style="font-size:15px;text-align:right">Lunas sampai</span>
+          <span class="ag-sum-after ag-sum-date" id="pilih-after">Sabtu, 14 Nov</span>
         </div>
       </div>
       <p class="ag-note" id="night-auto-note">Pembayaran via QRIS. Pastikan saldo dompet digital atau m-banking mencukupi sebelum lanjut.</p>
@@ -96,14 +99,16 @@
     if (booted) return;
     booted = true;
     var store = window.APIMA_STORE;
-    var member = store ? store.getActiveMember() : { paidNights: 4, tonightStatus: 'belum_lapor' };
+    var member = store ? store.getActiveMember() : null;
     var params = new URLSearchParams(window.location.search || '');
     var fromBeranda = params.get('from') === 'beranda';
     var TARIFF = store ? store.TARIFF : 3000;
 
-    var currentPaid = Math.max(0, parseInt(member.paidNights, 10) || 0);
-    /* Bayar saat malam terbayar 0 otomatis melapor jualan malam ini (memakai 1 malam) */
-    var autoReportTonight = (currentPaid === 0 && member.tonightStatus !== 'sudah_bayar');
+    var lunasNoteEl = document.getElementById('pilih-lunas-note');
+    if (store && member && member.lunas && lunasNoteEl) {
+      lunasNoteEl.textContent = 'Malam ini sudah lunas sampai ' + member.paidUntilLabel + '. Bayar sekarang akan memperpanjang dari tanggal itu.';
+      lunasNoteEl.hidden = false;
+    }
     var selected = Math.max(1, Math.min(30, parseInt(params.get('nights'), 10) || (store ? store.getPendingOrder().nights : 1) || 1));
 
     var minusBtn = document.getElementById('btn-night-minus');
@@ -121,16 +126,14 @@
     function sync(n) {
       selected = Math.max(1, Math.min(30, parseInt(n, 10) || 1));
       var total = selected * TARIFF;
-      var after = currentPaid + selected - (autoReportTonight ? 1 : 0);
+      var preview = store ? store.previewPaidUntil(selected) : null;
       readoutEl.textContent = selected + ' malam';
       subEl.textContent = selected + ' × ' + rp(TARIFF) + ' = ' + rp(total);
       minusBtn.disabled = selected <= 1;
       plusBtn.disabled = selected >= 30;
       totalEl.textContent = rp(total);
-      afterEl.textContent = after + ' malam';
-      noteEl.textContent = autoReportTonight
-        ? 'Malam terbayar Anda 0, jadi 1 malam langsung dipakai untuk melapor jualan malam ini setelah QRIS lunas.'
-        : 'Pembayaran via QRIS. Pastikan saldo dompet digital atau m-banking mencukupi sebelum lanjut.';
+      afterEl.textContent = preview ? preview.untilLabel : '';
+      noteEl.textContent = 'Pembayaran via QRIS. Pastikan saldo dompet digital atau m-banking mencukupi sebelum lanjut.';
       ctaLink.textContent = 'Lanjut Bayar ' + rp(total);
       ctaLink.setAttribute('href', 'AnggotaQris.dc.html?nights=' + selected);
       picks.forEach(function (b) {

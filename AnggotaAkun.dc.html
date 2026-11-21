@@ -58,7 +58,7 @@
         <div class="v5-row"><span class="v5-row-label">Nomor anggota</span><span class="v5-row-value mono" id="akun-id">0123</span></div>
         <div class="v5-row"><span class="v5-row-label">Lapak</span><span class="v5-row-value" id="akun-lapak">Blok C-14</span></div>
         <div class="v5-row"><span class="v5-row-label">Penjaga lapak</span><span class="v5-row-value" id="akun-penjaga">Rahmat (Aktif)</span></div>
-        <div class="v5-row"><span class="v5-row-label">Malam terbayar</span><span class="v5-row-value mono" id="akun-malam">4 malam</span></div>
+        <div class="v5-row"><span class="v5-row-label">Lunas sampai</span><span class="v5-row-value" id="akun-malam">Senin, 16 Nov</span></div>
       </div>
       <a href="AnggotaPilihHari.dc.html" class="btn btn-primary">Bayar Retribusi</a>
       <a href="MasukId.dc.html" class="ag-link-danger" id="akun-keluar">Keluar Akun</a>
@@ -78,15 +78,14 @@
     if (!store) return;
     var m = store.getActiveMember();
     var penjaga = (m.penjaga && m.penjaga !== 'Jaga sendiri') ? m.penjaga : 'Jaga sendiri';
-    var paid = Math.max(0, parseInt(m.paidNights, 10) || 0);
     document.getElementById('akun-sub').textContent = 'Status Terverifikasi · ' + m.blok;
     document.getElementById('akun-nama').textContent = m.name;
     document.getElementById('akun-id').textContent = m.id;
     document.getElementById('akun-lapak').textContent = m.blok;
     document.getElementById('akun-penjaga').textContent = penjaga === 'Jaga sendiri' ? penjaga : penjaga + ' (' + (m.penjagaActive ? 'Aktif' : 'Nonaktif') + ')';
     var malamEl = document.getElementById('akun-malam');
-    malamEl.textContent = paid + ' malam';
-    malamEl.classList.toggle('st-danger', paid === 0);
+    malamEl.textContent = m.lunas ? m.paidUntilLabel : 'Malam ini belum lunas';
+    malamEl.classList.toggle('st-warning', !m.lunas);
   }
   var booted = false;
   function boot() {

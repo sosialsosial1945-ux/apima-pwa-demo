@@ -47,7 +47,7 @@
           <button type="button" class="adm-btn adm-btn-primary" id="lp-pdf"><span data-icon="printer" data-icon-size="16"></span>Unduh PDF</button>
         </div>
         <div class="adm-hero-tiles">
-          <div class="adm-htile"><span class="adm-htile-label">Malam jualan terbayar</span><span class="adm-htile-val" id="lp-t1">3.780 malam</span></div>
+          <div class="adm-htile"><span class="adm-htile-label">Malam lunas tercatat</span><span class="adm-htile-val" id="lp-t1">3.780 malam</span></div>
           <div class="adm-htile"><span class="adm-htile-label">Kepatuhan bayar</span><span class="adm-htile-val" id="lp-t2">94,6%</span></div>
           <div class="adm-htile"><span class="adm-htile-label">Pelanggaran tercatat</span><span class="adm-htile-val" id="lp-t3">14 kasus</span></div>
           <div class="adm-htile"><span class="adm-htile-label">Rata-rata aktif</span><span class="adm-htile-val" id="lp-t4">540 / malam</span></div>
@@ -108,7 +108,7 @@
         <div class="adm-table-wrap" tabindex="0" role="region" aria-label="Tabel rincian periode, geser ke samping di layar kecil">
           <table class="adm-table">
             <thead><tr>
-              <th scope="col">Periode</th><th scope="col" class="num">Pedagang aktif</th><th scope="col" class="num">Malam terbayar</th>
+              <th scope="col">Periode</th><th scope="col" class="num">Pedagang aktif</th><th scope="col" class="num">Malam lunas</th>
               <th scope="col" class="num">Setoran masuk</th><th scope="col" class="num">Pelanggaran</th><th scope="col" class="end">Rekonsiliasi</th>
             </tr></thead>
             <tbody id="lp-tbody"></tbody>
@@ -241,7 +241,7 @@
 
   function exportCsv() {
     var d = DATA[current];
-    var rows = [['Periode', 'Pedagang aktif', 'Malam terbayar', 'Setoran masuk', 'Pelanggaran', 'Rekonsiliasi']];
+    var rows = [['Periode', 'Pedagang aktif', 'Malam lunas', 'Setoran masuk', 'Pelanggaran', 'Rekonsiliasi']];
     rowsWithLive(d).forEach(function (r) { rows.push([r[0], r[1], r[2], r[3], r[4], 'Cocok Rp0 selisih']); });
     A.downloadCsv('laporan-' + current + '-apima.csv', rows, 'Rekap ' + d.label + ' (.csv) berhasil diunduh.');
   }

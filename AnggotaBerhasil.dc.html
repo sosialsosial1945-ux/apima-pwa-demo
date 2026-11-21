@@ -40,10 +40,10 @@
         <div>
           <span class="ag-ok-label" id="berhasil-status-pill">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg>
-            <span id="berhasil-status-text">Malam Terbayar Ditambahkan</span>
+            <span id="berhasil-status-text">Retribusi Lunas</span>
           </span>
           <h2 class="ag-ok-title">Pembayaran berhasil</h2>
-          <p class="ag-small" style="font-size:14px" id="berhasil-summary">Dibayar 1 malam · Sudah dibayar untuk 5 malam lagi.</p>
+          <p class="ag-small" style="font-size:14px" id="berhasil-summary">Dibayar 1 malam · Lunas sampai Sabtu, 14 Nov.</p>
         </div>
       </div>
     </section>
@@ -69,9 +69,9 @@
       <h2 class="ag-muted" style="margin:0;font-size:15px;font-family:var(--apima-font);letter-spacing:0;font-weight:700">Rincian transaksi</h2>
       <div class="ag-rows">
         <div class="v5-row"><span class="v5-row-label">Malam ini</span><span class="v5-row-value" id="berhasil-date-full">Sab, 14 Nov 2026</span></div>
-        <div class="v5-row"><span class="v5-row-label">Dibayar</span><span class="v5-row-value mono" id="berhasil-paid">Rp3.000 · 1 malam</span></div>
-        <div class="v5-row" id="berhasil-used-row" hidden><span class="v5-row-label">Terpakai malam ini</span><span class="v5-row-value mono">1 malam</span></div>
-        <div class="v5-row"><span class="v5-row-label">Malam terbayar</span><span class="v5-row-value mono st-success" id="berhasil-remaining">5 malam</span></div>
+        <div class="v5-row"><span class="v5-row-label">Dibayar</span><span class="v5-row-value mono" id="berhasil-paid">1 malam × Rp3.000</span></div>
+        <div class="v5-row"><span class="v5-row-label">Total</span><span class="v5-row-value mono" id="berhasil-total">Rp3.000</span></div>
+        <div class="v5-row"><span class="v5-row-label">Lunas sampai</span><span class="v5-row-value st-success" id="berhasil-until">Sabtu, 14 Nov</span></div>
       </div>
       <div class="ag-btn-stack">
         <a href="Main.dc.html" class="btn btn-primary">Kembali ke Beranda</a>
@@ -94,7 +94,7 @@
     booted = true;
     var store = window.APIMA_STORE;
     var st = store ? store.getState() : null;
-    var member = store ? store.getActiveMember() : { id: '0123', paidNights: 4, tonightStatus: 'sudah_bayar' };
+    var member = store ? store.getActiveMember() : { id: '0123' };
     var lp = st && st.lastPayment ? st.lastPayment : null;
     var dateInfo = store && st ? store.formatDateInfo(st.dayOffset) : { short: 'Sab, 14 Nov', full: 'Sab, 14 Nov 2026' };
 
@@ -102,29 +102,17 @@
     var qNights = parseInt(params.get('nights'), 10);
     var nights = lp ? lp.nights : ((!isNaN(qNights) && qNights >= 1) ? qNights : 1);
     var amount = lp ? lp.amount : (nights * 3000);
-    var autoReported = lp ? !!lp.autoReported : false;
-    var remaining = lp ? lp.afterPaidNights : member.paidNights;
-    var tonightStatus = lp ? lp.tonightStatus : member.tonightStatus;
+    var untilLabel = (lp && lp.paidUntilLabel) || member.paidUntilLabel || '';
     var priceStr = store ? store.formatRupiah(amount) : ('Rp' + amount.toLocaleString('id-ID'));
 
     document.getElementById('berhasil-date-short').textContent = (lp && lp.dateShort) || dateInfo.short;
     document.getElementById('berhasil-date-full').textContent = (lp && lp.dateFull) || dateInfo.full;
-    document.getElementById('berhasil-paid').textContent = priceStr + ' · ' + nights + ' malam';
-    document.getElementById('berhasil-remaining').textContent = remaining + ' malam';
+    document.getElementById('berhasil-paid').textContent = nights + ' malam × Rp3.000';
+    document.getElementById('berhasil-total').textContent = priceStr;
+    document.getElementById('berhasil-until').textContent = untilLabel;
 
     var sumEl = document.getElementById('berhasil-summary');
-    var usedRow = document.getElementById('berhasil-used-row');
-    var stText = document.getElementById('berhasil-status-text');
-    var restTxt = remaining > 0 ? 'Sudah dibayar untuk ' + remaining + ' malam lagi.' : 'Malam terbayar sudah terpakai semua.';
-    if (autoReported) {
-      sumEl.textContent = 'Dibayar ' + nights + ' malam · Terpakai malam ini 1 · ' + restTxt;
-      usedRow.hidden = false;
-      stText.textContent = 'Jualan · Sudah Bayar';
-    } else {
-      sumEl.textContent = 'Dibayar ' + nights + ' malam · ' + restTxt;
-      usedRow.hidden = true;
-      stText.textContent = tonightStatus === 'sudah_bayar' ? 'Jualan · Sudah Bayar' : 'Malam Terbayar Ditambahkan';
-    }
+    sumEl.textContent = 'Dibayar ' + nights + ' malam · Lunas sampai ' + untilLabel + '.';
 
     startIdentityQr(member);
 

@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'apima-proto-state-v1';
+  var STORAGE_KEY = 'apima-proto-state-v2'; /* v2: model "lunas sampai tanggal" (22 Nov 2026) */
   var TARIFF = 3000;
   var DAY_NAMES = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
   var MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
@@ -39,16 +39,61 @@
     return hh + ':' + mm + ' WIB';
   }
 
+  var DAY_LONG = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+  function dateForOffset(offset) {
+    return new Date(2026, 10, 14 + (parseInt(offset, 10) || 0));
+  }
+
+  /* "Senin, 16 Nov" */
+  function formatDayLong(offset) {
+    var d = dateForOffset(offset);
+    return DAY_LONG[d.getDay()] + ', ' + d.getDate() + ' ' + MONTH_NAMES[d.getMonth()];
+  }
+
+  /* "10–16 Nov", "8 Nov", atau "28 Nov–4 Des" */
+  function formatRange(startOffset, endOffset) {
+    var a = dateForOffset(startOffset), b = dateForOffset(endOffset);
+    if (startOffset === endOffset) return a.getDate() + ' ' + MONTH_NAMES[a.getMonth()];
+    if (a.getMonth() === b.getMonth()) return a.getDate() + '\u2013' + b.getDate() + ' ' + MONTH_NAMES[b.getMonth()];
+    return a.getDate() + ' ' + MONTH_NAMES[a.getMonth()] + '\u2013' + b.getDate() + ' ' + MONTH_NAMES[b.getMonth()];
+  }
+
+  /* Model v2: satu tanggal "lunas sampai" (paidUntil, offset hari dari 14 Nov 2026).
+     Malam ini lunas jika dayOffset <= paidUntil. Lapor hanya mencatat absensi. */
+  function isLunasAt(m, dayOffset) {
+    return !!m && m.paidUntil !== null && m.paidUntil !== undefined && (parseInt(dayOffset, 10) || 0) <= m.paidUntil;
+  }
+
+  function deriveMember(m, dayOffset) {
+    var lunas = isLunasAt(m, dayOffset);
+    m.lunas = lunas;
+    m.paidUntilLabel = (m.paidUntil !== null && m.paidUntil !== undefined) ? formatDayLong(m.paidUntil) : '';
+    m.tonightStatus = !lunas ? 'belum_bayar' : (m.reportedTonight ? 'sudah_bayar' : 'belum_lapor');
+    if (!m.noteFixed) {
+      m.note = lunas ? ('Lunas sampai ' + m.paidUntilLabel) : 'Malam ini belum lunas';
+    }
+    delete m.paidNights;
+    return m;
+  }
+
+  function applyDerived(st) {
+    if (st && Array.isArray(st.members)) {
+      st.members.forEach(function (m) { deriveMember(m, st.dayOffset); });
+    }
+    return st;
+  }
+
   function buildBudiHistoryLama() {
     return [
-      { id: 'h-13', date: 'Jum, 13 Nov', type: 'lapor', title: 'Lapor jualan', sub: 'memakai 1 malam', amount: null, nights: 0 },
-      { id: 'h-12', date: 'Kam, 12 Nov', type: 'lapor', title: 'Lapor jualan', sub: 'memakai 1 malam', amount: null, nights: 0 },
+      { id: 'h-13', date: 'Jum, 13 Nov', type: 'lapor', title: 'Lapor jualan', sub: '', amount: null, nights: 0 },
+      { id: 'h-12', date: 'Kam, 12 Nov', type: 'lapor', title: 'Lapor jualan', sub: '', amount: null, nights: 0 },
       { id: 'h-11', date: 'Rab, 11 Nov', type: 'tidak_lapor', title: 'Tidak lapor', sub: '', amount: null, nights: 0 },
-      { id: 'h-10', date: 'Sel, 10 Nov', type: 'bayar', title: 'Bayar 7 malam', sub: 'terpakai 1 malam ini', amount: 21000, nights: 7, ref: 'QRIS-1011-0412', time: '20:45 WIB' },
+      { id: 'h-10', date: 'Sel, 10 Nov', type: 'bayar', title: 'Bayar 7 malam', sub: 'lunas 10\u201316 Nov', amount: 21000, nights: 7, ref: 'QRIS-1011-0412', time: '20:45 WIB' },
       { id: 'h-09', date: 'Sen, 9 Nov', type: 'tidak_lapor', title: 'Tidak lapor', sub: '', amount: null, nights: 0 },
-      { id: 'h-08', date: 'Min, 8 Nov', type: 'bayar', title: 'Bayar 1 malam', sub: '', amount: 3000, nights: 1, ref: 'QRIS-0811-0318', time: '21:10 WIB' },
-      { id: 'h-07', date: 'Sab, 7 Nov', type: 'bayar', title: 'Bayar 1 malam', sub: '', amount: 3000, nights: 1, ref: 'QRIS-0711-0294', time: '20:52 WIB' },
-      { id: 'h-06', date: 'Jum, 6 Nov', type: 'bayar', title: 'Bayar 1 malam', sub: '', amount: 3000, nights: 1, ref: 'QRIS-0611-0211', time: '21:05 WIB' }
+      { id: 'h-08', date: 'Min, 8 Nov', type: 'bayar', title: 'Bayar 1 malam', sub: 'lunas 8 Nov', amount: 3000, nights: 1, ref: 'QRIS-0811-0318', time: '21:10 WIB' },
+      { id: 'h-07', date: 'Sab, 7 Nov', type: 'bayar', title: 'Bayar 1 malam', sub: 'lunas 7 Nov', amount: 3000, nights: 1, ref: 'QRIS-0711-0294', time: '20:52 WIB' },
+      { id: 'h-06', date: 'Jum, 6 Nov', type: 'bayar', title: 'Bayar 1 malam', sub: 'lunas 6 Nov', amount: 3000, nights: 1, ref: 'QRIS-0611-0211', time: '21:05 WIB' }
     ];
   }
 
@@ -65,9 +110,8 @@
         penjaga: 'Rahmat',
         penjagaPhone: '6281298765432',
         penjagaActive: true,
-        paidNights: isLama ? 4 : 0,
-        tonightStatus: isLama ? 'belum_lapor' : 'belum_bayar',
-        note: isLama ? 'Malam terbayar 4 malam' : 'Belum ada malam terbayar',
+        paidUntil: isLama ? 2 : null,   /* lama: bayar 7 malam 10 Nov, lunas 10–16 Nov */
+        reportedTonight: false,
         history: isLama ? buildBudiHistoryLama() : []
       },
       {
@@ -78,9 +122,10 @@
         penjaga: 'Jaga sendiri',
         penjagaPhone: '',
         penjagaActive: false,
-        paidNights: 0,
-        tonightStatus: 'belum_bayar',
+        paidUntil: null,
+        reportedTonight: false,
         note: 'Terakhir 2 hari lalu',
+        noteFixed: true,
         history: []
       },
       {
@@ -91,9 +136,10 @@
         penjaga: 'Tono (adik)',
         penjagaPhone: '6281311223344',
         penjagaActive: true,
-        paidNights: 3,
-        tonightStatus: 'sudah_bayar',
+        paidUntil: 2,
+        reportedTonight: true,
         note: 'Bayar 22:15 WIB',
+        noteFixed: true,
         history: []
       },
       {
@@ -104,9 +150,10 @@
         penjaga: 'Jaga sendiri',
         penjagaPhone: '',
         penjagaActive: false,
-        paidNights: 0,
-        tonightStatus: 'belum_bayar',
+        paidUntil: null,
+        reportedTonight: false,
         note: 'Aktif kemarin',
+        noteFixed: true,
         history: []
       },
       {
@@ -117,9 +164,8 @@
         penjaga: 'Hendri',
         penjagaPhone: '6281544556677',
         penjagaActive: true,
-        paidNights: 2,
-        tonightStatus: 'belum_lapor',
-        note: 'Malam terbayar 2 malam',
+        paidUntil: 1,
+        reportedTonight: false,
         history: []
       },
       {
@@ -130,9 +176,10 @@
         penjaga: 'Darto',
         penjagaPhone: '6281233445566',
         penjagaActive: true,
-        paidNights: 29,
-        tonightStatus: 'sudah_bayar',
+        paidUntil: 28,
+        reportedTonight: true,
         note: 'Bayar 22:54 WIB',
+        noteFixed: true,
         history: []
       },
       {
@@ -143,9 +190,10 @@
         penjaga: 'Sari (istri)',
         penjagaPhone: '6281766554433',
         penjagaActive: true,
-        paidNights: 5,
-        tonightStatus: 'sudah_bayar',
+        paidUntil: 4,
+        reportedTonight: true,
         note: 'Dicek 22:40 WIB',
+        noteFixed: true,
         history: []
       }
     ];
@@ -190,7 +238,7 @@
     ];
 
     return {
-      version: 1,
+      version: 2,
       preset: mode,
       dayOffset: 0,
       activeMemberId: '0123',
@@ -212,22 +260,23 @@
       var raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         var parsed = JSON.parse(raw);
-        if (parsed && parsed.version === 1 && Array.isArray(parsed.members)) {
-          memoryFallback = parsed;
-          return parsed;
+        if (parsed && parsed.version === 2 && Array.isArray(parsed.members)) {
+          memoryFallback = applyDerived(parsed);
+          return memoryFallback;
         }
       }
     } catch (e) {
       /* fallback ke memori */
     }
     if (!memoryFallback) {
-      memoryFallback = createInitialState('lama');
+      memoryFallback = applyDerived(createInitialState('lama'));
       safeWrite(memoryFallback);
     }
     return memoryFallback;
   }
 
   function safeWrite(state) {
+    applyDerived(state);
     memoryFallback = state;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -250,8 +299,8 @@
       var raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         var parsed = JSON.parse(raw);
-        if (parsed && parsed.version === 1 && Array.isArray(parsed.members)) {
-          memoryFallback = parsed;
+        if (parsed && parsed.version === 2 && Array.isArray(parsed.members)) {
+          memoryFallback = applyDerived(parsed);
         }
       }
     } catch (e) {}
@@ -340,35 +389,52 @@
     };
   }
 
+  /* Lapor jualan = absensi saja. Tidak mengubah tanggal lunas. */
   function reportSellingTonight(memberId) {
     var st = cloneState(safeRead());
     var id = String(memberId || st.activeMemberId || '0123');
     var m = st.members.find(function (x) { return x.id === id; });
     if (!m) return { ok: false, reason: 'not_found' };
-    if (m.tonightStatus === 'sudah_bayar') return { ok: true, already: true, member: m };
-    if (m.paidNights <= 0) return { ok: false, reason: 'no_paid_nights', member: m };
+    if (!isLunasAt(m, st.dayOffset)) return { ok: false, reason: 'not_lunas', member: m };
+    if (m.reportedTonight) return { ok: true, already: true, member: m };
 
     var dateInfo = formatDateInfo(st.dayOffset);
     var timeWib = nowTimeWib();
-    m.paidNights = Math.max(0, m.paidNights - 1);
-    m.tonightStatus = 'sudah_bayar';
-    m.note = 'Lapor ' + timeWib;
+    m.reportedTonight = true;
     m.history = m.history || [];
     m.history.unshift({
       id: 'h-' + Date.now(),
       date: dateInfo.short,
       type: 'lapor',
       title: 'Lapor jualan',
-      sub: 'memakai 1 malam',
+      sub: '',
       amount: null,
       nights: 0,
       time: timeWib
     });
-    if (m.id === '0123') {
-      st.budiReportedTonight = true;
-    }
+    if (m.id === '0123') st.budiReportedTonight = true;
     safeWrite(st);
     return { ok: true, member: m, dateInfo: dateInfo };
+  }
+
+  /* Pratinjau: bayar N malam -> mulai dari malam pertama yang belum lunas (paling cepat malam ini) */
+  function previewPaidUntil(nights, memberId) {
+    var st = safeRead();
+    var m = getMember(memberId || st.activeMemberId || '0123');
+    var n = Math.max(1, Math.min(30, parseInt(nights, 10) || 1));
+    var day = parseInt(st.dayOffset, 10) || 0;
+    var start = (m && m.paidUntil !== null && m.paidUntil !== undefined && m.paidUntil >= day) ? m.paidUntil + 1 : day;
+    var until = start + n - 1;
+    return {
+      nights: n,
+      amount: n * TARIFF,
+      startOffset: start,
+      untilOffset: until,
+      untilLabel: formatDayLong(until),
+      rangeLabel: formatRange(start, until),
+      lunasNow: isLunasAt(m, day),
+      currentUntilLabel: m && m.paidUntil !== null && m.paidUntil !== undefined ? formatDayLong(m.paidUntil) : ''
+    };
   }
 
   function confirmPayment(nights, memberId) {
@@ -378,33 +444,23 @@
     if (!m) return null;
 
     var y = Math.max(1, Math.min(30, parseInt(nights, 10) || getPendingOrder().nights || 1));
-    var x = Math.max(0, parseInt(m.paidNights, 10) || 0);
+    var day = parseInt(st.dayOffset, 10) || 0;
+    var start = (m.paidUntil !== null && m.paidUntil !== undefined && m.paidUntil >= day) ? m.paidUntil + 1 : day;
+    var until = start + y - 1;
     var amount = y * TARIFF;
-    var autoReport = (x === 0 && m.tonightStatus !== 'sudah_bayar');
-    var usedTonight = autoReport ? 1 : 0;
-    var z = x + y - usedTonight;
     var dateInfo = formatDateInfo(st.dayOffset);
     var timeWib = nowTimeWib();
     var ref = 'QRIS-' + dateInfo.refStamp + '-' + String(Math.floor(1000 + Math.random() * 9000));
 
-    m.paidNights = z;
-    if (autoReport) {
-      m.tonightStatus = 'sudah_bayar';
-      m.note = 'Bayar ' + timeWib;
-      if (m.id === '0123') st.budiReportedTonight = true;
-    } else if (m.tonightStatus !== 'sudah_bayar') {
-      m.tonightStatus = 'belum_lapor';
-      m.note = 'Malam terbayar ' + z + ' malam';
-    }
-
-    var historySub = autoReport ? 'terpakai 1 malam ini' : '';
+    m.paidUntil = until;
+    m.noteFixed = false;
     m.history = m.history || [];
     m.history.unshift({
       id: 'h-' + Date.now(),
       date: dateInfo.short,
       type: 'bayar',
       title: 'Bayar ' + y + ' malam',
-      sub: historySub,
+      sub: 'lunas ' + formatRange(start, until),
       amount: amount,
       nights: y,
       ref: ref,
@@ -433,19 +489,17 @@
     };
     st.adminLivePayments = st.adminLivePayments || [];
     st.adminLivePayments.unshift(txEntry);
+    if (m.id === '0123') st.budiPaidTonightDelta = (st.budiPaidTonightDelta || 0) + amount;
 
-    if (m.id === '0123') {
-      st.budiPaidTonightDelta = (st.budiPaidTonightDelta || 0) + amount;
-    }
-
+    deriveMember(m, day);
     st.lastPayment = {
       memberId: m.id,
       nights: y,
       amount: amount,
-      prevPaidNights: x,
-      usedTonight: usedTonight,
-      afterPaidNights: z,
-      autoReported: autoReport,
+      startOffset: start,
+      untilOffset: until,
+      paidUntilLabel: formatDayLong(until),
+      rangeLabel: formatRange(start, until),
       dateShort: dateInfo.short,
       dateFull: dateInfo.full,
       time: timeWib,
@@ -550,8 +604,8 @@
     var prevDate = formatDateInfo(st.dayOffset);
     var budi = st.members.find(function (x) { return x.id === '0123'; });
 
-    /* Jika malam sebelumnya Budi tidak melapor, catat "Tidak lapor" dan malam terbayar tidak berubah */
-    if (budi && budi.tonightStatus !== 'sudah_bayar') {
+    /* Jika malam sebelumnya Budi tidak melapor, catat "Tidak lapor" */
+    if (budi && !budi.reportedTonight) {
       budi.history = budi.history || [];
       budi.history.unshift({
         id: 'h-skip-' + Date.now(),
@@ -566,16 +620,10 @@
 
     st.dayOffset = (parseInt(st.dayOffset, 10) || 0) + 1;
 
-    /* Reset status malam ini untuk malam baru; malam terbayar TIDAK berubah sampai anggota lapor */
+    /* Malam baru: absensi kembali kosong; tanggal lunas tidak berubah */
     st.members.forEach(function (m) {
-      if (m.id === '0123') {
-        m.tonightStatus = m.paidNights > 0 ? 'belum_lapor' : 'belum_bayar';
-        m.note = m.paidNights > 0 ? ('Malam terbayar ' + m.paidNights + ' malam') : 'Belum ada malam terbayar';
-      } else if (m.paidNights > 0) {
-        m.tonightStatus = 'belum_lapor';
-      } else {
-        m.tonightStatus = 'belum_bayar';
-      }
+      m.reportedTonight = false;
+      m.noteFixed = false;
     });
     st.budiReportedTonight = false;
     st.checkedMemberIds = [];
@@ -596,15 +644,16 @@
   /* DEMO SAJA, HAPUS SEBELUM PRODUKSI:
      status malam ini ikut dibawa di isi QR (PAID / UNPAID / NOREPORT) supaya HP satgas
      yang datanya terpisah tetap tahu status pedagang. Di produksi status dibaca dari server. */
-  var QR_STATUS_CODE = { sudah_bayar: 'PAID', belum_bayar: 'UNPAID', belum_lapor: 'NOREPORT' };
+  /* v2: PAID = malam ini lunas (sudah atau belum lapor), UNPAID = belum lunas.
+     NOREPORT dari QR lama tetap diterima dan dianggap lunas. */
   var QR_STATUS_KEY = { PAID: 'sudah_bayar', UNPAID: 'belum_bayar', NOREPORT: 'belum_lapor' };
 
   function buildIdentityQrPayload(memberId, nowMs) {
     var cleanId = String(memberId || '0123').trim();
     var base = 'APIMA:' + cleanId + ':' + getQrPeriod(nowMs);
     var member = getMember(cleanId);
-    var code = member ? QR_STATUS_CODE[member.tonightStatus] : null;
-    return code ? (base + ':' + code) : base;
+    if (!member) return base;
+    return base + ':' + (isLunasAt(member, safeRead().dayOffset) ? 'PAID' : 'UNPAID');
   }
 
   function parseIdentityQrPayload(rawText, nowMs) {
@@ -628,12 +677,14 @@
       return { status: 'expired', memberId: memberId, member: member, period: period };
     }
     /* DEMO SAJA, HAPUS SEBELUM PRODUKSI: status dari QR disimpan ke data uji HP satgas */
-    if (qrStatus && QR_STATUS_KEY[qrStatus] && member.tonightStatus !== QR_STATUS_KEY[qrStatus]) {
+    var qrLunas = qrStatus === 'PAID' || qrStatus === 'NOREPORT';
+    if (qrStatus && qrLunas !== isLunasAt(member, st.dayOffset)) {
       var next = cloneState(st);
       var target = next.members.find(function (x) { return x.id === memberId; });
       if (target) {
-        target.tonightStatus = QR_STATUS_KEY[qrStatus];
-        target.note = qrStatus === 'PAID' ? 'Bayar (dibaca dari QR)' : (qrStatus === 'NOREPORT' ? 'Belum lapor malam ini' : 'Belum ada pembayaran aktif');
+        var day = parseInt(next.dayOffset, 10) || 0;
+        target.paidUntil = qrLunas ? Math.max(day, target.paidUntil === null || target.paidUntil === undefined ? day : target.paidUntil) : day - 1;
+        target.noteFixed = false;
         safeWrite(next);
         member = target;
       }
@@ -669,9 +720,9 @@
   }
 
   /* Hasil pemeriksaan otomatis dari status malam ini (tanpa pilihan satgas) */
+  /* v2: hasil scan dihitung dari tanggal lunas. Lunas (sudah/belum lapor) = Sudah bayar. */
   function resultFromStatus(tonightStatus) {
-    if (tonightStatus === 'sudah_bayar') return { key: 'sesuai', label: 'Sesuai' };
-    if (tonightStatus === 'belum_lapor') return { key: 'belum_lapor', label: 'Belum lapor jualan' };
+    if (tonightStatus === 'sudah_bayar' || tonightStatus === 'belum_lapor') return { key: 'sesuai', label: 'Sesuai' };
     return { key: 'jualan_tanpa_bayar', label: 'Jualan tanpa bayar' };
   }
 
@@ -799,8 +850,9 @@
     fab.setAttribute('aria-controls', 'apima-test-panel');
     fab.setAttribute('aria-label', 'Buka panel Mode uji');
     fab.innerHTML =
-      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' +
-      '<span>Mode uji</span>';
+      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>' +
+      '';
+    fab.title = 'Mode uji';
 
     var panel = document.createElement('div');
     panel.id = 'apima-test-panel';
@@ -813,12 +865,12 @@
       var st = safeRead();
       var budi = getActiveMember();
       var dInfo = formatDateInfo(st.dayOffset);
-      var statusLabel = getStatusMeta(budi.tonightStatus).label;
+      var statusLabel = budi.lunas ? ('Lunas sampai ' + budi.paidUntilLabel) : 'Malam ini belum lunas';
       panel.innerHTML =
         '<div class="row between items-center gap-2">' +
           '<div class="stack">' +
             '<span class="text-sm fw-700 text-main">Mode uji prototype</span>' +
-            '<span class="text-xs text-secondary tnum">' + dInfo.short + ' · ' + statusLabel + ' · ' + budi.paidNights + ' malam</span>' +
+            '<span class="text-xs text-secondary tnum">' + dInfo.short + ' · ' + statusLabel + (budi.reportedTonight ? ' · Sudah lapor' : '') + '</span>' +
           '</div>' +
           '<button type="button" class="btn-icon" data-test-close aria-label="Sembunyikan panel Mode uji">' +
             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
@@ -873,31 +925,40 @@
       });
     }
 
-    function positionFab() {
-      if (window.innerWidth >= 900 && document.querySelector('.admin-shell')) {
-        fab.style.bottom = '16px';
-        fab.style.right = '16px';
-        panel.style.bottom = '68px';
-        panel.style.right = '16px';
+    /* Ikon kecil di deretan ikon header (sebelum tombol tema) supaya tidak menutupi teks atau tombol */
+    var placed = false;
+    function placeFab(tries) {
+      if (placed) return;
+      var anchor = document.querySelector('[data-theme-toggle]');
+      var header = document.querySelector('.screen header, .adm-topbar, header');
+      fab.style.cssText = 'position:static;width:32px;height:32px;min-height:0;padding:0;margin:0;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0.6;background:transparent;border:1px dashed currentColor;color:var(--apima-text-secondary);box-shadow:none;gap:0;';
+      if (anchor && anchor.parentNode) {
+        anchor.parentNode.insertBefore(fab, anchor);
+        placed = true;
+      } else if (tries < 10) {
+        setTimeout(function () { placeFab(tries + 1); }, 120);
         return;
+      } else if (header) {
+        header.appendChild(fab);
+        placed = true;
+      } else {
+        fab.style.cssText += 'position:fixed;top:4px;right:4px;z-index:60;';
+        document.body.appendChild(fab);
+        placed = true;
       }
-      var footer = document.querySelector('.screen-footer');
-      var nav = document.querySelector('.bottom-nav');
-      var offset = 16;
-      if (footer && !footer.hidden) {
-        offset = Math.max(offset, Math.round(footer.getBoundingClientRect().height) + 12);
-      } else if (nav && !nav.hidden) {
-        offset = Math.max(offset, Math.round(nav.getBoundingClientRect().height) + 12);
-      }
-      fab.style.bottom = offset + 'px';
-      fab.style.right = '12px';
-      panel.style.bottom = (offset + 52) + 'px';
-      panel.style.right = '12px';
+    }
+    function positionFab() {
+      var r = fab.getBoundingClientRect();
+      panel.style.position = 'fixed';
+      panel.style.top = Math.round(r.bottom + 8) + 'px';
+      panel.style.right = '8px';
+      panel.style.left = 'auto';
+      panel.style.bottom = 'auto';
     }
 
     fab.addEventListener('click', function () {
       var willOpen = panel.hidden;
-      if (willOpen) renderPanelBody();
+      if (willOpen) { renderPanelBody(); positionFab(); }
       panel.hidden = !willOpen;
       fab.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
     });
@@ -916,8 +977,7 @@
     });
 
     document.body.appendChild(panel);
-    document.body.appendChild(fab);
-    setTimeout(positionFab, 60);
+    placeFab(0);
   }
 
   window.addEventListener('storage', function (e) {
@@ -957,7 +1017,11 @@
     drawQrToCanvas: drawQrToCanvas,
     resultFromStatus: resultFromStatus,
     saveSatgasInspection: saveSatgasInspection,
-    updateLastInspection: updateLastInspection
+    updateLastInspection: updateLastInspection,
+    previewPaidUntil: previewPaidUntil,
+    formatDayLong: formatDayLong,
+    formatRange: formatRange,
+    isLunas: function (m) { return isLunasAt(m || getActiveMember(), safeRead().dayOffset); }
   };
 
   /* =====================================================================
