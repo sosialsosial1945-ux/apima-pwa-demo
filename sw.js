@@ -1,4 +1,4 @@
-const CACHE_NAME = 'apima-pwa-demo-v8';
+const CACHE_NAME = 'apima-pwa-demo-v9';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -45,10 +45,14 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const reqUrl = new URL(event.request.url);
+  const isSameOrigin = reqUrl.origin === self.location.origin;
+  const isAppShell = isSameOrigin && (event.request.mode === 'navigate' || /\.(html|js|css|webmanifest)$/i.test(reqUrl.pathname));
+
   event.respondWith(
-    fetch(event.request)
+    fetch(isAppShell ? new Request(event.request, { cache: 'no-cache' }) : event.request)
       .then((res) => {
-        if (res && res.status === 200) {
+        if (res && res.status === 200 && isSameOrigin) {
           const copy = res.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
         }
