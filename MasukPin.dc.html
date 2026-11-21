@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Masukkan PIN</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="MasukKode.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke masukkan kode">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <div class="stack">
+        <span class="header-eyebrow tnum">ID A-01</span>
+        <h1 class="text-md m-0 fw-700">Masukkan PIN</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <section class="hero-card" aria-label="Isian PIN pengurus">
+      <img src="illustrations/konfirmasi-pin.webp" alt="Ilustrasi konfirmasi PIN pengurus" class="illus-md">
+      <div class="stack gap-2">
+        <label for="pin" class="text-bold">PIN pengurus 6 angka</label>
+        <input id="pin" type="password" inputmode="numeric" maxlength="6" placeholder="······" class="input-otp">
+        <span class="text-sm text-secondary">Pengaman tambahan sebelum Anda membuka data setoran dan dashboard pengurus.</span>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="screen-footer">
+    <a href="AdminRingkasan.dc.html" class="btn btn-primary no-underline">Buka Dashboard</a>
+    <p class="login-help-row m-0 text-sm text-secondary text-center">
+      <span>Lupa PIN?</span>
+      <button type="button" class="link-inline" data-sheet-open="sheet-bantuan-pin">Hubungi Pengurus</button>
+    </p>
+  </div>
+
+  <div id="sheet-bantuan-pin" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-pin-title">
+    <div class="sheet">
+      <div class="row between">
+        <h2 id="sheet-pin-title" class="text-md m-0 fw-700">Atur ulang PIN pengurus</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup bantuan PIN">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="text-sm text-secondary m-0">Demi keamanan kas retribusi, pengaturan ulang PIN hanya dilakukan oleh pengurus utama APIMA setelah verifikasi langsung.</p>
+      <button type="button" class="btn btn-secondary" data-sheet-close>Oke, Mengerti</button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

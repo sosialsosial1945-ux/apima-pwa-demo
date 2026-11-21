@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Pengurus · Kinerja Satgas</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./admin.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="admin-shell">
+
+  <nav class="admin-nav" aria-label="Navigasi pengurus">
+    <div class="admin-nav-head">
+      <div class="row gap-2 items-center admin-brand-text">
+        <span class="brand-wordmark">
+          <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
+          <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
+        </span>
+      </div>
+      <button type="button" class="btn-icon" data-sidebar-toggle aria-expanded="true" aria-label="Ciutkan menu samping" title="Ciutkan atau perluas menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+      </button>
+    </div>
+
+    <div class="admin-nav-body">
+      <div class="admin-nav-group">
+        <span class="admin-nav-group-label">Utama</span>
+        <a href="AdminRingkasan.dc.html" class="admin-nav-link" aria-label="Ringkasan dan AI" title="Ringkasan dan analisis AI">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span class="admin-nav-text">Ringkasan AI</span>
+        </a>
+        <a href="AdminLaporan.dc.html" class="admin-nav-link" aria-label="Laporan periodik" title="Laporan mingguan, bulanan, tahunan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span class="admin-nav-text">Laporan periodik</span>
+        </a>
+        <a href="AdminRiwayat.dc.html" class="admin-nav-link" aria-label="Riwayat setoran" title="Riwayat transaksi retribusi">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+          <span class="admin-nav-text">Riwayat setoran</span>
+        </a>
+      </div>
+
+      <div class="admin-nav-group">
+        <span class="admin-nav-group-label">Anggota dan Lapangan</span>
+        <a href="AdminPedagang.dc.html" class="admin-nav-link" aria-label="Keaktifan pedagang" title="Pedagang rajin dan jarang jualan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="admin-nav-text">Keaktifan pedagang</span>
+        </a>
+        <a href="AdminSatgas.dc.html" class="admin-nav-link active" aria-current="page" aria-label="Kinerja satgas" title="Kinerja satgas lapangan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="admin-nav-text">Kinerja satgas</span>
+        </a>
+      </div>
+
+      <div class="admin-nav-footer">
+        <button type="button" class="admin-nav-link admin-nav-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+          <svg class="icon-moon shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <span class="admin-nav-text" data-theme-label>Mode gelap</span>
+        </button>
+        <div class="admin-user-pill">
+          <span class="avatar-initials" aria-hidden="true">HD</span>
+          <div class="stack admin-user-meta" style="min-width:0">
+            <span class="text-xs fw-700 text-main">H. Darmawan</span>
+            <span class="text-xs text-secondary">Pengurus APIMA</span>
+          </div>
+        </div>
+        <a href="MasukId.dc.html" class="admin-nav-link" aria-label="Keluar akun" title="Keluar ke halaman masuk">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span class="admin-nav-text">Keluar akun</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="admin-content">
+
+    <div class="admin-mobile-bar">
+      <span class="brand-wordmark">
+        <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
+        <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
+      </span>
+      <div class="row gap-1">
+        <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button type="button" class="btn-chip" data-sheet-open="sheet-admin-menu" aria-label="Buka menu navigasi pengurus">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          Menu
+        </button>
+      </div>
+    </div>
+
+    <main class="admin-main">
+
+      <header class="admin-page-head">
+        <div class="stack gap-1">
+          <h1 class="text-lg m-0">Kinerja satgas lapangan</h1>
+          <span class="text-sm text-secondary">Pantau bukti keliling, jumlah lapak dicek, jam aktif, dan sebaran GPS per shift.</span>
+        </div>
+
+        <div class="admin-actions">
+          <button type="button" class="btn-chip" id="sat-export-csv">Unduh Log Excel (.csv)</button>
+          <button type="button" class="btn-chip" data-export-pdf="Laporan kinerja satgas PDF">Unduh PDF</button>
+        </div>
+      </header>
+
+      <!-- Banner Eksekutif Biru Maritim -->
+      <section class="exec-banner" aria-label="Ringkasan patroli satgas malam ini">
+        <div class="exec-banner-top">
+          <div class="stack gap-2">
+            <span class="text-sm exec-banner-muted">Shift malam · Sab, 14 Nov 2026 (20:00 – 03:00 WIB)</span>
+            <div class="row gap-3 items-center wrap">
+              <span class="exec-kpi-big">212 lapak dicek</span>
+              <span class="exec-delta">2 dari 2 Satgas Aktif</span>
+            </div>
+            <p class="text-sm exec-banner-muted m-0">Arahkan Satgas B menyisir sisi barat Blok F pada putaran pukul 00:30 WIB sebelum batas bayar retribusi 03:00 WIB.</p>
+          </div>
+        </div>
+
+        <div class="exec-stats-row">
+          <div class="exec-stat">
+            <span class="exec-stat-lbl">Cakupan lapak jualan</span>
+            <span class="exec-stat-val">41% (212 / 512)</span>
+          </div>
+          <div class="exec-stat">
+            <span class="exec-stat-lbl">Scan QR berhasil</span>
+            <span class="exec-stat-val">191 lapak</span>
+          </div>
+          <div class="exec-stat">
+            <span class="exec-stat-lbl">Temuan lapangan</span>
+            <span class="exec-stat-val">3 kasus</span>
+          </div>
+          <div class="exec-stat">
+            <span class="exec-stat-lbl">Area prioritas</span>
+            <span class="exec-stat-val">Blok F (24%)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kartu perbandingan 2 satgas APIMA dengan timeline jam patroli -->
+      <section class="admin-bottom-grid" aria-label="Perbandingan kinerja per petugas">
+        <article class="admin-card">
+          <div class="row between items-start gap-2">
+            <div class="row gap-3 items-center">
+              <span class="avatar-initials tone-success" aria-hidden="true">AF</span>
+              <div class="stack">
+                <span class="text-xs text-secondary tnum">ID S-01 · Blok A, B, C</span>
+                <h2 class="text-md m-0 fw-700">Ahmad Fauzi</h2>
+              </div>
+            </div>
+            <span class="badge badge-success">Aktif · 23:41</span>
+          </div>
+
+          <div class="info-strip">
+            <div class="info-cell">
+              <span class="text-sm text-secondary">Lapak dicek</span>
+              <span class="text-md fw-700 tnum">118 lapak</span>
+            </div>
+            <div class="info-cell">
+              <span class="text-sm text-secondary">Temuan</span>
+              <span class="text-md fw-700 text-warning tnum">2 temuan</span>
+            </div>
+          </div>
+
+          <div class="stack gap-2">
+            <span class="text-sm text-secondary">Sebaran cek per jam (malam ini)</span>
+            <div class="hour-strip" aria-label="Aktivitas per jam Ahmad Fauzi">
+              <div class="hour-cell"><span class="hour-dot active">14</span><span class="hour-lbl">20</span></div>
+              <div class="hour-cell"><span class="hour-dot active">26</span><span class="hour-lbl">21</span></div>
+              <div class="hour-cell"><span class="hour-dot peak">38</span><span class="hour-lbl">22</span></div>
+              <div class="hour-cell"><span class="hour-dot active">28</span><span class="hour-lbl">23</span></div>
+              <div class="hour-cell"><span class="hour-dot active">12</span><span class="hour-lbl">00</span></div>
+              <div class="hour-cell"><span class="hour-dot">0</span><span class="hour-lbl">01</span></div>
+              <div class="hour-cell"><span class="hour-dot">0</span><span class="hour-lbl">02</span></div>
+              <div class="hour-cell"><span class="hour-dot">0</span><span class="hour-lbl">03</span></div>
+            </div>
+          </div>
+
+          <div class="row between text-sm text-secondary">
+            <span>Scan QR: 109 · Manual: 9</span>
+            <span class="text-success fw-700">GPS cocok 100%</span>
+          </div>
+        </article>
+
+        <article class="admin-card">
+          <div class="row between items-start gap-2">
+            <div class="row gap-3 items-center">
+              <span class="avatar-initials tone-warning" aria-hidden="true">DK</span>
+              <div class="stack">
+                <span class="text-xs text-secondary tnum">ID S-02 · Blok D, E, F</span>
+                <h2 class="text-md m-0 fw-700">Dedi Kurniawan</h2>
+              </div>
+            </div>
+            <span class="badge badge-warning">3 Belum Terkirim</span>
+          </div>
+
+          <div class="info-strip">
+            <div class="info-cell">
+              <span class="text-sm text-secondary">Lapak dicek</span>
+              <span class="text-md fw-700 tnum">94 lapak</span>
+            </div>
+            <div class="info-cell">
+              <span class="text-sm text-secondary">Temuan</span>
+              <span class="text-md fw-700 text-warning tnum">1 temuan</span>
+            </div>
+          </div>
+
+          <div class="stack gap-2">
+            <span class="text-sm text-secondary">Sebaran cek per jam (malam ini)</span>
+            <div class="hour-strip" aria-label="Aktivitas per jam Dedi Kurniawan">
+              <div class="hour-cell"><span class="hour-dot active">10</span><span class="hour-lbl">20</span></div>
+              <div class="hour-cell"><span class="hour-dot active">22</span><span class="hour-lbl">21</span></div>
+              <div class="hour-cell"><span class="hour-dot peak">32</span><span class="hour-lbl">22</span></div>
+              <div class="hour-cell"><span class="hour-dot active">21</span><span class="hour-lbl">23</span></div>
+              <div class="hour-cell"><span class="hour-dot active">9</span><span class="hour-lbl">00</span></div>
+              <div class="hour-cell"><span class="hour-dot">0</span><span class="hour-lbl">01</span></div>
+              <div class="hour-cell"><span class="hour-dot">0</span><span class="hour-lbl">02</span></div>
+              <div class="hour-cell"><span class="hour-dot">0</span><span class="hour-lbl">03</span></div>
+            </div>
+          </div>
+
+          <div class="row between text-sm text-secondary">
+            <span>Scan QR: 82 · Manual: 12</span>
+            <span class="text-warning fw-700">Sinyal lemah di Dermaga</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- Log pengecekan lapangan terbaru -->
+      <section class="admin-card" aria-label="Log verifikasi lapangan terbaru">
+        <div class="admin-toolbar">
+          <h2 class="text-md m-0 fw-700">Log verifikasi dan titik GPS terbaru</h2>
+          <div class="seg" role="group" aria-label="Filter log berdasarkan satgas">
+            <button type="button" class="seg-btn active" data-sat-filter="semua" aria-pressed="true">Semua Satgas</button>
+            <button type="button" class="seg-btn" data-sat-filter="S-01" aria-pressed="false">S-01 Ahmad</button>
+            <button type="button" class="seg-btn" data-sat-filter="S-02" aria-pressed="false">S-02 Dedi</button>
+          </div>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Jam</th>
+                <th>Satgas</th>
+                <th>Anggota / Lapak</th>
+                <th>Metode</th>
+                <th>Zona GPS</th>
+                <th>Hasil</th>
+              </tr>
+            </thead>
+            <tbody id="sat-log-tbody">
+              <tr data-sat="S-01">
+                <td class="tnum fw-700">23:41</td>
+                <td>Ahmad Fauzi (S-01)</td>
+                <td>Siti Aminah (0456)</td>
+                <td>Manual + Foto</td>
+                <td>Blok B · 6.1072 S, 106.7741 E</td>
+                <td><span class="badge badge-danger">Jualan Tanpa Bayar</span></td>
+              </tr>
+              <tr data-sat="S-01">
+                <td class="tnum fw-700">23:34</td>
+                <td>Ahmad Fauzi (S-01)</td>
+                <td>Budi Santoso (0123)</td>
+                <td>Scan QR dinamis</td>
+                <td>Blok B · 6.1070 S, 106.7743 E</td>
+                <td><span class="badge badge-success">Terverifikasi</span></td>
+              </tr>
+              <tr data-sat="S-02">
+                <td class="tnum fw-700">23:18</td>
+                <td>Dedi Kurniawan (S-02)</td>
+                <td>Rahmat Hidayat (0078)</td>
+                <td>Scan QR + Foto</td>
+                <td>Blok E · 6.1084 S, 106.7729 E</td>
+                <td><span class="badge badge-warning">QR Ganda</span></td>
+              </tr>
+              <tr data-sat="S-02">
+                <td class="tnum fw-700">23:09</td>
+                <td>Dedi Kurniawan (S-02)</td>
+                <td>Hj. Rohimah (0089)</td>
+                <td>Scan QR (tanpa sinyal)</td>
+                <td>Dermaga Timur · 6.1091 S</td>
+                <td><span class="badge badge-success">Terverifikasi</span></td>
+              </tr>
+              <tr data-sat="S-01">
+                <td class="tnum fw-700">22:55</td>
+                <td>Ahmad Fauzi (S-01)</td>
+                <td>Pedagang bukan anggota</td>
+                <td>Manual + Foto</td>
+                <td>Blok A · 6.1066 S, 106.7748 E</td>
+                <td><span class="badge badge-warning">Bukan Anggota</span></td>
+              </tr>
+              <tr data-sat="S-02">
+                <td class="tnum fw-700">22:47</td>
+                <td>Dedi Kurniawan (S-02)</td>
+                <td>Darmawan Putra (0241)</td>
+                <td>Scan QR dinamis</td>
+                <td>Blok D · 6.1081 S, 106.7735 E</td>
+                <td><span class="badge badge-success">Terverifikasi</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Sheet menu navigasi mobile -->
+  <div id="sheet-admin-menu" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
+    <div class="sheet">
+      <div class="row between">
+        <h2 id="mobile-menu-title" class="text-md m-0 fw-700">Menu Pengurus APIMA</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup menu pengurus">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="stack gap-1">
+        <a href="AdminRingkasan.dc.html" class="admin-nav-link">Ringkasan AI</a>
+        <a href="AdminLaporan.dc.html" class="admin-nav-link">Laporan periodik</a>
+        <a href="AdminRiwayat.dc.html" class="admin-nav-link">Riwayat setoran</a>
+        <a href="AdminPedagang.dc.html" class="admin-nav-link">Keaktifan pedagang</a>
+        <a href="AdminSatgas.dc.html" class="admin-nav-link active" aria-current="page">Kinerja satgas</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script>
+(function () {
+  function boot() {
+    var btns = document.querySelectorAll('[data-sat-filter]');
+    var rows = document.querySelectorAll('#sat-log-tbody tr');
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btns.forEach(function (b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+        var val = btn.dataset.satFilter;
+        rows.forEach(function (tr) {
+          tr.hidden = !(val === 'semua' || tr.dataset.sat === val);
+        });
+      });
+    });
+
+    var exportBtn = document.getElementById('sat-export-csv');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', function () {
+        var lines = ['Jam,Satgas,Anggota,Metode,Zona GPS,Hasil'];
+        rows.forEach(function (tr) {
+          if (tr.hidden) return;
+          var cols = Array.from(tr.children).map(function (td) { return '"' + td.textContent.trim() + '"'; });
+          lines.push(cols.join(','));
+        });
+        var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'kinerja-satgas-apima.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        if (window.apimaToast) window.apimaToast('Log kinerja satgas (.csv) berhasil diunduh.');
+      });
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 30); });
+  } else {
+    setTimeout(boot, 30);
+  }
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

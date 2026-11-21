@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Satgas · Hasil scan QR</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="SatgasDaftar.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke daftar satgas">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <h1 class="text-md m-0 fw-700">Hasil scan</h1>
+    </div>
+    <span class="text-sm text-secondary tnum">Sab, 14 Nov</span>
+  </header>
+
+  <main class="screen-scroll stack gap-4" style="padding:16px 16px 24px">
+
+    <section class="hero-card tone-warning" aria-label="Identitas anggota hasil scan">
+      <div class="row between items-start gap-3">
+        <div class="stack gap-1">
+          <span class="text-lg">Siti Aminah</span>
+          <span class="text-sm text-secondary tnum">ID 0456 · Blok C-14</span>
+        </div>
+        <span class="pill pill-warning">
+          <span class="status-dot dot-warning" aria-hidden="true"></span>
+          Belum Bayar
+        </span>
+      </div>
+
+      <div class="divider-t" style="padding-top:12px">
+        <div class="row between gap-2">
+          <span class="text-sm text-secondary">Penjaga terdaftar</span>
+          <span class="text-sm fw-700">Rahmat (anak)</span>
+        </div>
+      </div>
+    </section>
+
+    <fieldset class="m-0 stack gap-2" style="border:none;padding:0">
+      <legend class="text-bold" style="padding:0;margin-bottom:8px">Catat hasil pemeriksaan</legend>
+      <label class="radio-card selected-danger" data-danger>
+        <input type="radio" name="hasil" checked>
+        <span>Jualan tanpa bayar</span>
+      </label>
+      <label class="radio-card">
+        <input type="radio" name="hasil">
+        <span>Penjaga tidak dikenal</span>
+      </label>
+      <label class="radio-card">
+        <input type="radio" name="hasil">
+        <span>Sesuai</span>
+      </label>
+    </fieldset>
+
+  </main>
+
+  <div class="screen-footer">
+    <a href="SatgasDaftar.dc.html" class="btn btn-primary no-underline">Simpan Hasil Pemeriksaan</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

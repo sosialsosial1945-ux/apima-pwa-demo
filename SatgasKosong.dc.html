@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Satgas · Temuan saya kosong</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="SatgasDaftar.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke daftar satgas">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <h1 class="text-md m-0 fw-700">Temuan saya</h1>
+    </div>
+    <span class="text-sm text-secondary tnum">Sab, 14 Nov</span>
+  </header>
+
+  <main class="screen-scroll stack gap-4" style="padding:16px">
+
+    <section class="hero-card items-center text-center" style="padding:24px 16px" aria-label="Belum ada temuan malam ini">
+      <img src="illustrations/data-kosong.webp" alt="Ilustrasi belum ada temuan malam ini" class="illus-hero">
+      <div class="stack gap-1 items-center">
+        <span class="text-lg">Belum ada temuan malam ini</span>
+        <span class="text-sm text-secondary">Catatan akan muncul di sini setelah Anda scan QR anggota atau mencatat lapak bermasalah.</span>
+      </div>
+      <a href="SatgasScan.dc.html" class="btn btn-primary no-underline mt-1">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg>
+        Scan QR Anggota
+      </a>
+    </section>
+
+    <section class="open-section" aria-label="Jadwal cek lapak">
+      <ul class="open-list">
+        <li class="open-row">
+          <span class="text-sm text-secondary">Jadwal cek malam ini</span>
+          <span class="text-sm fw-700 tnum">Mulai 19:00 WIB</span>
+        </li>
+        <li class="open-row">
+          <span class="text-sm text-secondary">Batas pembayaran anggota</span>
+          <span class="text-sm fw-700 tnum">03:00 WIB</span>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

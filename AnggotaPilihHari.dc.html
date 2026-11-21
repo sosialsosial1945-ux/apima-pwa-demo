@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Pilih jumlah malam</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="Main.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke beranda">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <h1 class="text-md m-0 fw-700">Bayar retribusi</h1>
+    </div>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <div class="row gap-3 items-center">
+      <img src="illustrations/pilih-paket.webp" alt="Ilustrasi pilihan paket retribusi" class="illus-side">
+      <p class="text-sm text-secondary m-0">Pilih jumlah malam retribusi yang ingin Anda bayar. Tarif tetap Rp3.000 per malam dan langsung aktif.</p>
+    </div>
+
+    <div data-selectable-group data-base-quota="7" class="grid-2" role="group" aria-label="Pilihan jumlah malam">
+      <button type="button" class="selectable-card stack items-center gap-1" data-value="1" aria-pressed="false">
+        <span class="text-lg tnum text-main">1 malam</span>
+        <span class="text-sm text-primary-color fw-700 tnum">Rp3.000</span>
+      </button>
+      <button type="button" class="selectable-card selected stack items-center gap-1" data-value="7" aria-pressed="true">
+        <span class="text-lg tnum text-main">7 malam</span>
+        <span class="text-sm text-primary-color fw-700 tnum">Rp21.000</span>
+      </button>
+      <button type="button" class="selectable-card stack items-center gap-1" data-value="14" aria-pressed="false">
+        <span class="text-lg tnum text-main">14 malam</span>
+        <span class="text-sm text-primary-color fw-700 tnum">Rp42.000</span>
+      </button>
+      <button type="button" class="selectable-card stack items-center gap-1" data-value="30" aria-pressed="false">
+        <span class="text-lg tnum text-main">30 malam</span>
+        <span class="text-sm text-primary-color fw-700 tnum">Rp90.000</span>
+      </button>
+    </div>
+
+    <section class="hero-card" aria-label="Ringkasan total pembayaran">
+      <div class="row between items-end gap-3">
+        <div class="stack gap-1">
+          <span class="text-sm text-secondary">Total bayar</span>
+          <span class="text-xl tnum" data-selectable-output>Rp21.000</span>
+        </div>
+        <div class="stack gap-1 items-end text-right">
+          <span class="text-sm text-secondary">Sisa retribusi nanti</span>
+          <span class="text-md fw-700 text-success tnum" data-selectable-quota>14 malam</span>
+        </div>
+      </div>
+      <span class="text-sm text-secondary">Pembayaran memakai QRIS. Pastikan saldo dompet digital atau m-banking Anda cukup sebelum lanjut, ya.</span>
+    </section>
+
+  </main>
+
+  <div class="screen-footer">
+    <a href="AnggotaQris.dc.html" class="btn btn-primary no-underline" data-selectable-cta>Lanjut Bayar Rp21.000</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

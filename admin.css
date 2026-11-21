@@ -1,0 +1,1392 @@
+/* ======================================
+   APIMA Executive Dashboard Shell (v4.5 - FunDS AppShell + Maritime Executive)
+   Mengikuti FunDS: Inter 500 & 700, ritme 4px, kartu 16px, input 8px, modal 12px,
+   tombol pill 9999px, warna resmi Biru Laut APIMA (#0B4F8A terang / #1B6AD4 gelap).
+   ====================================== */
+
+body { background: var(--apima-bg-page); }
+
+.admin-shell {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  display: flex;
+  background: var(--apima-bg-page);
+  position: relative;
+}
+
+/* Sidebar FunDS AppShell: 240px penuh, 60px rail ciut */
+.admin-nav {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--apima-bg-card);
+  border-right: 1px solid var(--apima-line);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  transition: width var(--apima-transition);
+}
+.admin-nav.collapsed { width: 60px; }
+.admin-nav-head {
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--apima-line);
+  height: 56px;
+  flex-shrink: 0;
+}
+.admin-nav.collapsed .admin-brand-text,
+.admin-nav.collapsed .admin-nav-group-label,
+.admin-nav.collapsed .admin-nav-text,
+.admin-nav.collapsed .admin-user-meta { display: none; }
+.admin-nav.collapsed .admin-nav-head { justify-content: center; padding: 0 4px; }
+.admin-nav-body {
+  padding: 16px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+.admin-nav-group { display: flex; flex-direction: column; gap: 4px; }
+.admin-nav-group-label {
+  padding: 0 10px 4px;
+  font-size: var(--apima-text-micro);
+  line-height: var(--apima-lh-micro);
+  font-weight: 700;
+  color: var(--apima-text-caption);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.admin-nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  min-height: 44px;
+  border-radius: var(--apima-radius-sm);
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+  text-decoration: none;
+  transition: background var(--apima-transition), color var(--apima-transition);
+}
+.admin-nav.collapsed .admin-nav-link { justify-content: center; padding: 0; }
+.admin-nav-link:hover { background: var(--apima-bg-page); color: var(--apima-text); }
+.admin-nav-link.active {
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+  font-weight: 700;
+}
+.admin-nav-btn {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.admin-nav-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--apima-line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--apima-radius-sm);
+  background: var(--apima-bg-page);
+}
+.admin-nav.collapsed .admin-user-pill { justify-content: center; padding: 8px 0; }
+
+/* Avatar inisial (pedagang & pengurus) */
+.avatar-initials {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--apima-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  flex-shrink: 0;
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+}
+.avatar-initials.tone-success { background: var(--apima-success-tint); color: var(--apima-success); }
+.avatar-initials.tone-warning { background: var(--apima-warning-tint); color: var(--apima-warning); }
+.avatar-initials.tone-danger  { background: var(--apima-danger-tint);  color: var(--apima-danger); }
+.avatar-initials.tone-neutral { background: var(--apima-bg-raised);    color: var(--apima-text-secondary); }
+
+/* Mobile bar (52px topbar) */
+.admin-mobile-bar {
+  display: none;
+  min-height: 52px;
+  padding: 8px 16px;
+  background: var(--apima-bg-card);
+  border-bottom: 1px solid var(--apima-line);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-main {
+  padding: 24px 28px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1180px;
+  width: 100%;
+}
+
+/* Header halaman */
+.admin-page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* =====================================
+   Executive Command Banner (Biru Maritim APIMA sebagai jangkar hierarki)
+   ===================================== */
+.exec-banner {
+  background: #0B4F8A;
+  color: #FFFFFF;
+  border-radius: var(--apima-radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 6px 20px rgba(11, 79, 138, 0.14);
+}
+:root[data-theme="dark"] .exec-banner {
+  background: #102A4C;
+  border: 1px solid #1E4476;
+  box-shadow: none;
+}
+.exec-banner-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.exec-banner-muted {
+  color: rgba(255, 255, 255, 0.78);
+}
+.exec-kpi-big {
+  font-size: 36px;
+  line-height: 42px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  color: #FFFFFF;
+}
+.exec-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--apima-radius-pill);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+}
+.exec-seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: var(--apima-radius-pill);
+  padding: 4px;
+  gap: 4px;
+}
+.exec-seg-btn {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.86);
+  font-family: inherit;
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--apima-radius-pill);
+  cursor: pointer;
+  transition: background var(--apima-transition), color var(--apima-transition);
+}
+.exec-seg-btn:hover { color: #FFFFFF; background: rgba(255, 255, 255, 0.12); }
+.exec-seg-btn.active {
+  background: #FFFFFF;
+  color: #0B4F8A;
+}
+.exec-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+.exec-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.exec-stat-val {
+  font-size: var(--apima-text-md);
+  line-height: 24px;
+  font-weight: 700;
+  color: #FFFFFF;
+  font-variant-numeric: tabular-nums;
+}
+.exec-stat-lbl {
+  font-size: var(--apima-text-xs);
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 500;
+}
+
+/* =====================================
+   Panel Ringkasan AI / Analisis Otomatis APIMA
+   ===================================== */
+.ai-panel {
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-primary-ring);
+  border-radius: var(--apima-radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+:root[data-theme="dark"] .ai-panel {
+  border-color: #21406A;
+  background: #121B28;
+}
+.ai-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ai-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+}
+.ai-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.ai-point {
+  background: var(--apima-bg-page);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ai-point-kicker {
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  color: var(--apima-accent-text);
+}
+.ai-point-kicker.tone-success { color: var(--apima-success); }
+.ai-point-kicker.tone-warning { color: var(--apima-warning); }
+.ai-point-kicker.tone-danger  { color: var(--apima-danger); }
+
+.ai-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 1px solid var(--apima-line);
+}
+
+/* =====================================
+   Grid Asimetris & Kartu Analitik
+   ===================================== */
+.dash-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.admin-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.admin-hero {
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-lg);
+  padding: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+.admin-hero-right {
+  border-left: 1px solid var(--apima-line);
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Strip 3 metrik terbuka */
+.admin-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.metric-card {
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-metric-val {
+  font-size: var(--apima-text-lg);
+  line-height: var(--apima-lh-lg);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Panel kartu analitik */
+.admin-card {
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Baris pedagang (Rajin vs Jarang) dengan bar progres visual */
+.merchant-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.merchant-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--apima-line);
+}
+.merchant-row:last-child { border-bottom: none; padding-bottom: 0; }
+.merchant-row:first-child { padding-top: 0; }
+.merchant-bar-track {
+  height: 6px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-meter-track);
+  overflow: hidden;
+  margin-top: 4px;
+}
+.merchant-bar-fill {
+  height: 100%;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-primary);
+}
+.merchant-bar-fill.tone-success { background: var(--apima-success); }
+.merchant-bar-fill.tone-warning { background: var(--apima-warning); }
+.merchant-bar-fill.tone-danger  { background: var(--apima-danger); }
+
+/* Toolbar filter & pencarian */
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.admin-toolbar .seg {
+  max-width: 100%;
+  min-width: 0;
+}
+.admin-toolbar .seg-btn {
+  padding: 0 14px;
+}
+.admin-search-box {
+  position: relative;
+  min-width: 240px;
+  flex: 1;
+  max-width: 360px;
+}
+.admin-search-box svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--apima-text-secondary);
+  pointer-events: none;
+}
+.admin-search-box .input {
+  padding-left: 40px;
+  min-height: 44px;
+}
+
+/* Grafik batang fleksibel (Harian / Mingguan / Bulanan / Tahunan) */
+.period-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 184px;
+  padding: 16px 6px 0;
+  border-bottom: 1px solid var(--apima-line);
+  background: linear-gradient(to top, transparent 0%, transparent 49%, var(--apima-line) 50%, transparent 51%);
+  background-size: 100% 46px;
+}
+.period-col {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.period-val {
+  font-size: var(--apima-text-xs);
+  line-height: 16px;
+  font-weight: 700;
+  color: var(--apima-text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.period-bar {
+  width: 100%;
+  max-width: 44px;
+  border-radius: 8px 8px 0 0;
+  background: var(--apima-chart-dim);
+  transition: height var(--apima-transition), background var(--apima-transition);
+}
+.period-bar.highlight { background: var(--apima-primary); }
+.period-bar.success { background: var(--apima-success); }
+.period-labels {
+  display: flex;
+  gap: 10px;
+  padding: 8px 6px 0;
+}
+.period-label {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Penanda peringkat pedagang */
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: var(--apima-radius-xs);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background: var(--apima-bg-raised);
+  color: var(--apima-text-secondary);
+}
+.rank-badge.top {
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+}
+.rank-badge.warn {
+  background: var(--apima-warning-tint);
+  color: var(--apima-warning);
+}
+.rank-badge.danger {
+  background: var(--apima-danger-tint);
+  color: var(--apima-danger);
+}
+
+/* Jam cek satgas */
+.hour-strip {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+}
+.hour-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.hour-dot {
+  width: 100%;
+  height: 26px;
+  border-radius: var(--apima-radius-xs);
+  background: var(--apima-meter-track);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--apima-text-secondary);
+}
+.hour-dot.active {
+  background: var(--apima-success-tint);
+  color: var(--apima-success);
+  border: 1px solid var(--apima-border-success);
+}
+.hour-dot.peak {
+  background: var(--apima-primary);
+  color: var(--apima-on-primary);
+}
+.hour-lbl {
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tabel bersih FunDS */
+.admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-lg);
+  background: var(--apima-bg-card);
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  min-width: 640px;
+}
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: middle;
+}
+.admin-table th {
+  color: var(--apima-text-secondary);
+  font-weight: 700;
+  font-size: var(--apima-text-xs);
+  border-bottom: 1px solid var(--apima-line);
+  background: var(--apima-bg-page);
+  white-space: nowrap;
+}
+.admin-table td { border-bottom: 1px solid var(--apima-line); }
+.admin-table tbody tr:last-child td { border-bottom: none; }
+.admin-table tbody tr:hover { background: var(--apima-bg-page); }
+.admin-table th.num,
+.admin-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.admin-table td:last-child { white-space: nowrap; }
+
+/* =====================================
+   APIMA Vision Charts (SVG Area + Kolom + Kurva Tren + Donut)
+   ===================================== */
+:root {
+  --vc-line: #0B4F8A;
+  --vc-bar-top: #7BA6CF;
+  --vc-bar-bot: #CFE0F2;
+  --vc-peak: #0B4F8A;
+  --vc-avg: #0284C7;
+  --vc-grid: #E2E8F0;
+  --vc-halo: rgba(11, 79, 138, 0.16);
+}
+:root[data-theme="dark"] {
+  --vc-line: #38BDF8;
+  --vc-bar-top: #2A4B75;
+  --vc-bar-bot: #162438;
+  --vc-peak: #38BDF8;
+  --vc-avg: #60A5FA;
+  --vc-grid: #232B36;
+  --vc-halo: rgba(56, 189, 248, 0.24);
+}
+
+.vc-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.vc-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.vc-legend-items {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.vc-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+}
+.vc-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--apima-radius-pill);
+  flex-shrink: 0;
+}
+.vc-swatch-line { background: var(--vc-line); height: 3px; width: 14px; }
+.vc-swatch-peak { background: var(--vc-peak); }
+.vc-swatch-avg  { border-top: 2px dashed var(--vc-avg); width: 14px; height: 0; border-radius: 0; }
+.vc-live-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.vc-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.vc-grid {
+  stroke: var(--vc-grid);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+.vc-axis-y,
+.vc-axis-x {
+  fill: var(--apima-text-secondary);
+  font-family: var(--apima-font);
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.vc-axis-x.is-peak,
+.vc-axis-x.is-active {
+  fill: var(--apima-accent-text);
+  font-weight: 700;
+}
+.vc-bar {
+  transition: opacity 140ms ease;
+}
+.vc-bar.is-active {
+  filter: brightness(1.08);
+}
+.vc-line {
+  fill: none;
+  stroke: var(--vc-line);
+  stroke-width: 2.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.vc-dot {
+  fill: var(--apima-bg-card);
+  stroke: var(--vc-line);
+  stroke-width: 2.5;
+  transition: r 120ms ease;
+}
+.vc-dot.is-peak,
+.vc-dot.is-active {
+  fill: var(--vc-peak);
+  stroke: var(--apima-bg-card);
+  stroke-width: 2.5;
+}
+.vc-halo {
+  fill: var(--vc-halo);
+}
+.vc-crosshair {
+  stroke: var(--vc-line);
+  stroke-width: 1.25;
+  stroke-dasharray: 3 3;
+  transition: opacity 120ms ease;
+}
+.vc-avg line {
+  stroke: var(--vc-avg);
+  stroke-width: 1.25;
+  stroke-dasharray: 5 4;
+  opacity: 0.72;
+}
+.vc-avg rect {
+  fill: var(--apima-bg-card);
+  stroke: var(--apima-line);
+  stroke-width: 1;
+}
+.vc-avg text {
+  fill: var(--apima-accent-text);
+  font-family: var(--apima-font);
+  font-size: 10px;
+  font-weight: 700;
+}
+.vc-peak-badge rect {
+  fill: var(--vc-peak);
+}
+.vc-peak-badge text {
+  fill: #FFFFFF;
+  font-family: var(--apima-font);
+  font-size: 11px;
+  font-weight: 700;
+}
+:root[data-theme="dark"] .vc-peak-badge text {
+  fill: #0B0E13;
+}
+.vc-hit { cursor: pointer; }
+.vc-footer-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--apima-line);
+}
+.vc-foot-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.vc-foot-lbl {
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+}
+.vc-foot-val {
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+  color: var(--apima-text);
+}
+
+/* Vision Donut Ring Chart */
+.vd-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.vd-ring-box {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vd-svg {
+  width: 168px;
+  height: 168px;
+  display: block;
+}
+.vd-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+.vd-center-val {
+  font-size: var(--apima-text-lg);
+  line-height: 28px;
+  font-weight: 700;
+  color: var(--apima-text);
+}
+.vd-center-lbl {
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+}
+.vd-legend {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vd-leg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--apima-line);
+}
+.vd-leg-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.vd-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--apima-radius-pill);
+  flex-shrink: 0;
+}
+
+/* =====================================
+   Eventom-inspired Airy Bento & Interactive SaaS Polish (v5.0)
+   Tetap 100% FunDS: Inter 500/700, 44px touch targets, Light & Dark mode
+   ===================================== */
+
+/* Sticky Global Workspace Topbar */
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: 60px;
+  padding: 8px 28px;
+  background: var(--apima-bg-card);
+  border-bottom: 1px solid var(--apima-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.topbar-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  min-width: 220px;
+}
+.topbar-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--apima-text-secondary);
+  pointer-events: none;
+}
+.topbar-search-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 58px 0 40px;
+  border-radius: var(--apima-radius-pill);
+  border: 1px solid var(--apima-line);
+  background: var(--apima-bg-page);
+  color: var(--apima-text);
+  font-family: inherit;
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  transition: border-color var(--apima-transition), background var(--apima-transition), box-shadow var(--apima-transition);
+}
+.topbar-search-input::placeholder { color: var(--apima-text-secondary); }
+.topbar-search-input:focus {
+  outline: none;
+  background: var(--apima-bg-card);
+  border-color: var(--apima-primary);
+  box-shadow: 0 0 0 3px var(--apima-primary-tint);
+}
+.topbar-kbd {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  color: var(--apima-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  pointer-events: none;
+}
+.topbar-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-md);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+  padding: 6px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.topbar-dropdown[hidden] { display: none; }
+.topbar-res-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--apima-radius-sm);
+  background: transparent;
+  color: var(--apima-text);
+  font-family: inherit;
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--apima-transition);
+}
+.topbar-res-item:hover { background: var(--apima-bg-page); }
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Live Pulse Indicator */
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-success-tint);
+  color: var(--apima-success);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--apima-success);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.45);
+  animation: apimaPulse 2s infinite;
+}
+@keyframes apimaPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(21, 128, 61, 0.45); }
+  70%  { box-shadow: 0 0 0 6px rgba(21, 128, 61, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(21, 128, 61, 0); }
+}
+
+/* Sidebar Quick Portal Utility Card */
+.admin-portal-card {
+  padding: 10px;
+  border-radius: var(--apima-radius-md);
+  background: var(--apima-bg-page);
+  border: 1px solid var(--apima-line);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.admin-nav.collapsed .admin-portal-card { display: none; }
+.admin-portal-url {
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  color: var(--apima-accent-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 3-Column Bento KPI Grid (Eventom Signature Top Row) */
+.bento-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.bento-card {
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  transition: border-color var(--apima-transition), box-shadow var(--apima-transition);
+}
+.bento-card:hover {
+  border-color: var(--apima-primary-ring);
+  box-shadow: 0 6px 18px rgba(11, 79, 138, 0.06);
+}
+:root[data-theme="dark"] .bento-card:hover {
+  box-shadow: none;
+  border-color: #2B4C7E;
+}
+.bento-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bento-title {
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+  color: var(--apima-text-secondary);
+}
+.bento-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 8px;
+  margin: -12px -8px;
+  border-radius: var(--apima-radius-sm);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  color: var(--apima-accent-text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--apima-transition);
+}
+.bento-link:hover { background: var(--apima-primary-tint); }
+.bento-main-split {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.bento-kpi-num {
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--apima-text);
+  font-variant-numeric: tabular-nums;
+}
+.bento-delta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-success-tint);
+  color: var(--apima-success);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  width: fit-content;
+}
+.bento-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--apima-line);
+}
+.bento-progress-track {
+  height: 6px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-meter-track);
+  overflow: hidden;
+}
+.bento-progress-fill {
+  height: 100%;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-primary);
+  transition: width 260ms ease;
+}
+
+/* Mini Sparkbars (Card 1) */
+.ms-svg { display: block; flex-shrink: 0; }
+.ms-bar { fill: var(--apima-chart-dim); transition: fill 160ms ease; }
+.ms-bar.is-peak { fill: var(--apima-primary); }
+
+/* Mini Donut + 3-Row Legend (Card 2) */
+.bento-donut-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.md-ring-box {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.md-svg { width: 88px; height: 88px; display: block; }
+.md-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.md-val {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--apima-text);
+}
+.md-lbl {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+}
+.bento-leg-list {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bento-leg-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+}
+.bento-leg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Patroli Card Mini Status Rows (Card 3) */
+.patrol-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.patrol-chip {
+  padding: 8px 10px;
+  border-radius: var(--apima-radius-sm);
+  background: var(--apima-bg-page);
+  border: 1px solid var(--apima-line);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Guided Numbered Step Circle for AI Insights */
+.ai-step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+  flex-shrink: 0;
+}
+.ai-step-num.tone-success { background: var(--apima-success-tint); color: var(--apima-success); }
+.ai-step-num.tone-warning { background: var(--apima-warning-tint); color: var(--apima-warning); }
+
+/* Clickable Live Feed Row */
+.live-feed-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 4px;
+}
+.live-feed-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 58px;
+  padding: 8px 10px;
+  margin: 0 -10px;
+  width: calc(100% + 20px);
+  border: 1px solid transparent;
+  border-radius: var(--apima-radius-md);
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--apima-transition), border-color var(--apima-transition);
+}
+.live-feed-btn:hover {
+  background: var(--apima-bg-page);
+  border-color: var(--apima-line);
+}
+.live-feed-btn:focus-visible {
+  outline: 2px solid var(--apima-primary);
+  outline-offset: 1px;
+}
+.feed-filter-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 14px 0 38px;
+  border-radius: var(--apima-radius-sm);
+  border: 1px solid var(--apima-line);
+  background: var(--apima-bg-page);
+  color: var(--apima-text);
+  font-family: inherit;
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+}
+.feed-filter-input:focus {
+  outline: none;
+  background: var(--apima-bg-card);
+  border-color: var(--apima-primary);
+}
+
+/* Right Slide-Over Detail Drawer (Desktop) / Bottom Sheet (Mobile) */
+.admin-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(15, 23, 42, 0.42);
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+}
+.admin-drawer-backdrop[hidden] { display: none; }
+.admin-drawer {
+  width: 100%;
+  max-width: 420px;
+  background: var(--apima-bg-card);
+  border-left: 1px solid var(--apima-line);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  box-shadow: -12px 0 32px rgba(15, 23, 42, 0.14);
+}
+.drawer-kv-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-md);
+  overflow: hidden;
+}
+.drawer-kv-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--apima-line);
+  font-size: var(--apima-text-sm);
+}
+.drawer-kv-row:last-child { border-bottom: none; }
+
+/* Dialog modal FunDS */
+.admin-shell .sheet-backdrop {
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.admin-shell .sheet {
+  max-width: 500px;
+  border-radius: var(--apima-radius-md);
+  border: 1px solid var(--apima-line);
+}
+.admin-shell .toast {
+  position: fixed;
+  left: auto;
+  right: 24px;
+  bottom: 24px;
+  max-width: 380px;
+}
+
+@media (max-width: 1120px) {
+  .bento-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1024px) {
+  .dash-split { grid-template-columns: 1fr; }
+  .ai-grid { grid-template-columns: 1fr; }
+  .exec-stats-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .admin-hero { grid-template-columns: 1fr; }
+  .admin-hero-right { border-left: none; border-top: 1px solid var(--apima-line); padding-left: 0; padding-top: 16px; }
+  .admin-bottom-grid { grid-template-columns: 1fr; }
+  .bento-kpi-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .admin-nav { display: none; }
+  .admin-topbar { display: none; }
+  .admin-mobile-bar { display: flex; }
+  .admin-main { padding: 16px 16px 32px; gap: 16px; }
+  .admin-card { padding: 16px; }
+  .bento-card { padding: 16px; }
+  .exec-banner { padding: 16px; }
+  .exec-kpi-big { font-size: 28px; line-height: 34px; }
+  .exec-seg { width: 100%; border-radius: var(--apima-radius-md); }
+  .exec-seg-btn { flex: 1 1 auto; padding: 0 10px; }
+  .admin-metrics { grid-template-columns: 1fr; gap: 12px; }
+  .vc-footer-strip { grid-template-columns: 1fr; }
+  .admin-toolbar .seg,
+  .admin-card .seg,
+  .admin-page-head .seg { display: flex; flex-wrap: wrap; width: 100%; border-radius: var(--apima-radius-md); }
+  .admin-toolbar .seg-btn,
+  .admin-card .seg-btn,
+  .admin-page-head .seg-btn { flex: 1 1 auto; padding: 0 10px; }
+  .admin-search-box { min-width: 0; max-width: none; width: 100%; }
+  .admin-table-wrap { width: 100%; max-width: 100%; min-width: 0; }
+  .admin-drawer-backdrop { align-items: flex-end; }
+  .admin-drawer { max-width: none; border-left: none; border-top: 1px solid var(--apima-line); border-radius: var(--apima-radius-md) var(--apima-radius-md) 0 0; max-height: 85vh; }
+  .admin-shell .sheet-backdrop { align-items: flex-end; padding: 0; }
+  .admin-shell .sheet { max-width: none; border-radius: var(--apima-radius-md) var(--apima-radius-md) 0 0; }
+  .admin-shell .toast { left: 16px; right: 16px; max-width: none; }
+}

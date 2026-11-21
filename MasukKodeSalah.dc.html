@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Kode belum cocok</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="MasukId.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke halaman masuk">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <div class="stack">
+        <span class="header-eyebrow tnum">ID 0123</span>
+        <h1 class="text-md m-0 fw-700">Masukkan kode</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <section class="hero-card tone-danger" aria-label="Isian kode verifikasi salah">
+      <img src="illustrations/error-gagal.webp" alt="Ilustrasi kode verifikasi belum cocok" class="illus-md">
+      <div class="stack gap-2">
+        <label for="otp" class="text-bold">Kode 6 angka dari WhatsApp</label>
+        <input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" aria-invalid="true" aria-describedby="otp-err" class="input-otp error">
+      </div>
+      <div id="otp-err" role="alert" class="banner banner-danger">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--apima-danger)" stroke-width="2" class="banner-icon" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div class="stack gap-1">
+          <span class="text-bold text-danger">Kode belum cocok</span>
+          <span class="text-sm">Cek lagi pesan WhatsApp Anda, ya. Sisa 3 kali percobaan lagi.</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="stack gap-2" style="padding:0 2px">
+      <span class="text-sm text-secondary">Kode belum masuk? Kirim ulang dalam <strong class="text-main tnum" data-resend-after="42">42 detik</strong>.</span>
+      <button type="button" disabled class="btn-chip" data-resend-btn>Kirim Ulang Kode</button>
+    </div>
+
+  </main>
+
+  <div class="screen-footer">
+    <a href="Main.dc.html" class="btn btn-primary no-underline" data-otp-submit>Coba Masuk Lagi</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

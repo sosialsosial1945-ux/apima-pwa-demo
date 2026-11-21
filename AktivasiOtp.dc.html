@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Masukkan kode aktivasi</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-primary-tall">
+    <div class="row gap-2">
+      <a href="AktivasiData.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke isi data diri">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <div class="stack gap-1 flex-1">
+        <span class="row gap-2 items-center"><span class="brand-wordmark brand-wordmark-sm"><img src="brand/apima-wordmark-light.webp" width="62" height="22" alt="APIMA" class="wm-light"><img src="brand/apima-wordmark-dark.webp" width="62" height="22" alt="" aria-hidden="true" class="wm-dark"></span><span class="header-eyebrow">Aktifkan akun</span></span>
+        <h1 class="text-md m-0 fw-700">Masukkan kode</h1>
+      </div>
+    </div>
+    <div class="progress-bar" aria-label="Langkah 2 dari 4">
+      <div class="progress-seg done"></div>
+      <div class="progress-seg active"></div>
+      <div class="progress-seg"></div>
+      <div class="progress-seg"></div>
+      <span class="progress-label tnum">2 / 4</span>
+    </div>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <p class="text-sm text-secondary m-0">Kode 6 angka dikirim lewat WhatsApp ke <strong class="text-main tnum">0812****4417</strong>.</p>
+
+    <section class="hero-card" aria-label="Isian kode OTP WhatsApp">
+      <img src="illustrations/otp-wa.webp" alt="Ilustrasi kode OTP WhatsApp" class="illus-md">
+      <div class="stack gap-2">
+        <label for="otp" class="text-bold">Kode dari WhatsApp</label>
+        <input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" class="input-otp">
+        <span class="text-sm text-secondary text-center">Ketuk kotak di atas, lalu masukkan 6 angka dari pesan WhatsApp Anda.</span>
+      </div>
+    </section>
+
+    <div class="stack gap-2" style="padding:0 2px">
+      <span class="text-sm text-secondary">Kode belum masuk? Kirim ulang dalam <strong class="text-main tnum" data-resend-after="45">45 detik</strong>.</span>
+      <button type="button" disabled class="btn-chip" data-resend-btn>Kirim Ulang Kode</button>
+    </div>
+
+  </main>
+
+  <div class="screen-footer">
+    <a href="AktivasiPersetujuan.dc.html" class="btn btn-primary no-underline">Lanjut</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Pembayaran gangguan</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="Main.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke beranda">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <h1 class="text-md m-0 fw-700">Bayar 7 malam</h1>
+    </div>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <section class="hero-card tone-warning" role="alert" aria-label="Gangguan sistem pembayaran">
+      <div class="row between">
+        <span class="text-sm text-secondary">Status malam ini</span>
+        <span class="pill pill-warning">
+          <span class="status-dot dot-warning" aria-hidden="true"></span>
+          Menunggu Pembayaran
+        </span>
+      </div>
+      <img src="illustrations/bayar-pending.webp" alt="Ilustrasi pembayaran sedang gangguan" class="illus-md">
+      <div class="stack gap-1">
+        <span class="text-lg">Maaf, ada gangguan</span>
+        <span class="text-sm text-secondary">Tenang, laporan jualan Anda tetap aman. Anda masih bisa bayar sampai 03:00 WIB dan tidak dianggap menunggak selama gangguan berlangsung.</span>
+      </div>
+    </section>
+
+    <section class="open-section" aria-label="Keterangan untuk pengecekan satgas">
+      <ul class="open-list">
+        <li class="open-row">
+          <span class="text-sm text-secondary">Info di layar satgas</span>
+          <span class="badge badge-warning">Sistem Gangguan</span>
+        </li>
+        <li class="open-row">
+          <span class="text-sm text-secondary">Batas bayar malam ini</span>
+          <span class="text-sm fw-700 tnum">03:00 WIB</span>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <div class="screen-footer">
+    <button type="button" class="btn btn-primary" data-retry-btn>Coba Bayar Lagi</button>
+    <a href="Main.dc.html" class="btn btn-ghost no-underline">Bayar Nanti</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

@@ -1,0 +1,1372 @@
+/* ======================================
+   APIMA Design System v4.0 - FunDS Component Rules + APIMA Maritime Blue
+   Warna brand: Biru Laut APIMA (#0B4F8A terang / #1B6AD4 gelap)
+   Komponen & ritme: FunDS Lite (Inter 500 & 700 saja, ritme 4px,
+   tombol pill 9999px, kartu 16px / padding 12px, input & selectable card 8px,
+   modal/sheet 12px tanpa grip handle, badge tint-50, topbar 48px).
+   ====================================== */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/inter-latin-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('fonts/inter-latin-700.woff2') format('woff2');
+}
+
+/* Tema Default: Terang Bersih Maritim (FunDS Neutral + APIMA Blue) */
+:root {
+  color-scheme: light;
+
+  /* Permukaan */
+  --apima-bg-page: #F4F6F9;
+  --apima-bg-card: #FFFFFF;
+  --apima-bg-raised: #EBF0F6;
+
+  /* Teks & garis (alias semantik FunDS) */
+  --apima-text: #111928;
+  --apima-text-secondary: #525C6A;
+  --apima-text-caption: #6B7280;
+  --apima-text-disabled: #8E95A3;
+  --apima-line: #E5E7EB;
+  --apima-line-soft: #E5E7EB;
+  --apima-line-strong: #6B7280;
+
+  /* Aksi merek resmi APIMA (Biru Laut #0B4F8A) */
+  --apima-primary: #0B4F8A;
+  --apima-primary-hover: #094375;
+  --apima-primary-pressed: #073863;
+  --apima-primary-tint: #EDF5FC;
+  --apima-primary-ring: #BFDBFE;
+  --apima-on-primary: #FFFFFF;
+  --apima-accent-text: #0B4F8A;
+  --apima-focus: #1B6AD4;
+
+  /* Status FunDS (selalu berpasangan dengan latar tint-50) */
+  --apima-success: #007D55;
+  --apima-warning: #AD540A;
+  --apima-danger:  #D73630;
+  --apima-neutral: #525C6A;
+  --apima-success-tint: #E4FCEF;
+  --apima-warning-tint: #FDF4E9;
+  --apima-danger-tint:  #FFF4F3;
+  --apima-neutral-tint: #F4F6F9;
+  --apima-border-success: #A2EDC3;
+  --apima-border-warning: #FCDDAB;
+  --apima-border-danger:  #FFD9D6;
+  --apima-tile-primary-bg: #EDF5FC;
+
+  /* Tipografi FunDS (skala resmi + bobot 500 & 700 saja) */
+  --apima-font: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --apima-text-xl: 32px;   --apima-lh-xl: 38px;
+  --apima-text-lg: 24px;   --apima-lh-lg: 28px;
+  --apima-text-md: 20px;   --apima-lh-md: 24px;
+  --apima-text-18: 18px;   --apima-lh-18: 28px;
+  --apima-text-base: 16px; --apima-lh-base: 24px;
+  --apima-text-sm: 14px;   --apima-lh-sm: 20px;
+  --apima-text-xs: 12px;   --apima-lh-xs: 18px;
+  --apima-text-micro: 10px; --apima-lh-micro: 16px;
+
+  /* Jarak FunDS (kelipatan 4px: 0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48) */
+  --apima-space-0: 0px;
+  --apima-space-half: 2px;
+  --apima-space-1: 4px;
+  --apima-space-2: 8px;
+  --apima-space-12: 12px;
+  --apima-space-3: 16px;
+  --apima-space-20: 20px;
+  --apima-space-4: 24px;
+  --apima-space-32: 32px;
+  --apima-space-40: 40px;
+  --apima-space-5: 48px;
+
+  /* Layout FunDS */
+  --page-padding-x: 16px;
+  --page-padding-top: 16px;
+  --section-gap: 12px;
+  --card-padding: 12px;
+  --card-gap: 8px;
+  --topbar-height: 48px;
+
+  /* Sudut FunDS */
+  --apima-radius-xs: 6px;
+  --apima-radius-sm: 8px;
+  --apima-radius-md: 12px;
+  --apima-radius-lg: 16px;
+  --apima-radius-pill: 9999px;
+
+  /* Grafik, overlay, dan permukaan khusus */
+  --apima-chart-dim: #C6CAD0;
+  --apima-meter-track: #E5E7EB;
+  --apima-on-success: #FFFFFF;
+  --apima-on-warning: #FFFFFF;
+  --apima-on-danger:  #FFFFFF;
+  --apima-preview-bg: #E5E7EB;
+  --apima-preview-edge: #C6CAD0;
+  --apima-scrim: rgba(17, 25, 40, 0.8);
+  --apima-toast-bg: #111928;
+  --apima-toast-text: #FFFFFF;
+  --apima-toast-border: #26303D;
+  --apima-qr-border: #E5E7EB;
+  --apima-card-shadow: none;
+  --apima-icon-ring: 0 2px 6px rgba(17, 25, 40, 0.12);
+
+  /* Ukuran sentuh minimum WCAG / FunDS */
+  --apima-touch-min: 44px;
+  --apima-btn-h: 48px;
+  --apima-btn-h-sec: 44px;
+
+  /* Transisi tenang */
+  --apima-transition: 150ms ease;
+  --apima-transition-fast: 100ms ease;
+}
+
+/* Mode Gelap Opsional (Shift Malam 00:00 - 04:00 WIB) */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --apima-bg-page: #0B0E13;
+  --apima-bg-card: #141920;
+  --apima-bg-raised: #1D242E;
+
+  --apima-text: #F4F6F9;
+  --apima-text-secondary: #9BA6B5;
+  --apima-text-caption: #9BA6B5;
+  --apima-text-disabled: #6B7280;
+  --apima-line: #232B36;
+  --apima-line-soft: #26303D;
+  --apima-line-strong: #5B6778;
+
+  --apima-primary: #1B6AD4;
+  --apima-primary-hover: #1D6FE2;
+  --apima-primary-pressed: #1864C9;
+  --apima-primary-tint: rgba(27, 106, 212, 0.18);
+  --apima-primary-ring: rgba(124, 192, 245, 0.35);
+  --apima-on-primary: #FFFFFF;
+  --apima-accent-text: #60A5FA;
+  --apima-focus: #7CC0F5;
+
+  --apima-success: #34D399;
+  --apima-warning: #FBBF24;
+  --apima-danger:  #F87171;
+  --apima-neutral: #9BA6B5;
+  --apima-success-tint: #10241D;
+  --apima-warning-tint: #261E0F;
+  --apima-danger-tint:  #281518;
+  --apima-neutral-tint: #1A212B;
+  --apima-border-success: rgba(52, 211, 153, 0.35);
+  --apima-border-warning: rgba(251, 191, 36, 0.35);
+  --apima-border-danger:  rgba(248, 113, 113, 0.42);
+  --apima-tile-primary-bg: rgba(27, 106, 212, 0.22);
+
+  --apima-chart-dim: #526277;
+  --apima-meter-track: #26303D;
+  --apima-on-success: #071912;
+  --apima-on-warning: #1C1304;
+  --apima-on-danger:  #0B0E13;
+  --apima-preview-bg: #05070A;
+  --apima-preview-edge: #1E2631;
+  --apima-scrim: rgba(17, 25, 40, 0.84);
+  --apima-toast-bg: #1D242E;
+  --apima-toast-text: #F4F6F9;
+  --apima-toast-border: #5B6778;
+  --apima-qr-border: transparent;
+  --apima-card-shadow: none;
+  --apima-icon-ring: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+/* ======================================
+   Reset & Base
+   ====================================== */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--apima-font);
+  font-weight: 500;
+  color: var(--apima-text);
+  background: var(--apima-bg-page);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body:has(.screen) {
+  background: var(--apima-preview-bg);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 0 48px;
+}
+body:has(.screen) .screen {
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--apima-preview-edge);
+}
+
+a { color: var(--apima-accent-text); text-decoration: none; font-weight: 500; }
+a:hover { color: var(--apima-focus); }
+button, input, select, textarea { font-family: inherit; font-weight: 500; }
+
+a[href], button, summary, select, label[for], input[type="checkbox"], input[type="radio"] {
+  cursor: pointer;
+}
+button:disabled, input:disabled, select:disabled {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--apima-focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ======================================
+   Tombol FunDS (SELALU Pill 9999px & Bobot 700)
+   ====================================== */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--apima-space-2);
+  min-height: var(--apima-btn-h);
+  border-radius: var(--apima-radius-pill);
+  font-family: var(--apima-font);
+  font-size: var(--apima-text-base);
+  font-weight: 700;
+  line-height: 1.25;
+  padding: 12px 20px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--apima-transition), border-color var(--apima-transition), color var(--apima-transition), transform var(--apima-transition-fast);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.btn:active { transform: scale(0.985); }
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--apima-bg-card), 0 0 0 4px var(--apima-primary-ring);
+}
+
+.btn-primary {
+  background: var(--apima-primary);
+  color: var(--apima-on-primary);
+  width: 100%;
+}
+.btn-primary:hover  { background: var(--apima-primary-hover); color: var(--apima-on-primary); }
+.btn-primary:active { background: var(--apima-primary-pressed); color: var(--apima-on-primary); }
+.btn-primary:disabled {
+  background: var(--apima-line);
+  color: var(--apima-text-disabled);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: var(--apima-bg-card);
+  color: var(--apima-accent-text);
+  border: 1px solid var(--apima-primary);
+  min-height: var(--apima-btn-h-sec);
+  font-size: var(--apima-text-sm);
+  padding: 8px 16px;
+  width: 100%;
+}
+.btn-secondary:hover  { background: var(--apima-primary-tint); color: var(--apima-accent-text); }
+.btn-secondary:active { background: var(--apima-primary-tint); }
+
+.btn-outline {
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  border: 1px solid var(--apima-line);
+  min-height: var(--apima-btn-h-sec);
+  font-size: var(--apima-text-sm);
+  padding: 8px 16px;
+  width: 100%;
+}
+.btn-outline:hover { border-color: var(--apima-line-strong); color: var(--apima-text); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--apima-accent-text);
+  min-height: var(--apima-btn-h-sec);
+  font-size: var(--apima-text-sm);
+  padding: 8px 16px;
+  width: 100%;
+}
+.btn-ghost:hover { background: var(--apima-primary-tint); color: var(--apima-accent-text); }
+
+.btn-danger {
+  background: var(--apima-danger);
+  border-color: var(--apima-danger);
+  color: var(--apima-on-danger);
+  width: 100%;
+}
+.btn-danger:hover { filter: brightness(0.95); color: var(--apima-on-danger); }
+
+.btn-danger-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--apima-space-2);
+  background: transparent;
+  color: var(--apima-danger);
+  min-height: var(--apima-btn-h-sec);
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  font-family: var(--apima-font);
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--apima-transition);
+  border-radius: var(--apima-radius-pill);
+}
+.btn-danger-ghost:hover { background: var(--apima-danger-tint); }
+.btn-danger-ghost:disabled { color: var(--apima-text-disabled); cursor: not-allowed; }
+
+.btn-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--apima-touch-min);
+  height: var(--apima-touch-min);
+  border-radius: var(--apima-radius-pill);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--apima-text);
+  transition: background var(--apima-transition);
+  flex-shrink: 0;
+}
+.btn-icon:hover  { background: var(--apima-bg-raised); color: var(--apima-text); }
+.btn-icon:active { background: var(--apima-line); }
+
+.btn-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--apima-touch-min);
+  padding: 8px 16px;
+  border-radius: var(--apima-radius-pill);
+  border: 1px solid var(--apima-line);
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  font-family: var(--apima-font);
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  align-self: flex-start;
+  text-decoration: none;
+  transition: background var(--apima-transition), border-color var(--apima-transition), color var(--apima-transition);
+}
+.btn-chip:hover { border-color: var(--apima-primary); background: var(--apima-primary-tint); color: var(--apima-accent-text); }
+.btn-chip[aria-pressed="true"] {
+  background: var(--apima-primary-tint);
+  border-color: var(--apima-primary);
+  color: var(--apima-accent-text);
+}
+
+/* Tombol ganti tema (Terang / Gelap) */
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+/* ======================================
+   Kartu & Permukaan FunDS (Radius 16px, Padding 12px, Tanpa Nesting)
+   ====================================== */
+.card {
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-lg);
+  overflow: hidden;
+}
+.card-pad { padding: var(--card-padding); }
+
+.hero-card {
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-lg);
+  padding: var(--apima-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--apima-space-12);
+}
+.hero-card.tone-success { border-color: var(--apima-border-success); }
+.hero-card.tone-warning { border-color: var(--apima-border-warning); }
+.hero-card.tone-danger  { border-color: var(--apima-border-danger); }
+
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: var(--apima-space-12);
+  padding: var(--card-padding);
+  min-height: 48px;
+  transition: background var(--apima-transition);
+  cursor: pointer;
+}
+.card-row:hover  { background: var(--apima-bg-page); }
+.card-row:active { background: var(--apima-bg-raised); }
+.card-row + .card-row { border-top: 1px solid var(--apima-line); }
+
+.info-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-lg);
+  overflow: hidden;
+}
+.info-cell {
+  padding: var(--card-padding);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.info-cell + .info-cell { border-left: 1px solid var(--apima-line); }
+a.info-cell { color: inherit; transition: background var(--apima-transition); }
+a.info-cell:hover { background: var(--apima-bg-page); color: inherit; }
+
+.open-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.open-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 2px;
+}
+.open-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.open-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--apima-line);
+}
+.open-row:last-child { border-bottom: none; }
+
+.screen-scroll > .card,
+.screen-scroll > .hero-card,
+.screen-scroll > .info-strip,
+.screen-scroll > .open-section,
+.screen-scroll > .status-card,
+.screen-scroll > a.card { flex-shrink: 0; }
+
+.status-card {
+  background: var(--apima-bg-card);
+  border-radius: var(--apima-radius-lg);
+  overflow: hidden;
+  display: flex;
+  border: 1px solid var(--apima-line);
+}
+.status-card-stripe { display: none; }
+.status-card-body {
+  flex: 1;
+  padding: var(--apima-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.status-card.tone-success { border-color: var(--apima-border-success); }
+.status-card.tone-warning { border-color: var(--apima-border-warning); }
+.status-card.tone-danger  { border-color: var(--apima-border-danger); }
+.status-card.tone-neutral { border-color: var(--apima-line); }
+.status-card.tone-neutral .status-word { color: var(--apima-text); }
+
+/* ======================================
+   Badge & Pil Status FunDS (Pill 9999px, 12px / 500, Selalu Tint-50)
+   ====================================== */
+.pill,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--apima-radius-pill);
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.pill { align-self: flex-start; gap: 8px; }
+
+.pill-success, .badge-success { background: var(--apima-success-tint); color: var(--apima-success); }
+.pill-warning, .badge-warning { background: var(--apima-warning-tint); color: var(--apima-warning); }
+.pill-danger,  .badge-danger  { background: var(--apima-danger-tint);  color: var(--apima-danger); }
+.pill-neutral, .badge-neutral { background: var(--apima-neutral-tint); color: var(--apima-neutral); border: 1px solid var(--apima-line); }
+
+.status-dot { width: 8px; height: 8px; border-radius: var(--apima-radius-pill); flex-shrink: 0; }
+.dot-success { background: var(--apima-success); }
+.dot-warning { background: var(--apima-warning); }
+.dot-danger  { background: var(--apima-danger); }
+.dot-neutral { background: var(--apima-neutral); }
+
+/* Chip penanda contoh data prototipe (FunDS rounded-6) */
+.sample-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--apima-radius-xs);
+  background: var(--apima-bg-raised);
+  color: var(--apima-text-secondary);
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* ======================================
+   Input FunDS (Radius 8px, Focus 3px Primary Tint Ring)
+   ====================================== */
+.input {
+  height: var(--apima-btn-h-sec);
+  border-radius: var(--apima-radius-sm);
+  border: 1px solid var(--apima-line);
+  padding: 0 12px;
+  font-family: var(--apima-font);
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  line-height: var(--apima-lh-sm);
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  width: 100%;
+  transition: border-color var(--apima-transition), box-shadow var(--apima-transition);
+  -webkit-appearance: none;
+}
+.input:focus {
+  border-color: var(--apima-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--apima-primary-tint);
+}
+.input::placeholder { color: var(--apima-text-disabled); }
+.input.error {
+  border-color: var(--apima-danger);
+  box-shadow: 0 0 0 3px var(--apima-danger-tint);
+}
+
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-wrap .search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--apima-text-secondary);
+  pointer-events: none;
+}
+.search-wrap .input { padding-left: 40px; }
+
+.input-otp {
+  height: 64px;
+  border-radius: var(--apima-radius-sm);
+  border: 1px solid var(--apima-line-strong);
+  padding: 0 16px;
+  font-family: var(--apima-font);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 8px;
+  text-align: center;
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.input-otp:focus {
+  border-color: var(--apima-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--apima-primary-tint);
+}
+
+/* ======================================
+   Banner Pesan (Radius 12px, Tint-50)
+   ====================================== */
+.banner {
+  border-radius: var(--apima-radius-md);
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.banner-warning { background: var(--apima-warning-tint); border: 1px solid var(--apima-border-warning); }
+.banner-danger  { background: var(--apima-danger-tint);  border: 1px solid var(--apima-border-danger); }
+.banner-neutral { background: var(--apima-neutral-tint); border: 1px solid var(--apima-line); }
+
+/* ======================================
+   Navigation Header FunDS (Tinggi 48px, Padding 0 16px)
+   ====================================== */
+.header-primary,
+.header-dark {
+  min-height: var(--topbar-height);
+  padding: 8px var(--page-padding-x);
+  background: var(--apima-bg-card);
+  border-bottom: 1px solid var(--apima-line);
+  color: var(--apima-text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.header-compact {
+  min-height: var(--topbar-height);
+  padding: 4px var(--page-padding-x);
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--apima-line);
+}
+.header-primary-tall {
+  padding: 12px var(--page-padding-x);
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--apima-line);
+}
+
+.wordmark {
+  font-size: var(--apima-text-sm);
+  line-height: var(--apima-lh-sm);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--apima-accent-text);
+}
+.header-eyebrow {
+  font-size: var(--apima-text-xs);
+  line-height: var(--apima-lh-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+}
+
+/* ======================================
+   Progress Bar Aktivasi
+   ====================================== */
+.progress-bar { display: flex; align-items: center; gap: 4px; }
+.progress-seg {
+  height: 4px;
+  flex: 1;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-line);
+}
+.progress-seg.active { background: var(--apima-primary); }
+.progress-seg.done { background: var(--apima-primary); opacity: 0.55; }
+.progress-label {
+  font-size: var(--apima-text-xs);
+  line-height: var(--apima-lh-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+  white-space: nowrap;
+}
+
+/* ======================================
+   Navigation Bar FunDS (Tab Datar Sama Lebar, 500 -> 700 Aktif)
+   ====================================== */
+.bottom-nav {
+  min-height: 64px;
+  background: var(--apima-bg-card);
+  border-top: 1px solid var(--apima-line);
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  gap: 4px;
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--apima-text-caption);
+  text-decoration: none;
+  font-size: var(--apima-text-xs);
+  line-height: 1.2;
+  font-weight: 500;
+  border-radius: var(--apima-radius-sm);
+  transition: color var(--apima-transition);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: var(--apima-font);
+  padding: 8px 4px;
+  min-height: 48px;
+}
+.nav-item:hover  { color: var(--apima-text); }
+.nav-item.active {
+  color: var(--apima-accent-text);
+  font-weight: 700;
+}
+
+/* ======================================
+   Selectable Card & Radio Card FunDS (SELALU Radius 8px!)
+   ====================================== */
+.radio-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px;
+  border-radius: var(--apima-radius-sm);
+  border: 1px solid var(--apima-line);
+  background: var(--apima-bg-card);
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  line-height: var(--apima-lh-sm);
+  cursor: pointer;
+  transition: border-color var(--apima-transition), background var(--apima-transition);
+}
+.radio-card:hover { border-color: var(--apima-primary); background: var(--apima-primary-tint); }
+.radio-card input[type=radio] {
+  width: 20px; height: 20px; margin: 0;
+  accent-color: var(--apima-primary); flex-shrink: 0;
+}
+.radio-card.selected {
+  border-color: var(--apima-primary);
+  background: var(--apima-primary-tint);
+  font-weight: 700;
+}
+.radio-card.selected-danger {
+  border-color: var(--apima-danger);
+  background: var(--apima-danger-tint);
+  font-weight: 700;
+}
+.radio-card.selected-danger input { accent-color: var(--apima-danger); }
+
+.selectable-card {
+  position: relative;
+  padding: var(--card-padding);
+  border-radius: var(--apima-radius-sm);
+  border: 1px solid var(--apima-line);
+  background: var(--apima-bg-card);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--apima-transition), background var(--apima-transition);
+}
+.selectable-card:hover { border-color: var(--apima-primary); background: var(--apima-primary-tint); }
+.selectable-card.selected {
+  border-color: var(--apima-primary);
+  background: var(--apima-primary-tint);
+  box-shadow: inset 0 0 0 1px var(--apima-primary);
+}
+
+/* ======================================
+   Daftar Satgas & Statistik Ringkas
+   ====================================== */
+.metric-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--apima-bg-card);
+  border-bottom: 1px solid var(--apima-line);
+}
+.metric-item { display: flex; flex-direction: column; gap: 2px; }
+.metric-num {
+  font-size: var(--apima-text-lg);
+  line-height: var(--apima-lh-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.metric-label {
+  font-size: var(--apima-text-xs);
+  line-height: var(--apima-lh-xs);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  min-height: 64px;
+  background: var(--apima-bg-card);
+  border-bottom: 1px solid var(--apima-line);
+  transition: background var(--apima-transition);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--apima-text);
+}
+.list-row:hover  { background: var(--apima-bg-page); color: var(--apima-text); }
+.list-row:active { background: var(--apima-bg-raised); }
+.list-row:last-child { border-bottom: none; }
+
+/* ======================================
+   Segmented Control (Filter Tab)
+   ====================================== */
+.seg-control,
+.seg {
+  display: flex;
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-pill);
+  padding: 4px;
+  gap: 4px;
+}
+.seg-btn {
+  flex: 1;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--apima-radius-pill);
+  border: none;
+  background: transparent;
+  font-family: var(--apima-font);
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  color: var(--apima-text-secondary);
+  cursor: pointer;
+  transition: background var(--apima-transition), color var(--apima-transition);
+  white-space: nowrap;
+}
+.seg-btn:hover { color: var(--apima-text); }
+.seg-btn.active {
+  background: var(--apima-primary);
+  color: var(--apima-on-primary);
+  font-weight: 700;
+}
+
+/* ======================================
+   QR Stage & Langkah Pembayaran
+   ====================================== */
+.qr-stage {
+  background: #FFFFFF;
+  color: #111928;
+  border: 1px solid var(--apima-qr-border);
+  border-radius: var(--apima-radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 268px;
+  margin: 0 auto;
+}
+.qr-stage-title {
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+  color: #111928;
+}
+.qr-stage-caption {
+  font-size: var(--apima-text-xs);
+  font-weight: 500;
+  color: #525C6A;
+}
+
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  line-height: var(--apima-lh-sm);
+  color: var(--apima-text-secondary);
+}
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--apima-radius-pill);
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ======================================
+   Bottom Sheet & Modal FunDS (Radius 12px, Padding 16px, Tanpa Handle)
+   ====================================== */
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--apima-scrim);
+  display: flex;
+  align-items: flex-end;
+  z-index: 40;
+}
+.sheet-backdrop[hidden] { display: none; }
+.sheet {
+  width: 100%;
+  background: var(--apima-bg-card);
+  border-top: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-md) var(--apima-radius-md) 0 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.toast {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 128px;
+  background: var(--apima-toast-bg);
+  color: var(--apima-toast-text);
+  border: 1px solid var(--apima-toast-border);
+  border-radius: var(--apima-radius-md);
+  padding: 12px 16px;
+  font-size: var(--apima-text-sm);
+  font-weight: 500;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toast[hidden] { display: none; }
+
+/* ======================================
+   Empty State & Skeleton
+   ====================================== */
+.empty-state {
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+.empty-state[hidden] { display: none; }
+
+.skel {
+  background: var(--apima-bg-raised);
+  border-radius: var(--apima-radius-sm);
+}
+.skel-line  { height: 16px; }
+.skel-line.sm { height: 12px; }
+.skel-line.lg { height: 24px; }
+.skel-block { height: 72px; border-radius: var(--apima-radius-md); }
+.skel-w-30 { width: 30%; } .skel-w-50 { width: 50%; }
+.skel-w-70 { width: 70%; } .skel-w-100 { width: 100%; }
+
+/* ======================================
+   Brand Assets APIMA
+   ====================================== */
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: var(--apima-icon-ring);
+}
+.brand-icon-sm { width: 32px; height: 32px; border-radius: 8px; }
+.brand-icon-md { width: 56px; height: 56px; border-radius: 12px; }
+.brand-wordmark {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.brand-wordmark img { height: 24px; width: auto; display: block; object-fit: contain; }
+.brand-wordmark-sm img { height: 20px; }
+.brand-wordmark-lg img { height: 32px; }
+.brand-wordmark .wm-dark { display: none; }
+:root[data-theme="dark"] .brand-wordmark .wm-light { display: none; }
+:root[data-theme="dark"] .brand-wordmark .wm-dark { display: block; }
+.login-logo {
+  width: 96px;
+  height: 96px;
+  display: block;
+  object-fit: contain;
+  border-radius: 20px;
+  box-shadow: var(--apima-icon-ring);
+}
+
+.btn[aria-disabled="true"] {
+  background: var(--apima-line);
+  color: var(--apima-text-disabled);
+  border-color: var(--apima-line);
+  cursor: not-allowed;
+}
+
+.consent-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--apima-bg-card);
+  border: 1px solid var(--apima-line);
+  border-radius: var(--apima-radius-sm);
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color var(--apima-transition), background var(--apima-transition);
+}
+.consent-box:has(input:checked) {
+  border-color: var(--apima-primary);
+  background: var(--apima-primary-tint);
+}
+.consent-box input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--apima-primary);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.photo-drop {
+  width: 100%;
+  min-height: 96px;
+  border: 1px dashed var(--apima-line-strong);
+  border-radius: var(--apima-radius-sm);
+  background: var(--apima-bg-card);
+  color: var(--apima-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--apima-font);
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+  transition: border-color var(--apima-transition), background var(--apima-transition);
+}
+.photo-drop:hover { border-color: var(--apima-primary); background: var(--apima-primary-tint); }
+.photo-drop.captured { border-style: solid; border-color: var(--apima-success); color: var(--apima-success); background: var(--apima-success-tint); }
+
+/* ======================================
+   Tipografi Helpers FunDS (Hanya 500 & 700!)
+   ====================================== */
+.text-xl   { font-size: var(--apima-text-xl);   line-height: var(--apima-lh-xl);   font-weight: 700; letter-spacing: -0.02em; }
+.text-lg   { font-size: var(--apima-text-lg);   line-height: var(--apima-lh-lg);   font-weight: 700; letter-spacing: -0.02em; }
+.text-md   { font-size: var(--apima-text-md);   line-height: var(--apima-lh-md);   font-weight: 700; letter-spacing: -0.01em; }
+.text-18   { font-size: var(--apima-text-18);   line-height: var(--apima-lh-18);   font-weight: 500; }
+.text-base { font-size: var(--apima-text-base); line-height: var(--apima-lh-base); font-weight: 500; }
+.text-bold { font-size: var(--apima-text-base); line-height: var(--apima-lh-base); font-weight: 700; }
+.text-sm   { font-size: var(--apima-text-sm);   line-height: var(--apima-lh-sm);   font-weight: 500; }
+.text-xs   { font-size: var(--apima-text-xs);   line-height: var(--apima-lh-xs);   font-weight: 500; }
+.text-micro {
+  font-size: var(--apima-text-micro);
+  line-height: var(--apima-lh-micro);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.text-secondary     { color: var(--apima-text-secondary); }
+.text-primary-color { color: var(--apima-accent-text); }
+.text-danger        { color: var(--apima-danger); }
+.text-warning       { color: var(--apima-warning); }
+.text-success       { color: var(--apima-success); }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Layout Helpers (Skala 4px FunDS) */
+.stack   { display: flex; flex-direction: column; }
+.row     { display: flex; flex-direction: row; align-items: center; }
+.gap-1   { gap: var(--apima-space-1); }
+.gap-2   { gap: var(--apima-space-2); }
+.gap-12  { gap: var(--apima-space-12); }
+.gap-3   { gap: var(--section-gap); }
+.gap-4   { gap: var(--apima-space-3); }
+.p-3     { padding: var(--apima-space-3); }
+.p-4     { padding: var(--apima-space-4); }
+.mt-auto { margin-top: auto; }
+.w-full  { width: 100%; }
+
+/* Screen Shell Mobile */
+.screen {
+  position: relative;
+  width: 390px;
+  max-width: 100vw;
+  height: 844px;
+  max-height: 100dvh;
+  box-sizing: border-box;
+  background: var(--apima-bg-page);
+  font-family: var(--apima-font);
+  color: var(--apima-text);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.screen-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.screen-footer {
+  padding: 12px 16px 16px;
+  background: var(--apima-bg-card);
+  border-top: 1px solid var(--apima-line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Utilitas */
+.flex-1        { flex: 1; }
+.shrink-0      { flex-shrink: 0; }
+.d-flex        { display: flex; }
+.dir-col       { flex-direction: column; }
+.items-center  { align-items: center; }
+.items-start   { align-items: flex-start; }
+.items-end     { align-items: flex-end; }
+.items-stretch { align-items: stretch; }
+.justify-center{ justify-content: center; }
+.between       { justify-content: space-between; }
+.wrap          { flex-wrap: wrap; }
+
+.m-0           { margin: 0; }
+.mt-1          { margin-top: var(--apima-space-1); }
+.mt-2          { margin-top: var(--apima-space-2); }
+.mt-3          { margin-top: var(--apima-space-3); }
+.ml-auto       { margin-left: auto; }
+.p-0           { padding: 0; }
+
+/* Bobot FunDS ketat: hanya 500 & 700 */
+.fw-400        { font-weight: 500; }
+.fw-500        { font-weight: 500; }
+.fw-600        { font-weight: 700; }
+.fw-700        { font-weight: 700; }
+
+.text-center   { text-align: center; }
+.text-right    { text-align: right; }
+.text-left     { text-align: left; }
+.text-main     { color: var(--apima-text); }
+
+.no-underline    { text-decoration: none; }
+.overflow-hidden { overflow: hidden; }
+.rounded-pill    { border-radius: var(--apima-radius-pill); }
+.rounded-md      { border-radius: var(--apima-radius-md); }
+
+.divider-b     { border-bottom: 1px solid var(--apima-line); }
+.divider-t     { border-top: 1px solid var(--apima-line); }
+
+.bg-success     { background: var(--apima-success); }
+.bg-warning     { background: var(--apima-warning); }
+.bg-danger      { background: var(--apima-danger); }
+.bg-line-strong { background: var(--apima-line-strong); }
+.bg-card        { background: var(--apima-bg-card); }
+.bg-raised      { background: var(--apima-bg-raised); }
+
+.dot-lg        { width: 12px; height: 12px; }
+.date-col      { width: 96px; flex-shrink: 0; }
+.banner-icon   { flex-shrink: 0; margin-top: 2px; }
+.nudge-left    { margin-left: -8px; }
+.screen-main   { flex: 1; min-height: 0; padding: var(--page-padding-top) var(--page-padding-x); }
+.grid-2        { display: grid; grid-template-columns: 1fr 1fr; gap: var(--card-gap); }
+.circle-lg     { width: 80px; height: 80px; border-radius: var(--apima-radius-pill);
+                 display: flex; align-items: center; justify-content: center; }
+.bg-success-tint { background: var(--apima-success-tint); }
+.bg-warning-tint { background: var(--apima-warning-tint); }
+.bg-danger-tint  { background: var(--apima-danger-tint); }
+
+.icon-tile {
+  width: 40px; height: 40px;
+  border-radius: var(--apima-radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.icon-tile-primary { background: var(--apima-tile-primary-bg); color: var(--apima-accent-text); }
+.icon-tile-success { background: var(--apima-success-tint); color: var(--apima-success); }
+.icon-tile-warning { background: var(--apima-warning-tint); color: var(--apima-warning); }
+.icon-tile-neutral { background: var(--apima-bg-raised); color: var(--apima-text-secondary); }
+.icon-tile-danger  { background: var(--apima-danger-tint); color: var(--apima-danger); }
+
+.meter-bar   { width: 100%; height: 8px; border-radius: var(--apima-radius-pill); background: var(--apima-meter-track); overflow: hidden; }
+.meter-fill  { height: 100%; border-radius: var(--apima-radius-pill); }
+
+.status-word { font-size: var(--apima-text-lg); line-height: var(--apima-lh-lg); font-weight: 700; letter-spacing: -0.02em; }
+
+/* ======================================
+   Ilustrasi Maskot APIMA, Tautan Sebaris, dan Sandi
+   ====================================== */
+.illus-hero,
+.illus-md,
+.illus-sm,
+.illus-side {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.illus-hero { height: 132px; margin: 0 auto; }
+.illus-md   { height: 112px; margin: 0 auto; }
+.illus-sm   { height: 92px;  margin: 0 auto; }
+.illus-side { width: 76px; height: 76px; }
+:root[data-theme="dark"] .illus-hero,
+:root[data-theme="dark"] .illus-md,
+:root[data-theme="dark"] .illus-sm,
+:root[data-theme="dark"] .illus-side {
+  filter: drop-shadow(0 0 2px rgba(241, 245, 249, 0.24));
+}
+
+.login-help-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 44px;
+}
+.link-inline {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 2px;
+  background: transparent;
+  border: none;
+  font-family: var(--apima-font);
+  font-size: var(--apima-text-sm);
+  line-height: var(--apima-lh-sm);
+  font-weight: 700;
+  color: var(--apima-accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.link-inline:hover { opacity: 0.85; }
+.link-inline:focus-visible {
+  outline: 2px solid var(--apima-primary);
+  outline-offset: 2px;
+  border-radius: var(--apima-radius-xs);
+}
+
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.password-wrap .input {
+  padding-right: 48px;
+}
+.password-toggle {
+  position: absolute;
+  right: 2px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--apima-radius-sm);
+  color: var(--apima-text-secondary);
+  cursor: pointer;
+}
+.password-toggle:hover { color: var(--apima-text); }
+.password-toggle:focus-visible {
+  outline: 2px solid var(--apima-primary);
+  outline-offset: -2px;
+}
+.password-toggle .eye-off { display: none; }
+.password-toggle[aria-pressed="true"] .eye-on { display: none; }
+.password-toggle[aria-pressed="true"] .eye-off { display: block; }
+
+/* Layar kecil asli (<= 430px): penuh tanpa bingkai preview */
+@media (max-width: 430px) {
+  body:has(.screen) {
+    background: var(--apima-bg-page);
+    padding: 0;
+    display: block;
+  }
+  body:has(.screen) .screen {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* =====================================
+   PWA Demo Presentasi: Pilih Peran Cepat di Halaman Masuk
+   ===================================== */
+.demo-role-box {
+  background: var(--apima-bg-card);
+  border: 1px dashed var(--apima-primary-ring);
+  border-radius: var(--apima-radius-lg);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.demo-role-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.demo-role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.demo-role-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: var(--apima-radius-pill);
+  border: 1px solid var(--apima-primary-ring);
+  background: var(--apima-primary-tint);
+  color: var(--apima-accent-text);
+  font-family: inherit;
+  font-size: var(--apima-text-sm);
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--apima-transition), color var(--apima-transition), border-color var(--apima-transition), transform 120ms ease;
+}
+.demo-role-btn:hover {
+  background: var(--apima-primary);
+  border-color: var(--apima-primary);
+  color: var(--apima-on-primary);
+}
+.demo-role-btn:active { transform: scale(0.98); }

@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Dashboard Pengurus</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./admin.css">
+<script src="./support.js"></script>
+<script src="./admin-charts.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="admin-shell">
+
+  <nav class="admin-nav" aria-label="Navigasi pengurus">
+    <div class="admin-nav-head">
+      <div class="row gap-2 items-center admin-brand-text">
+        <span class="brand-wordmark">
+          <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
+          <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
+        </span>
+      </div>
+      <button type="button" class="btn-icon" data-sidebar-toggle aria-expanded="true" aria-label="Ciutkan menu samping" title="Ciutkan atau perluas menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+      </button>
+    </div>
+
+    <div class="admin-nav-body">
+      <div class="admin-nav-group">
+        <span class="admin-nav-group-label">Utama</span>
+        <a href="AdminRingkasan.dc.html" class="admin-nav-link active" aria-current="page" aria-label="Ringkasan dan AI" title="Ringkasan dan analisis AI">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span class="admin-nav-text">Ringkasan AI</span>
+        </a>
+        <a href="AdminLaporan.dc.html" class="admin-nav-link" aria-label="Laporan periodik" title="Laporan mingguan, bulanan, tahunan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span class="admin-nav-text">Laporan periodik</span>
+        </a>
+        <a href="AdminRiwayat.dc.html" class="admin-nav-link" aria-label="Riwayat setoran" title="Riwayat transaksi retribusi">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+          <span class="admin-nav-text">Riwayat setoran</span>
+        </a>
+      </div>
+
+      <div class="admin-nav-group">
+        <span class="admin-nav-group-label">Anggota dan Lapangan</span>
+        <a href="AdminPedagang.dc.html" class="admin-nav-link" aria-label="Keaktifan pedagang" title="Pedagang rajin dan jarang jualan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="admin-nav-text">Keaktifan pedagang</span>
+        </a>
+        <a href="AdminSatgas.dc.html" class="admin-nav-link" aria-label="Kinerja satgas" title="Kinerja satgas lapangan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="admin-nav-text">Kinerja satgas</span>
+        </a>
+      </div>
+
+      <div class="admin-nav-footer">
+        <div class="admin-portal-card">
+          <span class="text-xs text-secondary">Portal bayar QRIS</span>
+          <span class="admin-portal-url tnum">apima.id/bayar-qris</span>
+          <button type="button" class="btn-chip" id="sidebar-copy-link" style="width:100%;justify-content:center">Salin Tautan</button>
+        </div>
+
+        <button type="button" class="admin-nav-link admin-nav-btn theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+          <svg class="icon-moon shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <span class="admin-nav-text" data-theme-label>Mode gelap</span>
+        </button>
+
+        <div class="admin-user-pill">
+          <span class="avatar-initials" aria-hidden="true">HD</span>
+          <div class="stack admin-user-meta" style="min-width:0">
+            <span class="text-xs fw-700 text-main">H. Darmawan</span>
+            <span class="text-xs text-secondary">Pengurus APIMA</span>
+          </div>
+        </div>
+
+        <a href="MasukId.dc.html" class="admin-nav-link" aria-label="Keluar akun" title="Keluar ke halaman masuk">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span class="admin-nav-text">Keluar akun</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="admin-content">
+
+    <div class="admin-topbar" role="region" aria-label="Pencarian cepat dan status shift">
+      <div class="topbar-search-wrap">
+        <svg class="topbar-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" id="dash-global-search" class="topbar-search-input" placeholder="Cari pedagang, blok, atau transaksi" aria-label="Cari pedagang, blok, atau transaksi" autocomplete="off">
+        <span class="topbar-kbd" aria-hidden="true">⌘K</span>
+        <div id="dash-search-results" class="topbar-dropdown" hidden role="listbox" aria-label="Hasil pencarian cepat"></div>
+      </div>
+      <div class="topbar-right">
+        <span class="live-pill">
+          <span class="live-dot" aria-hidden="true"></span>
+          Shift Malam Aktif · Muara Angke
+        </span>
+        <button type="button" class="btn-chip" data-export-csv>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Unduh CSV
+        </button>
+      </div>
+    </div>
+
+    <div class="admin-mobile-bar">
+      <span class="brand-wordmark">
+        <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
+        <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
+      </span>
+      <div class="row gap-1">
+        <button type="button" class="btn-icon theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button type="button" class="btn-chip" data-sheet-open="sheet-admin-menu" aria-label="Buka menu navigasi pengurus">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          Menu
+        </button>
+      </div>
+    </div>
+
+    <main class="admin-main">
+
+      <header id="ringkasan" class="admin-page-head">
+        <div class="stack gap-1">
+          <h1 class="text-lg m-0">Ringkasan pasar</h1>
+          <span class="text-sm text-secondary tnum" id="dash-updated">Sab, 14 Nov 2026 · Diperbarui 23:42 WIB</span>
+        </div>
+        <div class="admin-actions">
+          <div class="seg" role="group" aria-label="Pilih rentang waktu ringkasan">
+            <button type="button" class="seg-btn" data-dash-period="harian" aria-pressed="false">Harian</button>
+            <button type="button" class="seg-btn active" data-dash-period="mingguan" aria-pressed="true">Mingguan</button>
+            <button type="button" class="seg-btn" data-dash-period="bulanan" aria-pressed="false">Bulanan</button>
+            <button type="button" class="seg-btn" data-dash-period="tahunan" aria-pressed="false">Tahunan</button>
+          </div>
+          <a href="AdminLaporan.dc.html" class="btn btn-primary no-underline" style="width:auto;height:44px;padding:0 18px">Buka Laporan</a>
+        </div>
+      </header>
+
+      <section class="bento-kpi-grid" aria-label="Metrik utama retribusi pasar">
+
+        <article class="bento-card">
+          <div class="bento-head">
+            <span class="bento-title">Setoran retribusi</span>
+            <a href="AdminRiwayat.dc.html" class="bento-link">Lihat Riwayat</a>
+          </div>
+          <div class="bento-main-split">
+            <div class="stack gap-1" style="min-width:0">
+              <span class="bento-kpi-num" id="exec-total">Rp11.340.000</span>
+              <span class="text-xs text-secondary" id="exec-label">Mingguan (8 – 14 Nov)</span>
+              <span class="bento-delta-pill" id="exec-delta">Naik 4,2% dari pekan lalu</span>
+            </div>
+            <div id="kpi-sparkbars" aria-hidden="true"></div>
+          </div>
+          <div class="bento-progress-wrap">
+            <div class="row between items-center">
+              <span class="text-xs text-secondary">Capaian target periode</span>
+              <span class="text-xs fw-700 tnum text-main" id="kpi-target-pct">94,6%</span>
+            </div>
+            <div class="bento-progress-track">
+              <div class="bento-progress-fill" id="kpi-target-fill" style="width:94.6%"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-card">
+          <div class="bento-head">
+            <span class="bento-title">Kepatuhan bayar</span>
+            <a href="AdminPedagang.dc.html" class="bento-link">Lihat Pedagang</a>
+          </div>
+          <div class="bento-donut-row">
+            <div id="kpi-mini-donut"></div>
+            <div class="bento-leg-list">
+              <div class="bento-leg-item">
+                <span class="row gap-2 items-center"><span class="bento-leg-dot" style="background:var(--apima-success)"></span>Lunas tepat waktu</span>
+                <span class="fw-700 tnum text-main" id="kpi-ontime">548</span>
+              </div>
+              <div class="bento-leg-item">
+                <span class="row gap-2 items-center"><span class="bento-leg-dot" style="background:var(--apima-warning)"></span>Bayar susulan</span>
+                <span class="fw-700 tnum text-main" id="kpi-late">29</span>
+              </div>
+              <div class="bento-leg-item">
+                <span class="row gap-2 items-center"><span class="bento-leg-dot" style="background:var(--apima-danger)"></span>Belum bayar</span>
+                <span class="fw-700 tnum text-main" id="kpi-unpaid">3</span>
+              </div>
+            </div>
+          </div>
+          <div class="bento-progress-wrap">
+            <div class="row between items-center gap-2">
+              <span class="text-xs text-secondary">Aktif: <strong class="text-main tnum" id="exec-merchants">580 / 700</strong></span>
+              <span class="text-xs fw-700 text-main tnum" id="exec-nights">3.780 malam</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="bento-card">
+          <div class="bento-head">
+            <span class="bento-title">Patroli dan temuan</span>
+            <a href="AdminSatgas.dc.html" class="bento-link">Cek Satgas</a>
+          </div>
+          <div class="row between items-center gap-2">
+            <div class="row gap-2 items-baseline">
+              <span class="bento-kpi-num" id="pending-count">3</span>
+              <span class="text-sm text-secondary">kasus perlu ditinjau</span>
+            </div>
+            <span class="badge badge-success tnum">Rp0 selisih</span>
+          </div>
+          <div class="patrol-mini-grid">
+            <div class="patrol-chip">
+              <span class="text-xs fw-700 text-main">Satgas A</span>
+              <span class="text-xs text-secondary tnum">Blok A–C · 92%</span>
+            </div>
+            <div class="patrol-chip">
+              <span class="text-xs fw-700 text-main">Satgas B</span>
+              <span class="text-xs text-secondary tnum">Blok D–F · 68%</span>
+            </div>
+          </div>
+          <div class="bento-progress-wrap">
+            <div class="row between items-center gap-2">
+              <span class="text-xs text-secondary">Rekonsiliasi QRIS otomatis</span>
+              <a href="#temuan" class="bento-link">Tinjau Sekarang</a>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+      <section class="dash-split" aria-label="Grafik tren setoran dan log setoran langsung">
+
+        <article class="admin-card" id="setoran">
+          <div class="row between items-start wrap gap-2">
+            <div class="stack gap-1">
+              <h2 class="text-md m-0 fw-700" id="chart-title">Tren setoran retribusi mingguan</h2>
+              <span class="text-sm text-secondary" id="chart-sub">Dalam jutaan rupiah · Batang biru menandai capaian tertinggi</span>
+            </div>
+            <span class="badge badge-success tnum" id="chart-peak">Puncak: Rp1,74 jt</span>
+          </div>
+          <div id="dash-vision-chart"></div>
+        </article>
+
+        <article class="admin-card" aria-label="Log setoran terbaru langsung">
+          <div class="row between items-center wrap gap-2">
+            <div class="row gap-2 items-center">
+              <h2 class="text-md m-0 fw-700">Setoran terbaru</h2>
+              <span class="live-pill">
+                <span class="live-dot" aria-hidden="true"></span>
+                Live
+              </span>
+            </div>
+            <a href="AdminRiwayat.dc.html" class="bento-link">Lihat Semua</a>
+          </div>
+
+          <div class="topbar-search-wrap" style="max-width:none;min-width:0">
+            <svg class="topbar-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="live-feed-search" class="feed-filter-input" placeholder="Filter nama atau blok pedagang" aria-label="Filter setoran terbaru">
+          </div>
+
+          <ul class="live-feed-list" id="live-feed-list"></ul>
+        </article>
+
+      </section>
+
+      <section class="ai-panel" aria-label="Ringkasan otomatis AI APIMA">
+        <div class="ai-panel-head">
+          <div class="row gap-2 items-center wrap">
+            <span class="ai-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+              Ringkasan AI APIMA
+            </span>
+            <h2 class="text-md m-0 fw-700" id="ai-headline">Analisis otomatis pekan ini (8 – 14 Nov 2026)</h2>
+          </div>
+          <span class="text-xs text-secondary tnum" id="ai-meta">Diolah dari 3.780 catatan retribusi</span>
+        </div>
+
+        <div class="ai-grid">
+          <div class="ai-point">
+            <div class="row gap-2 items-center">
+              <span class="ai-step-num tone-success" aria-hidden="true">1</span>
+              <span class="ai-point-kicker tone-success">Tren setoran</span>
+            </div>
+            <p class="text-sm text-main m-0" id="ai-p1">Setoran mingguan naik 4,2% (Rp11,34 jt) dengan puncak tertinggi di malam Sabtu sebesar Rp1,74 jt. Seluruh pembayaran QRIS cocok Rp0 selisih.</p>
+          </div>
+          <div class="ai-point">
+            <div class="row gap-2 items-center">
+              <span class="ai-step-num" aria-hidden="true">2</span>
+              <span class="ai-point-kicker">Pola pedagang</span>
+            </div>
+            <p class="text-sm text-main m-0" id="ai-p2">412 pedagang rutin jualan di atas 5 malam per pekan. Ada 24 pedagang jarang buka (kurang dari 2 malam) dan 18 anggota belum aktif selama 30 hari.</p>
+          </div>
+          <div class="ai-point">
+            <div class="row gap-2 items-center">
+              <span class="ai-step-num tone-warning" aria-hidden="true">3</span>
+              <span class="ai-point-kicker tone-warning">Saran tindakan</span>
+            </div>
+            <p class="text-sm text-main m-0" id="ai-p3">Prioritaskan cek lapangan ke Blok F bersama Satgas B sebelum pukul 03:00 WIB dan kirim pengingat ke 6 pedagang yang menunggak berulang.</p>
+          </div>
+        </div>
+
+        <div class="ai-action-bar">
+          <span class="text-sm text-secondary" id="ai-footer-note">Ubah rentang Harian, Mingguan, Bulanan, atau Tahunan di atas untuk melihat hasil analisis AI lainnya.</span>
+          <div class="row gap-2 wrap items-center">
+            <span class="badge badge-success" id="ai-copy-status" hidden>Tersalin</span>
+            <button type="button" class="btn-chip" id="ai-copy-wa">Salin Ringkasan ke WhatsApp</button>
+            <a href="AdminLaporan.dc.html" class="btn-chip no-underline">Lihat Detail Laporan</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-bottom-grid" aria-label="Sorotan pedagang dan temuan lapangan">
+
+        <article class="admin-card" aria-label="Sorotan pedagang rajin dan jarang jualan">
+          <div class="row between items-center wrap gap-2">
+            <div class="stack gap-1">
+              <h2 class="text-md m-0 fw-700">Sorotan pedagang</h2>
+              <span class="text-sm text-secondary">Peringkat keaktifan jualan dan kepatuhan retribusi</span>
+            </div>
+            <div class="seg" role="group" aria-label="Filter sorotan pedagang">
+              <button type="button" class="seg-btn active" data-hl-tab="rajin" aria-pressed="true">Paling Rajin</button>
+              <button type="button" class="seg-btn" data-hl-tab="jarang" aria-pressed="false">Jarang Jualan</button>
+            </div>
+          </div>
+
+          <ul class="merchant-list" id="hl-merchant-list"></ul>
+
+          <a href="AdminPedagang.dc.html" class="btn btn-secondary no-underline" style="height:44px">Lihat Semua Peringkat Pedagang</a>
+        </article>
+
+        <article class="admin-card" id="temuan">
+          <div class="row between items-center wrap gap-2">
+            <div class="stack gap-1">
+              <h2 class="text-md m-0 fw-700">Temuan lapangan perlu ditinjau</h2>
+              <span class="text-sm text-secondary">Laporan langsung dari Satgas A dan Satgas B</span>
+            </div>
+            <a href="AdminSatgas.dc.html" class="btn-chip no-underline">Cek Satgas</a>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" style="min-width:460px">
+              <thead>
+                <tr>
+                  <th>Temuan</th>
+                  <th>Pedagang</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="temuan-tbody">
+                <tr>
+                  <td>
+                    <div class="stack">
+                      <span class="text-danger fw-700">Jualan tanpa bayar</span>
+                      <span class="text-xs text-secondary tnum">Satgas A · 23:41 WIB</span>
+                    </div>
+                  </td>
+                  <td>Siti Aminah <span class="text-xs text-secondary tnum">(0456)</span></td>
+                  <td><span class="badge badge-danger" data-row-status>Perlu Tinjau</span></td>
+                  <td>
+                    <button type="button" class="btn-chip"
+                      data-evidence-open
+                      data-temuan="Jualan tanpa bayar"
+                      data-anggota="Siti Aminah (0456)"
+                      data-satgas="Satgas A"
+                      data-jam="23:41 WIB"
+                      data-lokasi="Blok C-14, Pasar Ikan Muara Angke">
+                      Lihat Bukti
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="stack">
+                      <span class="text-warning fw-700">QR ganda</span>
+                      <span class="text-xs text-secondary tnum">Satgas B · 23:18 WIB</span>
+                    </div>
+                  </td>
+                  <td>Rahmat Hidayat <span class="text-xs text-secondary tnum">(0078)</span></td>
+                  <td><span class="badge badge-warning" data-row-status>Perlu Tinjau</span></td>
+                  <td>
+                    <button type="button" class="btn-chip"
+                      data-evidence-open
+                      data-temuan="QR ganda"
+                      data-anggota="Rahmat Hidayat (0078)"
+                      data-satgas="Satgas B"
+                      data-jam="23:18 WIB"
+                      data-lokasi="Blok B-03, Pasar Ikan Muara Angke">
+                      Lihat Bukti
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="stack">
+                      <span class="fw-700">Bukan anggota</span>
+                      <span class="text-xs text-secondary tnum">Satgas A · 22:55 WIB</span>
+                    </div>
+                  </td>
+                  <td class="text-secondary">Tidak terdaftar</td>
+                  <td><span class="badge badge-neutral" data-row-status>Perlu Tinjau</span></td>
+                  <td>
+                    <button type="button" class="btn-chip"
+                      data-evidence-open
+                      data-temuan="Pedagang bukan anggota"
+                      data-anggota="Tidak terdaftar"
+                      data-satgas="Satgas A"
+                      data-jam="22:55 WIB"
+                      data-lokasi="Lorong Utara Blok D">
+                      Lihat Bukti
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+      </section>
+
+    </main>
+  </div>
+
+  <div id="drawer-setoran" class="admin-drawer-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="drawer-setoran-title">
+    <div class="admin-drawer">
+      <div class="row between items-center">
+        <div class="stack gap-1">
+          <h2 id="drawer-setoran-title" class="text-md m-0 fw-700">Detail setoran retribusi</h2>
+          <span class="text-xs text-secondary tnum" id="drawer-ref">QRIS-20261114-001</span>
+        </div>
+        <button type="button" class="btn-icon" data-drawer-close aria-label="Tutup detail setoran">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="row between items-center">
+        <div class="row gap-3 items-center">
+          <span class="avatar-initials tone-success" id="drawer-avatar" aria-hidden="true">BS</span>
+          <div class="stack">
+            <span class="text-md fw-700 text-main" id="drawer-name">Budi Santoso</span>
+            <span class="text-xs text-secondary tnum" id="drawer-id">ID 0123 · Blok C-14</span>
+          </div>
+        </div>
+        <span class="badge badge-success" id="drawer-status">Lunas</span>
+      </div>
+
+      <div class="drawer-kv-list">
+        <div class="drawer-kv-row">
+          <span class="text-secondary">Nominal retribusi</span>
+          <span class="fw-700 tnum text-main" id="drawer-amount">Rp21.000</span>
+        </div>
+        <div class="drawer-kv-row">
+          <span class="text-secondary">Jumlah malam</span>
+          <span class="fw-700 tnum text-main" id="drawer-nights">7 malam</span>
+        </div>
+        <div class="drawer-kv-row">
+          <span class="text-secondary">Waktu bayar</span>
+          <span class="fw-700 tnum text-main" id="drawer-time">23:38 WIB</span>
+        </div>
+        <div class="drawer-kv-row">
+          <span class="text-secondary">Metode pembayaran</span>
+          <span class="fw-700 text-main">QRIS Resmi APIMA</span>
+        </div>
+        <div class="drawer-kv-row">
+          <span class="text-secondary">Status rekonsiliasi</span>
+          <span class="fw-700 text-success">Cocok otomatis (Rp0 selisih)</span>
+        </div>
+      </div>
+
+      <div class="stack gap-2" style="margin-top:auto">
+        <button type="button" class="btn btn-primary" id="drawer-copy-receipt">Salin Bukti Transaksi</button>
+        <button type="button" class="btn btn-secondary" data-drawer-close>Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="sheet-bukti" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="bukti-judul">
+    <div class="sheet">
+      <div class="row between">
+        <h2 id="bukti-judul" class="text-md m-0 fw-700">Detail temuan lapangan</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup detail bukti">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <span id="bukti-meta" class="text-sm text-secondary"></span>
+      <div class="banner banner-neutral">
+        <span id="bukti-lokasi" class="text-sm"></span>
+      </div>
+      <div class="stack gap-2">
+        <button type="button" class="btn btn-primary" data-mark-reviewed>Tandai Sudah Ditinjau</button>
+        <button type="button" class="btn btn-secondary" data-sheet-close>Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="sheet-admin-menu" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
+    <div class="sheet">
+      <div class="row between">
+        <h2 id="mobile-menu-title" class="text-md m-0 fw-700">Menu Pengurus APIMA</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup menu pengurus">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="stack gap-1">
+        <a href="AdminRingkasan.dc.html" class="admin-nav-link active" aria-current="page">Ringkasan AI</a>
+        <a href="AdminLaporan.dc.html" class="admin-nav-link">Laporan periodik</a>
+        <a href="AdminRiwayat.dc.html" class="admin-nav-link">Riwayat setoran</a>
+        <a href="AdminPedagang.dc.html" class="admin-nav-link">Keaktifan pedagang</a>
+        <a href="AdminSatgas.dc.html" class="admin-nav-link">Kinerja satgas</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script>
+(function () {
+  var PERIODS = {
+    harian: {
+      label: 'Malam ini (Sab, 14 Nov)',
+      total: 'Rp1.740.000',
+      delta: 'Naik 1,8% dari semalam',
+      targetPct: 95.8,
+      merchants: '580 / 700',
+      nights: '580 malam',
+      rate: '95,8%',
+      ontime: 556,
+      late: 21,
+      unpaid: 3,
+      aiHeadline: 'Analisis otomatis malam ini (Sab, 14 Nov 2026)',
+      aiMeta: 'Diolah dari 580 catatan retribusi aktif',
+      aiP1: 'Setoran malam ini mencapai Rp1,74 jt dan menjadi angka tertinggi sepanjang pekan. Pembayaran paling ramai masuk pukul 19:00 – 22:00 WIB.',
+      aiP2: '580 pedagang aktif berjualan malam ini, 205 sudah lunas di awal shift, dan tersisa 9 lapak yang perlu diingatkan sebelum 03:00 WIB.',
+      aiP3: 'Arahkan Satgas B ke sisi barat Blok F pada putaran pukul 00:30 WIB karena baru 24% lapak di area tersebut yang selesai dicek.',
+      chartTitle: 'Setoran masuk per jam malam ini',
+      chartSub: 'Dalam ribuan rupiah · Puncak transaksi pukul 21:00 WIB',
+      chartPeak: 'Puncak: Rp390 rb',
+      bars: [
+        { label: '18:00', val: 120, text: '120rb' },
+        { label: '19:00', val: 240, text: '240rb' },
+        { label: '20:00', val: 330, text: '330rb' },
+        { label: '21:00', val: 390, text: '390rb', peak: true },
+        { label: '22:00', val: 310, text: '310rb' },
+        { label: '23:00', val: 210, text: '210rb' },
+        { label: '00:00', val: 140, text: '140rb' }
+      ]
+    },
+    mingguan: {
+      label: 'Mingguan (8 – 14 Nov)',
+      total: 'Rp11.340.000',
+      delta: 'Naik 4,2% dari pekan lalu',
+      targetPct: 94.6,
+      merchants: '580 / 700',
+      nights: '3.780 malam',
+      rate: '94,6%',
+      ontime: 548,
+      late: 29,
+      unpaid: 3,
+      aiHeadline: 'Analisis otomatis pekan ini (8 – 14 Nov 2026)',
+      aiMeta: 'Diolah dari 3.780 catatan retribusi',
+      aiP1: 'Setoran mingguan naik 4,2% (Rp11,34 jt) dengan puncak tertinggi di malam Sabtu sebesar Rp1,74 jt. Seluruh pembayaran QRIS cocok Rp0 selisih.',
+      aiP2: '412 pedagang rutin jualan di atas 5 malam per pekan. Ada 24 pedagang jarang buka (kurang dari 2 malam) dan 18 anggota belum aktif selama 30 hari.',
+      aiP3: 'Prioritaskan cek lapangan ke Blok F bersama Satgas B sebelum pukul 03:00 WIB dan kirim pengingat ke 6 pedagang yang menunggak berulang.',
+      chartTitle: 'Tren setoran retribusi mingguan',
+      chartSub: 'Dalam jutaan rupiah · Batang biru menandai capaian tertinggi',
+      chartPeak: 'Puncak: Rp1,74 jt',
+      bars: [
+        { label: 'Min', val: 1.48, text: '1,48' },
+        { label: 'Sen', val: 1.56, text: '1,56' },
+        { label: 'Sel', val: 1.61, text: '1,61' },
+        { label: 'Rab', val: 1.59, text: '1,59' },
+        { label: 'Kam', val: 1.65, text: '1,65' },
+        { label: 'Jum', val: 1.71, text: '1,71' },
+        { label: 'Sab', val: 1.74, text: '1,74', peak: true }
+      ]
+    },
+    bulanan: {
+      label: 'Bulanan (November 2026)',
+      total: 'Rp45.840.000',
+      delta: 'Naik 1,9% dari Oktober',
+      targetPct: 96.0,
+      merchants: '612 / 700',
+      nights: '15.280 malam',
+      rate: '93,8%',
+      ontime: 574,
+      late: 32,
+      unpaid: 6,
+      aiHeadline: 'Analisis otomatis bulan November 2026',
+      aiMeta: 'Diolah dari 15.280 catatan retribusi',
+      aiP1: 'Pemasukan bulan ini mencapai 96% dari target bulanan (Rp45,84 jt). Pembayaran langsung 7 dan 14 malam meningkat di pekan ketiga.',
+      aiP2: 'Pedagang Blok A dan Blok C mencatat tingkat keaktifan tertinggi (97%). Sebaliknya, 24 pedagang di Blok D dan E tercatat jarang buka di bawah 5 malam per bulan.',
+      aiP3: 'Lakukan pendataan ulang terhadap 18 anggota yang tidak aktif lebih dari 30 hari agar daftar lapak kosong bisa segera ditata pengurus.',
+      chartTitle: 'Tren setoran retribusi per pekan (November)',
+      chartSub: 'Dalam jutaan rupiah · Stabil di atas Rp11 jt tiap pekan',
+      chartPeak: 'Puncak: Rp11,88 jt',
+      bars: [
+        { label: 'Pekan 1', val: 11.12, text: '11,1' },
+        { label: 'Pekan 2', val: 11.50, text: '11,5' },
+        { label: 'Pekan 3', val: 11.88, text: '11,9', peak: true },
+        { label: 'Pekan 4', val: 11.34, text: '11,3' }
+      ]
+    },
+    tahunan: {
+      label: 'Tahunan (Jan – Nov 2026)',
+      total: 'Rp518.760.000',
+      delta: 'Tercapai 92% target 2026',
+      targetPct: 92.0,
+      merchants: '664 / 700',
+      nights: '172.920 malam',
+      rate: '94,1%',
+      ontime: 625,
+      late: 28,
+      unpaid: 11,
+      aiHeadline: 'Analisis otomatis tahunan (Jan – Nov 2026)',
+      aiMeta: 'Diolah dari 172.920 catatan retribusi',
+      aiP1: 'Total kas retribusi tembus Rp518,76 jt dengan kepatuhan rata-rata 94,1%. Bulan Maret menjadi puncak tertinggi sebesar Rp51,6 jt saat musim tangkapan ramai.',
+      aiP2: '412 pedagang memenuhi syarat pembagian bak ikan tahunan (minimal 200 malam terbayar dan 0 tunggakan). H. Slamet Raharjo memimpin di 304 malam.',
+      aiP3: 'Siapkan rekap daftar 412 pedagang paling rajin untuk rapat pembagian bak ikan akhir tahun dan terbitkan surat teguran untuk 11 pelanggar berulang.',
+      chartTitle: 'Tren setoran bulanan sepanjang 2026',
+      chartSub: 'Dalam jutaan rupiah · Puncak tertinggi pada bulan Maret',
+      chartPeak: 'Puncak: Rp51,6 jt',
+      bars: [
+        { label: 'Jan', val: 44.2, text: '44' },
+        { label: 'Feb', val: 42.8, text: '43' },
+        { label: 'Mar', val: 51.6, text: '52', peak: true },
+        { label: 'Apr', val: 48.1, text: '48' },
+        { label: 'Mei', val: 46.9, text: '47' },
+        { label: 'Jun', val: 47.4, text: '47' },
+        { label: 'Jul', val: 49.0, text: '49' },
+        { label: 'Agt', val: 47.8, text: '48' },
+        { label: 'Sep', val: 46.5, text: '47' },
+        { label: 'Okt', val: 48.6, text: '49' },
+        { label: 'Nov', val: 45.8, text: '46' }
+      ]
+    }
+  };
+
+  var LIVE_FEED = [
+    { id: '0123', initials: 'BS', name: 'Budi Santoso', blok: 'Blok C-14', nights: '7 malam', time: '23:38 WIB', amount: 'Rp21.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0842' },
+    { id: '0012', initials: 'SR', name: 'H. Slamet Raharjo', blok: 'Blok A-02', nights: '30 malam', time: '22:54 WIB', amount: 'Rp90.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0831' },
+    { id: '0219', initials: 'DL', name: 'Dewi Lestari', blok: 'Blok B-08', nights: '1 malam', time: '22:15 WIB', amount: 'Rp3.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0819' },
+    { id: '0344', initials: 'HW', name: 'Hendra Wijaya', blok: 'Blok D-11', nights: '7 malam', time: '21:48 WIB', amount: 'Rp21.000', status: 'Menunggu', badge: 'badge-warning', tone: 'tone-warning', ref: 'QRIS-20261114-0794' },
+    { id: '0089', initials: 'HR', name: 'Hj. Rohimah', blok: 'Blok B-05', nights: '14 malam', time: '21:12 WIB', amount: 'Rp42.000', status: 'Lunas', badge: 'badge-success', tone: 'tone-success', ref: 'QRIS-20261114-0762' }
+  ];
+
+  var HIGHLIGHTS = {
+    rajin: [
+      { initials: 'SR', name: 'H. Slamet Raharjo', meta: 'Blok A-02 · 100% tertib', nights: '304 malam', pct: 100, tone: 'tone-success' },
+      { initials: 'BS', name: 'Budi Santoso', meta: 'Blok C-14 · 100% tertib', nights: '296 malam', pct: 97, tone: 'tone-success' },
+      { initials: 'HR', name: 'Hj. Rohimah', meta: 'Blok B-05 · 99,3% tertib', nights: '289 malam', pct: 95, tone: 'tone-success' },
+      { initials: 'DP', name: 'Darmawan Putra', meta: 'Blok C-09 · 98,9% tertib', nights: '274 malam', pct: 90, tone: 'tone-success' }
+    ],
+    jarang: [
+      { initials: 'WY', name: 'Wahyudi', meta: 'Blok D-12 · Hanya 3 malam bulan ini', nights: '3 malam/bln', pct: 12, tone: 'tone-warning' },
+      { initials: 'SL', name: 'Slamet Riyadi', meta: 'Blok E-04 · Hanya 4 malam bulan ini', nights: '4 malam/bln', pct: 16, tone: 'tone-warning' },
+      { initials: 'ML', name: 'Mulyadi', meta: 'Blok E-11 · Terakhir 35 hari lalu', nights: '0 malam/bln', pct: 4, tone: 'tone-danger' },
+      { initials: 'HW', name: 'Hendra Wijaya', meta: 'Blok D-07 · Terakhir 42 hari lalu', nights: '0 malam/bln', pct: 4, tone: 'tone-danger' }
+    ]
+  };
+
+  var currentPeriod = 'mingguan';
+  var activeReceipt = LIVE_FEED[0];
+
+  function openReceiptDrawer(item) {
+    activeReceipt = item;
+    var drawer = document.getElementById('drawer-setoran');
+    if (!drawer) return;
+    document.getElementById('drawer-ref').textContent = item.ref;
+    var av = document.getElementById('drawer-avatar');
+    av.textContent = item.initials;
+    av.className = 'avatar-initials ' + item.tone;
+    document.getElementById('drawer-name').textContent = item.name;
+    document.getElementById('drawer-id').textContent = 'ID ' + item.id + ' · ' + item.blok;
+    var st = document.getElementById('drawer-status');
+    st.textContent = item.status;
+    st.className = 'badge ' + item.badge;
+    document.getElementById('drawer-amount').textContent = item.amount;
+    document.getElementById('drawer-nights').textContent = item.nights;
+    document.getElementById('drawer-time').textContent = item.time;
+    drawer.hidden = false;
+  }
+
+  function closeReceiptDrawer() {
+    var drawer = document.getElementById('drawer-setoran');
+    if (drawer) drawer.hidden = true;
+  }
+
+  function renderLiveFeed(query) {
+    var listEl = document.getElementById('live-feed-list');
+    if (!listEl) return;
+    var q = (query || '').trim().toLowerCase();
+    var filtered = LIVE_FEED.filter(function (item) {
+      if (!q) return true;
+      return (item.name + ' ' + item.blok + ' ' + item.id + ' ' + item.status).toLowerCase().indexOf(q) !== -1;
+    });
+    if (!filtered.length) {
+      listEl.innerHTML = '<li class="text-sm text-secondary" style="padding:16px 0;text-align:center">Tidak ada setoran yang cocok dengan pencarian.</li>';
+      return;
+    }
+    listEl.innerHTML = filtered.map(function (item, idx) {
+      return '<li>' +
+        '<button type="button" class="live-feed-btn" data-feed-idx="' + LIVE_FEED.indexOf(item) + '">' +
+          '<div class="row gap-3 items-center" style="min-width:0">' +
+            '<span class="avatar-initials ' + item.tone + '" aria-hidden="true">' + item.initials + '</span>' +
+            '<div class="stack" style="min-width:0">' +
+              '<span class="text-sm fw-700 text-main">' + item.name + '</span>' +
+              '<span class="text-xs text-secondary tnum">' + item.blok + ' · ' + item.nights + ' · ' + item.time + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="stack items-end shrink-0">' +
+            '<span class="text-sm fw-700 tnum text-main">' + item.amount + '</span>' +
+            '<span class="badge ' + item.badge + '">' + item.status + '</span>' +
+          '</div>' +
+        '</button>' +
+      '</li>';
+    }).join('');
+    listEl.querySelectorAll('[data-feed-idx]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var idx = parseInt(btn.dataset.feedIdx, 10);
+        if (LIVE_FEED[idx]) openReceiptDrawer(LIVE_FEED[idx]);
+      });
+    });
+  }
+
+  function renderPeriod(key) {
+    var d = PERIODS[key] || PERIODS.mingguan;
+    currentPeriod = key;
+    document.getElementById('exec-label').textContent = d.label;
+    document.getElementById('exec-total').textContent = d.total;
+    document.getElementById('exec-delta').textContent = d.delta;
+    document.getElementById('exec-merchants').textContent = d.merchants;
+    document.getElementById('exec-nights').textContent = d.nights;
+    document.getElementById('kpi-target-pct').textContent = d.targetPct.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+    document.getElementById('kpi-target-fill').style.width = Math.min(100, d.targetPct) + '%';
+    document.getElementById('kpi-ontime').textContent = d.ontime;
+    document.getElementById('kpi-late').textContent = d.late;
+    document.getElementById('kpi-unpaid').textContent = d.unpaid;
+    document.getElementById('ai-headline').textContent = d.aiHeadline;
+    document.getElementById('ai-meta').textContent = d.aiMeta;
+    document.getElementById('ai-p1').textContent = d.aiP1;
+    document.getElementById('ai-p2').textContent = d.aiP2;
+    document.getElementById('ai-p3').textContent = d.aiP3;
+    document.getElementById('chart-title').textContent = d.chartTitle;
+    document.getElementById('chart-sub').textContent = d.chartSub;
+    document.getElementById('chart-peak').textContent = d.chartPeak;
+
+    if (window.APIMA_CHARTS) {
+      window.APIMA_CHARTS.renderMiniSparkbars(document.getElementById('kpi-sparkbars'), d.bars);
+      window.APIMA_CHARTS.renderMiniDonut(document.getElementById('kpi-mini-donut'), {
+        centerVal: d.rate,
+        centerLbl: 'patuh',
+        ariaLabel: 'Tingkat kepatuhan bayar ' + d.rate,
+        segments: [
+          { val: d.ontime, color: 'var(--apima-success)' },
+          { val: d.late, color: 'var(--apima-warning)' },
+          { val: d.unpaid, color: 'var(--apima-danger)' }
+        ]
+      });
+      window.APIMA_CHARTS.renderComboChart(document.getElementById('dash-vision-chart'), {
+        bars: d.bars,
+        unit: key === 'harian' ? 'rb' : 'jt',
+        ariaLabel: d.chartTitle
+      });
+    }
+  }
+
+  function renderHighlights(tab) {
+    var list = HIGHLIGHTS[tab] || HIGHLIGHTS.rajin;
+    var el = document.getElementById('hl-merchant-list');
+    el.innerHTML = list.map(function (m) {
+      return '<li class="merchant-row">' +
+        '<span class="avatar-initials ' + m.tone + '" aria-hidden="true">' + m.initials + '</span>' +
+        '<div class="stack flex-1" style="min-width:0">' +
+          '<div class="row between gap-2">' +
+            '<span class="text-sm fw-700 text-main">' + m.name + '</span>' +
+            '<span class="text-xs fw-700 tnum text-main">' + m.nights + '</span>' +
+          '</div>' +
+          '<span class="text-xs text-secondary">' + m.meta + '</span>' +
+          '<div class="merchant-bar-track"><div class="merchant-bar-fill ' + m.tone + '" style="width:' + m.pct + '%"></div></div>' +
+        '</div>' +
+      '</li>';
+    }).join('');
+  }
+
+  function bindGlobalSearch() {
+    var input = document.getElementById('dash-global-search');
+    var drop = document.getElementById('dash-search-results');
+    if (!input || !drop) return;
+
+    function updateDropdown() {
+      var q = input.value.trim().toLowerCase();
+      if (!q) { drop.hidden = true; return; }
+      var matches = LIVE_FEED.filter(function (item) {
+        return (item.name + ' ' + item.blok + ' ' + item.id).toLowerCase().indexOf(q) !== -1;
+      });
+      if (!matches.length) {
+        drop.innerHTML = '<div class="text-xs text-secondary" style="padding:10px">Tidak ditemukan pedagang atau transaksi.</div>';
+      } else {
+        drop.innerHTML = matches.map(function (item) {
+          return '<button type="button" class="topbar-res-item" data-search-idx="' + LIVE_FEED.indexOf(item) + '">' +
+            '<span><strong class="text-main">' + item.name + '</strong> <span class="text-xs text-secondary">· ' + item.blok + '</span></span>' +
+            '<span class="text-xs fw-700 tnum text-main">' + item.amount + '</span>' +
+          '</button>';
+        }).join('');
+        drop.querySelectorAll('[data-search-idx]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var item = LIVE_FEED[parseInt(btn.dataset.searchIdx, 10)];
+            drop.hidden = true;
+            input.value = '';
+            if (item) openReceiptDrawer(item);
+          });
+        });
+      }
+      drop.hidden = false;
+    }
+
+    input.addEventListener('input', updateDropdown);
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.topbar-search-wrap')) drop.hidden = true;
+    });
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        input.focus();
+      }
+      if (e.key === 'Escape') {
+        drop.hidden = true;
+        closeReceiptDrawer();
+      }
+    });
+  }
+
+  function bind() {
+    document.querySelectorAll('[data-dash-period]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-dash-period]').forEach(function (b) {
+          var active = b === btn;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        renderPeriod(btn.dataset.dashPeriod);
+      });
+    });
+
+    document.querySelectorAll('[data-hl-tab]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-hl-tab]').forEach(function (b) {
+          var active = b === btn;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        renderHighlights(btn.dataset.hlTab);
+      });
+    });
+
+    var feedSearch = document.getElementById('live-feed-search');
+    if (feedSearch) {
+      feedSearch.addEventListener('input', function () {
+        renderLiveFeed(feedSearch.value);
+      });
+    }
+
+    document.querySelectorAll('[data-drawer-close]').forEach(function (btn) {
+      btn.addEventListener('click', closeReceiptDrawer);
+    });
+    var drawerBackdrop = document.getElementById('drawer-setoran');
+    if (drawerBackdrop) {
+      drawerBackdrop.addEventListener('click', function (e) {
+        if (e.target === drawerBackdrop) closeReceiptDrawer();
+      });
+    }
+
+    var copyReceipt = document.getElementById('drawer-copy-receipt');
+    if (copyReceipt) {
+      copyReceipt.addEventListener('click', function () {
+        var txt = 'Bukti Retribusi APIMA · ' + activeReceipt.name + ' (' + activeReceipt.blok + ') · ' + activeReceipt.amount + ' · ' + activeReceipt.ref;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).catch(function () {});
+        }
+        if (window.apimaToast) window.apimaToast('Bukti transaksi berhasil disalin.');
+      });
+    }
+
+    var copyPortal = document.getElementById('sidebar-copy-link');
+    if (copyPortal) {
+      copyPortal.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText('https://apima.id/bayar-qris').catch(function () {});
+        }
+        copyPortal.textContent = 'Tersalin';
+        setTimeout(function () { copyPortal.textContent = 'Salin Tautan'; }, 1800);
+        if (window.apimaToast) window.apimaToast('Tautan portal bayar QRIS disalin.');
+      });
+    }
+
+    var copyBtn = document.getElementById('ai-copy-wa');
+    var copyBadge = document.getElementById('ai-copy-status');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var d = PERIODS[currentPeriod];
+        var msg = 'Ringkasan APIMA (' + currentPeriod.toUpperCase() + '): Total ' + d.total + '. ' + d.aiP1 + ' ' + d.aiP3;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(msg).catch(function () {});
+        }
+        if (copyBadge) {
+          copyBadge.hidden = false;
+          setTimeout(function () { copyBadge.hidden = true; }, 2200);
+        }
+        if (window.apimaToast) window.apimaToast('Ringkasan AI siap ditempel ke grup WhatsApp pengurus.');
+      });
+    }
+
+    bindGlobalSearch();
+    renderPeriod('mingguan');
+    renderLiveFeed('');
+    renderHighlights('rajin');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(bind, 40); });
+  } else {
+    setTimeout(bind, 40);
+  }
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

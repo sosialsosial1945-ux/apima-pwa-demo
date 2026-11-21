@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · QR untuk satgas</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="Main.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke beranda">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <h1 class="text-md m-0 fw-700">QR saya</h1>
+    </div>
+    <span class="pill pill-success">
+      <span class="status-dot dot-success" aria-hidden="true"></span>
+      Sudah Bayar
+    </span>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <section class="hero-card items-center text-center" aria-label="Kode QR pedagang">
+      <div class="stack gap-1 items-center">
+        <span class="text-md fw-700">Budi Santoso</span>
+        <span class="text-sm text-secondary">Lapak Blok C-14</span>
+      </div>
+
+      <div class="qr-stage">
+        <span class="qr-stage-title">APIMA · QR Pedagang</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 230" width="212" height="212" role="img" aria-label="QR pedagang untuk dicek satgas">
+          <rect width="230" height="230" fill="#FFFFFF"/>
+          <path d="M10,10h70v70h-70z M20,20h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
+          <rect x="30" y="30" width="30" height="30" fill="#0F172A"/>
+          <path d="M150,10h70v70h-70z M160,20h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
+          <rect x="170" y="30" width="30" height="30" fill="#0F172A"/>
+          <path d="M10,150h70v70h-70z M20,160h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
+          <rect x="30" y="170" width="30" height="30" fill="#0F172A"/>
+          <rect x="90" y="70" width="10" height="10" fill="#0F172A"/>
+          <rect x="110" y="70" width="10" height="10" fill="#0F172A"/>
+          <rect x="130" y="70" width="10" height="10" fill="#0F172A"/>
+          <rect x="80" y="80" width="10" height="10" fill="#0F172A"/>
+          <rect x="100" y="80" width="10" height="10" fill="#0F172A"/>
+          <rect x="90" y="90" width="10" height="10" fill="#0F172A"/>
+          <rect x="110" y="90" width="10" height="10" fill="#0F172A"/>
+          <rect x="90" y="110" width="10" height="10" fill="#0F172A"/>
+          <rect x="90" y="130" width="10" height="10" fill="#0F172A"/>
+          <rect x="90" y="150" width="10" height="10" fill="#0F172A"/>
+          <rect x="110" y="150" width="10" height="10" fill="#0F172A"/>
+          <rect x="90" y="170" width="10" height="10" fill="#0F172A"/>
+          <rect x="90" y="190" width="10" height="10" fill="#0F172A"/>
+        </svg>
+        <span class="qr-stage-caption">Berganti otomatis setiap 45 detik</span>
+      </div>
+
+      <div class="row gap-2 text-sm text-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>QR berganti dalam <strong class="text-main tnum" data-countdown="45" data-countdown-loop>00:45</strong></span>
+      </div>
+    </section>
+
+    <p class="text-sm text-secondary m-0 text-center" style="padding:0 8px">Tunjukkan langsung ke satgas saat keliling. Hasil screenshot tidak berlaku karena kode selalu diperbarui.</p>
+
+  </main>
+
+  <div class="screen-footer">
+    <button type="button" class="btn btn-primary" data-share-wa>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l2-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>
+      Bagikan QR ke Penjaga
+    </button>
+    <button type="button" class="btn-danger-ghost" data-sheet-open="sheet-cabut">Nonaktifkan Akses Penjaga</button>
+  </div>
+
+  <div id="sheet-cabut" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-cabut-title">
+    <div class="sheet">
+      <div class="row between">
+        <h2 id="sheet-cabut-title" class="text-md m-0 fw-700">Nonaktifkan akses penjaga?</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Batal nonaktifkan akses">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="text-sm text-secondary m-0">Penjaga lapak tidak bisa lagi membuka QR Anda sampai Anda membagikannya kembali.</p>
+      <button type="button" class="btn btn-danger" data-revoke-confirm>Ya, Nonaktifkan</button>
+      <button type="button" class="btn btn-secondary" data-sheet-close>Batal</button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

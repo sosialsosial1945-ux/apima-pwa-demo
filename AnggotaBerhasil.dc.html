@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Pembayaran berhasil</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <span class="brand-wordmark">
+      <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
+      <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
+    </span>
+    <span class="text-sm text-secondary tnum">Sab, 14 Nov</span>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <section class="hero-card tone-success items-center text-center" aria-label="Status pembayaran berhasil">
+      <img src="illustrations/bayar-sukses.webp" alt="Ilustrasi pembayaran retribusi berhasil" class="illus-hero">
+      <div class="stack gap-1 items-center">
+        <h1 class="text-lg m-0">Pembayaran berhasil!</h1>
+        <p class="text-sm text-secondary m-0">Retribusi Anda sudah masuk dan status jualan malam ini langsung aktif.</p>
+      </div>
+      <span class="pill pill-success" style="align-self:center">
+        <span class="status-dot dot-success" aria-hidden="true"></span>
+        Jualan · Sudah Bayar
+      </span>
+    </section>
+
+    <section class="open-section" aria-label="Rincian transaksi">
+      <span class="text-bold">Rincian transaksi</span>
+      <ul class="open-list">
+        <li class="open-row">
+          <span class="text-sm text-secondary">Malam ini</span>
+          <span class="text-sm fw-700">Sab, 14 Nov 2026</span>
+        </li>
+        <li class="open-row">
+          <span class="text-sm text-secondary">Dibayar</span>
+          <span class="text-sm fw-700 tnum">Rp21.000 · 7 malam</span>
+        </li>
+        <li class="open-row">
+          <span class="text-sm text-secondary">Sisa retribusi</span>
+          <span class="text-md fw-700 text-success tnum">14 malam</span>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <div class="screen-footer">
+    <a href="Main.dc.html" class="btn btn-primary no-underline">Kembali ke Beranda</a>
+    <a href="AnggotaQrIdentitas.dc.html" class="btn btn-secondary no-underline">Lihat QR Saya</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

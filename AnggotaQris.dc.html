@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Bayar QRIS</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="AnggotaPilihHari.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke pilih malam">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <h1 class="text-md m-0 fw-700">Bayar QRIS</h1>
+    </div>
+    <span class="pill pill-warning tnum" aria-label="Sisa waktu QRIS">
+      <span class="status-dot dot-warning" aria-hidden="true"></span>
+      <span data-countdown="892">14:52</span>
+    </span>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <section class="hero-card items-center text-center" aria-label="Kode QR pembayaran">
+      <div class="stack gap-1 items-center">
+        <span class="text-sm text-secondary">Total bayar</span>
+        <span class="text-xl tnum">Rp21.000</span>
+        <span class="text-sm text-secondary tnum">7 malam × Rp3.000 · Batas bayar 03:00 WIB</span>
+      </div>
+
+      <div class="qr-stage">
+        <span class="qr-stage-title">APIMA · Retribusi Pasar</span>
+        <svg id="qris-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 230" width="212" height="212" role="img" aria-label="Kode QRIS untuk pembayaran Rp21.000">
+          <rect width="230" height="230" fill="#FFFFFF"/>
+          <path d="M10,10h70v70h-70z M20,20h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
+          <rect x="30" y="30" width="30" height="30" fill="#0F172A"/>
+          <path d="M150,10h70v70h-70z M160,20h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
+          <rect x="170" y="30" width="30" height="30" fill="#0F172A"/>
+          <path d="M10,150h70v70h-70z M20,160h50v50h-50z" fill="#0F172A" fill-rule="evenodd"/>
+          <rect x="30" y="170" width="30" height="30" fill="#0F172A"/>
+          <rect x="90" y="20" width="10" height="10" fill="#0F172A"/>
+          <rect x="110" y="20" width="20" height="10" fill="#0F172A"/>
+          <rect x="100" y="40" width="10" height="20" fill="#0F172A"/>
+          <rect x="120" y="50" width="20" height="10" fill="#0F172A"/>
+          <rect x="90" y="70" width="10" height="10" fill="#0F172A"/>
+          <rect x="110" y="70" width="10" height="10" fill="#0F172A"/>
+          <rect x="130" y="70" width="10" height="10" fill="#0F172A"/>
+          <rect x="20" y="90" width="20" height="10" fill="#0F172A"/>
+          <rect x="50" y="100" width="20" height="10" fill="#0F172A"/>
+          <rect x="20" y="120" width="30" height="10" fill="#0F172A"/>
+          <rect x="70" y="90" width="10" height="10" fill="#0F172A"/>
+          <rect x="90" y="90" width="20" height="10" fill="#0F172A"/>
+          <rect x="120" y="90" width="10" height="20" fill="#0F172A"/>
+          <rect x="140" y="100" width="20" height="10" fill="#0F172A"/>
+          <rect x="170" y="90" width="20" height="10" fill="#0F172A"/>
+          <rect x="200" y="100" width="20" height="20" fill="#0F172A"/>
+          <rect x="90" y="110" width="10" height="20" fill="#0F172A"/>
+          <rect x="110" y="120" width="20" height="10" fill="#0F172A"/>
+          <rect x="150" y="120" width="10" height="20" fill="#0F172A"/>
+          <rect x="180" y="130" width="20" height="10" fill="#0F172A"/>
+          <rect x="90" y="150" width="20" height="10" fill="#0F172A"/>
+          <rect x="130" y="150" width="20" height="10" fill="#0F172A"/>
+          <rect x="170" y="160" width="20" height="20" fill="#0F172A"/>
+          <rect x="200" y="150" width="20" height="10" fill="#0F172A"/>
+          <rect x="100" y="170" width="20" height="10" fill="#0F172A"/>
+          <rect x="140" y="180" width="20" height="20" fill="#0F172A"/>
+          <rect x="90" y="190" width="10" height="20" fill="#0F172A"/>
+          <rect x="110" y="200" width="20" height="10" fill="#0F172A"/>
+          <rect x="180" y="200" width="30" height="10" fill="#0F172A"/>
+        </svg>
+        <span class="qr-stage-caption">Scan lewat dompet digital atau m-banking</span>
+      </div>
+    </section>
+
+    <section class="open-section" aria-label="Cara bayar dari HP ini">
+      <h2 class="text-base fw-700 m-0">Cara bayar dari HP ini</h2>
+      <ol class="step-list">
+        <li class="step-item">
+          <span class="step-num tnum">1</span>
+          <span>Ketuk <strong class="text-main">Simpan QR</strong> di bawah, atau screenshot layar ini.</span>
+        </li>
+        <li class="step-item">
+          <span class="step-num tnum">2</span>
+          <span>Buka GoPay, DANA, OVO, atau m-banking, lalu pilih <strong class="text-main">Scan dari Galeri</strong>.</span>
+        </li>
+        <li class="step-item">
+          <span class="step-num tnum">3</span>
+          <span>Pastikan tujuan <strong class="text-main">APIMA</strong> dan nominal <strong class="text-main">Rp21.000</strong>, lalu bayar.</span>
+        </li>
+      </ol>
+    </section>
+
+  </main>
+
+  <div id="apima-toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <div class="screen-footer">
+    <div class="grid-2">
+      <button type="button" class="btn btn-secondary" data-save-qr>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Simpan QR
+      </button>
+      <button type="button" class="btn btn-secondary" data-sheet-open="ewallet-sheet">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        Cara Bayar
+      </button>
+    </div>
+    <a href="AnggotaBerhasil.dc.html" class="btn btn-primary">Saya Sudah Bayar</a>
+  </div>
+
+  <div id="ewallet-sheet" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="ewallet-title" hidden>
+    <div class="sheet">
+      <div class="row between gap-2">
+        <h2 id="ewallet-title" class="text-md m-0 fw-700">Bayar lewat galeri HP</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup panduan">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="stack gap-2">
+        <div class="open-row" style="padding:12px 0">
+          <span class="text-sm fw-700">GoPay / DANA / OVO</span>
+          <span class="text-sm text-secondary">Ketuk Scan · ikon Galeri</span>
+        </div>
+        <div class="open-row" style="padding:12px 0">
+          <span class="text-sm fw-700">BCA / BRImo / Livin</span>
+          <span class="text-sm text-secondary">Menu QRIS · pilih foto QR</span>
+        </div>
+      </div>
+      <p class="text-sm text-secondary m-0">Setelah bayar berhasil, status Anda di APIMA berubah otomatis dalam beberapa detik.</p>
+      <button type="button" class="btn btn-primary" data-sheet-close>Oke, Mengerti</button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

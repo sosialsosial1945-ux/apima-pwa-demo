@@ -1,0 +1,26 @@
+{
+  "name": "APIMA · Sistem Retribusi Pasar Ikan",
+  "short_name": "APIMA",
+  "description": "Aplikasi PWA Sistem Retribusi Pasar Ikan Muara Angke untuk Penjual, Petugas Satgas, dan Pengurus APIMA.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F4F6F9",
+  "theme_color": "#0B4F8A",
+  "lang": "id",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Foto diri</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-primary-tall">
+    <div class="row gap-2">
+      <a href="AktivasiPersetujuan.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke pemakaian data">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <div class="stack gap-1 flex-1">
+        <span class="row gap-2 items-center"><span class="brand-wordmark brand-wordmark-sm"><img src="brand/apima-wordmark-light.webp" width="62" height="22" alt="APIMA" class="wm-light"><img src="brand/apima-wordmark-dark.webp" width="62" height="22" alt="" aria-hidden="true" class="wm-dark"></span><span class="header-eyebrow">Aktifkan akun</span></span>
+        <h1 class="text-md m-0 fw-700">Foto diri</h1>
+      </div>
+    </div>
+    <div class="progress-bar" aria-label="Langkah 4 dari 4">
+      <div class="progress-seg done"></div>
+      <div class="progress-seg done"></div>
+      <div class="progress-seg done"></div>
+      <div class="progress-seg active"></div>
+      <span class="progress-label tnum">4 / 4</span>
+    </div>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <section class="hero-card items-center text-center" aria-label="Preview foto diri anggota">
+      <p class="text-sm text-secondary m-0">Foto ini dipakai satgas untuk mengenali Anda saat keliling lapak.</p>
+
+      <div class="rounded-md overflow-hidden d-flex items-center justify-center" style="width:100%;max-width:240px;height:168px;background:var(--apima-bg-raised);border:1px solid var(--apima-line);padding:12px">
+        <img src="illustrations/foto-selfie.webp" alt="Preview foto diri anggota" class="illus-hero" style="height:140px">
+      </div>
+
+      <span id="foto-status" class="text-sm text-secondary">Preview foto diri</span>
+    </section>
+
+    <ul class="stack gap-1 text-sm text-secondary m-0" style="padding-left:20px">
+      <li>Pastikan wajah terlihat jelas tanpa topi atau masker.</li>
+      <li>Ambil foto di tempat yang cukup terang.</li>
+      <li>Tunjukkan foto ini ke pengurus APIMA jika diminta verifikasi.</li>
+    </ul>
+
+  </main>
+
+  <div class="screen-footer">
+    <a href="AktivasiSelesai.dc.html" class="btn btn-primary no-underline">Pakai Foto Ini</a>
+    <button type="button" class="btn btn-secondary" data-retake-photo>Foto Ulang</button>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

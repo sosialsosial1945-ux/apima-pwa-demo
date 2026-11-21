@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Satgas · Catat temuan</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2">
+      <a href="SatgasDaftar.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke daftar satgas">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <h1 class="text-md m-0 fw-700">Catat temuan</h1>
+    </div>
+    <span class="pill pill-warning">
+      <span class="status-dot dot-warning" aria-hidden="true"></span>
+      Offline
+    </span>
+  </header>
+
+  <main class="screen-scroll stack gap-4" style="padding:16px 16px 24px">
+
+    <div role="status" class="banner banner-warning">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--apima-warning)" stroke-width="2" class="banner-icon" aria-hidden="true"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+      <div class="stack gap-1">
+        <span class="text-bold text-warning">Sedang offline · Data disimpan di HP</span>
+        <span class="text-sm text-secondary">Catatan disimpan di HP Anda dan otomatis terkirim saat sinyal kembali.</span>
+      </div>
+    </div>
+
+    <div class="stack gap-2">
+      <label for="anggota" class="text-bold">Anggota</label>
+      <input id="anggota" type="search" value="0456 · Siti Aminah" class="input">
+      <button type="button" class="btn-chip" data-non-member-toggle aria-pressed="false">Bukan Anggota APIMA</button>
+    </div>
+
+    <fieldset class="m-0 stack gap-2" style="border:none;padding:0">
+      <legend class="text-bold" style="padding:0;margin-bottom:8px">Hasil temuan</legend>
+      <label class="radio-card selected-danger" data-danger>
+        <input type="radio" name="hasil" checked>
+        <span>Jualan tanpa bayar</span>
+      </label>
+      <label class="radio-card">
+        <input type="radio" name="hasil">
+        <span>Penjaga tidak dikenal</span>
+      </label>
+      <label class="radio-card">
+        <input type="radio" name="hasil">
+        <span>Sesuai</span>
+      </label>
+    </fieldset>
+
+    <div class="stack gap-2">
+      <span class="text-bold">Bukti foto lapak</span>
+      <button type="button" class="photo-drop" data-photo-btn>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Ambil Foto Lapak</span>
+      </button>
+      <span class="text-sm text-secondary tnum">Lokasi dan jam tercatat otomatis · 23:41</span>
+    </div>
+
+  </main>
+
+  <div class="screen-footer">
+    <button type="button" class="btn btn-primary" disabled data-photo-send>Simpan Temuan</button>
+    <p class="text-sm text-secondary m-0 text-center" data-photo-hint>Ambil foto dulu untuk menyimpan temuan ini.</p>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

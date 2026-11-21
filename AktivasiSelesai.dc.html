@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Akun aktif</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <span class="brand-wordmark">
+      <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
+      <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
+    </span>
+    <span class="text-sm text-secondary tnum">Sab, 14 Nov</span>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px">
+
+    <section class="hero-card items-center text-center" aria-label="Konfirmasi akun aktif">
+      <img src="illustrations/akun-aktif.webp" alt="Ilustrasi akun APIMA sudah aktif" class="illus-hero">
+      <div class="stack gap-1 items-center">
+        <h1 class="text-lg m-0">Akun Anda sudah aktif!</h1>
+        <p class="text-sm text-secondary m-0">Mulai malam ini, Anda bisa lapor jualan dan bayar retribusi langsung dari HP.</p>
+      </div>
+    </section>
+
+    <section class="open-section" aria-label="Cara pasang aplikasi di layar depan HP">
+      <div class="row gap-3 items-center">
+        <img src="illustrations/pasang-hp.webp" alt="Ilustrasi pasang APIMA di layar utama HP" class="illus-side">
+        <div class="stack gap-1 flex-1">
+          <span class="text-bold">Pasang di layar depan HP</span>
+          <p class="text-sm text-secondary m-0">Supaya Anda bisa langsung buka APIMA seperti aplikasi biasa.</p>
+        </div>
+      </div>
+      <ol class="step-list mt-1">
+        <li class="step-item"><span class="step-num">1</span><span>Ketuk tombol titik tiga di pojok kanan atas browser.</span></li>
+        <li class="step-item"><span class="step-num">2</span><span>Pilih menu <strong class="text-main">Tambahkan ke layar utama</strong>, lalu tekan <strong class="text-main">Tambah</strong>.</span></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <div class="screen-footer">
+    <a href="Main.dc.html" class="btn btn-primary no-underline">Ke Beranda</a>
+    <button type="button" class="btn btn-ghost" data-sheet-open="sheet-penjaga">Tambah Penjaga Lapak</button>
+  </div>
+
+  <div id="sheet-penjaga" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-penjaga-title">
+    <div class="sheet">
+      <div class="row between">
+        <h2 id="sheet-penjaga-title" class="text-md m-0 fw-700">Tambah penjaga lapak</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup panduan penjaga lapak">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="text-sm text-secondary m-0">Penjaga lapak bisa didaftarkan kapan saja lewat menu <strong class="text-main">QR saya</strong> setelah masuk ke beranda agar satgas mengenali wakil lapak Anda.</p>
+      <a href="AnggotaQrIdentitas.dc.html" class="btn btn-primary no-underline">Buka Menu QR Saya</a>
+      <button type="button" class="btn btn-secondary" data-sheet-close>Nanti Saja</button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>

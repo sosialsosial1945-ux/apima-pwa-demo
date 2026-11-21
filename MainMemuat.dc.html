@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Beranda · memuat</title>
+<link rel="stylesheet" href="./styles.css">
+<script src="./support.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="header-compact between">
+    <div class="row gap-2 items-center">
+      <h1 class="sr-only">Memuat beranda APIMA</h1>
+      <span class="brand-wordmark">
+        <img src="brand/apima-wordmark-light.webp" width="79" height="28" alt="APIMA" class="wm-light">
+        <img src="brand/apima-wordmark-dark.webp" width="79" height="28" alt="" aria-hidden="true" class="wm-dark">
+      </span>
+    </div>
+    <span class="skel skel-line sm" style="width:76px" aria-hidden="true"></span>
+  </header>
+
+  <main class="screen-scroll stack gap-3" style="padding:16px" role="status" aria-live="polite" aria-busy="true">
+
+    <span class="text-sm text-secondary">Memuat data malam ini&hellip;</span>
+
+    <section class="hero-card" aria-hidden="true">
+      <div class="row between">
+        <span class="skel skel-line sm skel-w-30"></span>
+        <span class="skel skel-line sm" style="width:92px"></span>
+      </div>
+      <div class="stack gap-2">
+        <span class="skel skel-line lg skel-w-70"></span>
+        <span class="skel skel-line sm skel-w-100"></span>
+      </div>
+      <span class="skel skel-block skel-w-100" style="height:56px"></span>
+    </section>
+
+    <div class="info-strip" aria-hidden="true">
+      <div class="info-cell">
+        <span class="skel skel-line sm skel-w-50"></span>
+        <span class="skel skel-line skel-w-70"></span>
+      </div>
+      <div class="info-cell">
+        <span class="skel skel-line sm skel-w-50"></span>
+        <span class="skel skel-line skel-w-70"></span>
+      </div>
+    </div>
+
+    <div class="open-section" aria-hidden="true">
+      <span class="skel skel-line sm" style="width:120px"></span>
+      <div class="open-row"><span class="skel skel-line sm" style="width:140px"></span><span class="skel skel-line sm" style="width:68px"></span></div>
+      <div class="open-row"><span class="skel skel-line sm" style="width:130px"></span><span class="skel skel-line sm" style="width:68px"></span></div>
+      <div class="open-row"><span class="skel skel-line sm" style="width:150px"></span><span class="skel skel-line sm" style="width:68px"></span></div>
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navigasi utama">
+    <a href="Main.dc.html" class="nav-item active" aria-current="page">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4.5v-6h3v6H18a1 1 0 0 0 1-1V9.5"/></svg>
+      <span>Beranda</span>
+    </a>
+    <a href="AnggotaRiwayat.dc.html" class="nav-item" data-nav="AnggotaRiwayat.dc.html">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      <span>Riwayat</span>
+    </a>
+    <a href="AnggotaQrIdentitas.dc.html" class="nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 20h3"/></svg>
+      <span>QR saya</span>
+    </a>
+    <a href="Main.dc.html" class="nav-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Akun</span>
+    </a>
+  </nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>
