@@ -114,7 +114,7 @@
       resultEl.textContent = check.resultLabel;
       var badgeClass = 'badge-success';
       if (check.resultKey === 'jualan_tanpa_bayar') badgeClass = 'badge-danger';
-      else if (check.resultKey === 'penjaga_tidak_dikenal' || check.resultKey === 'bayar_di_tempat') badgeClass = 'badge-warning';
+      else if (check.resultKey !== 'sesuai') badgeClass = 'badge-warning';
       resultEl.className = 'badge ' + badgeClass;
     }
 

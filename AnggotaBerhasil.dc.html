@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="./styles.css">
 <script src="./support.js"></script>
 <script src="./apima-store.js"></script>
+<script src="./lib/qrcode.js"></script>
 <script src="./interactions.js" defer></script>
 <link rel="manifest" href="./manifest.webmanifest">
 <meta name="theme-color" content="#0B4F8A">
@@ -40,6 +41,23 @@
         <span class="status-dot dot-success" aria-hidden="true"></span>
         <span id="berhasil-status-text">Jualan · Sudah Bayar</span>
       </span>
+    </section>
+
+    <section class="qr-id-card" aria-label="QR identitas untuk ditunjukkan ke satgas">
+      <div class="qr-id-head">
+        <h2 class="qr-id-label m-0" style="font-size:inherit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M15 10h3M15 14h3M7 16c.5-1.5 3.5-1.5 4 0"/></svg>
+          Tunjukkan QR ini ke satgas
+        </h2>
+      </div>
+      <div class="qr-id-body" id="berhasil-qr-stage" data-qr-payload="">
+        <canvas id="berhasil-qr-canvas" width="220" height="220" role="img" aria-label="Kode QR identitas anggota APIMA yang berganti setiap 45 detik" style="width:212px;height:212px;display:block;image-rendering:pixelated"></canvas>
+        <div class="qr-id-timer-row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span>QR berganti dalam <strong id="berhasil-qr-countdown" class="tnum qr-id-countdown">00:45</strong></span>
+        </div>
+        <span id="berhasil-qr-caption" class="text-xs tnum qr-id-caption">Kode identitas aktif · Berlaku 45 detik</span>
+      </div>
     </section>
 
     <section class="open-section" aria-label="Rincian transaksi">
@@ -119,6 +137,36 @@
         stText.textContent = tonightStatus === 'sudah_bayar' ? 'Jualan · Sudah Bayar' : 'Malam Terbayar Ditambahkan';
       }
     }
+
+    startIdentityQr(member);
+  }
+
+  /* QR identitas yang sama dengan AnggotaQrIdentitas: berganti setiap 45 detik, status ikut di isi QR */
+  var qrTimer = null;
+  function startIdentityQr(member) {
+    var store = window.APIMA_STORE;
+    var canvas = document.getElementById('berhasil-qr-canvas');
+    var stage = document.getElementById('berhasil-qr-stage');
+    var countdownEl = document.getElementById('berhasil-qr-countdown');
+    var captionEl = document.getElementById('berhasil-qr-caption');
+    if (!store || !canvas || !member || !member.id) return;
+    if (qrTimer) clearInterval(qrTimer);
+
+    var lastPayload = '';
+    function refreshQr() {
+      var now = Date.now();
+      var rem = store.getQrSecondsRemaining(now);
+      if (countdownEl) countdownEl.textContent = String(Math.floor(rem / 60)).padStart(2, '0') + ':' + String(rem % 60).padStart(2, '0');
+      var payload = store.buildIdentityQrPayload(member.id, now);
+      if (payload !== lastPayload) {
+        lastPayload = payload;
+        store.drawQrToCanvas(canvas, payload, 240);
+        if (stage) stage.dataset.qrPayload = payload;
+        if (captionEl) captionEl.textContent = 'ID ' + member.id + ' · Periode aktif #' + String(store.getQrPeriod(now)).slice(-4);
+      }
+    }
+    refreshQr();
+    qrTimer = setInterval(refreshQr, 1000);
   }
 
   window.addEventListener('apima:ready', boot);

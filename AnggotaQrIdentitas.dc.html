@@ -52,9 +52,9 @@
         <canvas id="qr-id-canvas" width="220" height="220" role="img" aria-label="Kode QR identitas anggota APIMA yang berganti setiap 45 detik" style="width:212px;height:212px;display:block;image-rendering:pixelated"></canvas>
         <div class="qr-id-timer-row">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          <span>QR berganti dalam <strong id="qr-id-countdown" class="tnum" style="color:#0F172A">00:45</strong></span>
+          <span>QR berganti dalam <strong id="qr-id-countdown" class="tnum qr-id-countdown">00:45</strong></span>
         </div>
-        <span id="qr-id-code-caption" class="text-xs tnum" style="color:#475569">Kode identitas aktif · Berlaku 45 detik</span>
+        <span id="qr-id-code-caption" class="text-xs tnum qr-id-caption">Kode identitas aktif · Berlaku 45 detik</span>
       </div>
 
       <div class="qr-id-not-payment">
@@ -104,27 +104,8 @@
 <script>
 (function () {
   function drawQrToCanvas(canvas, text) {
-    if (!canvas || typeof window.qrcode !== 'function') return;
-    var qr = window.qrcode(0, 'M');
-    qr.addData(text);
-    qr.make();
-    var count = qr.getModuleCount();
-    var quiet = 4;
-    var totalModules = count + quiet * 2;
-    var scale = Math.max(4, Math.floor(240 / totalModules));
-    var size = totalModules * scale;
-    canvas.width = size;
-    canvas.height = size;
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, size, size);
-    ctx.fillStyle = '#0F172A';
-    for (var r = 0; r < count; r++) {
-      for (var c = 0; c < count; c++) {
-        if (qr.isDark(r, c)) {
-          ctx.fillRect((c + quiet) * scale, (r + quiet) * scale, scale, scale);
-        }
-      }
+    if (window.APIMA_STORE && window.APIMA_STORE.drawQrToCanvas) {
+      window.APIMA_STORE.drawQrToCanvas(canvas, text, 240);
     }
   }
 
@@ -179,7 +160,7 @@
       if (penjagaCard) penjagaCard.hidden = true;
     }
 
-    var lastPeriod = -1;
+    var lastPayload = '';
     function refreshQr() {
       var now = Date.now();
       var period = store ? store.getQrPeriod(now) : Math.floor(now / 45000);
@@ -188,9 +169,10 @@
       var ss = String(rem % 60).padStart(2, '0');
       if (countdownEl) countdownEl.textContent = mm + ':' + ss;
 
-      if (period !== lastPeriod) {
-        lastPeriod = period;
-        var payload = store ? store.buildIdentityQrPayload(member.id, now) : ('APIMA:' + member.id + ':' + period);
+      /* Digambar ulang saat periode atau status berubah (status ikut di isi QR, lihat apima-store.js) */
+      var payload = store ? store.buildIdentityQrPayload(member.id, now) : ('APIMA:' + member.id + ':' + period);
+      if (payload !== lastPayload) {
+        lastPayload = payload;
         drawQrToCanvas(canvas, payload);
         if (stage) stage.dataset.qrPayload = payload;
         if (captionEl) captionEl.textContent = 'ID ' + member.id + ' \u00b7 Periode aktif #' + String(period).slice(-4);

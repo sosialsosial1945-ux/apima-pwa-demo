@@ -26,14 +26,14 @@
       <a href="SatgasDaftar.dc.html" class="btn-icon nudge-left" aria-label="Kembali ke daftar lapak">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
       </a>
-      <h1 id="scan-header-title" class="text-md m-0 fw-700">Hasil scan</h1>
+      <h1 id="scan-header-title" class="text-md m-0 fw-700">Scan QR Anggota</h1>
     </div>
-    <button id="btn-open-camera-top" type="button" class="btn-chip" style="min-height:44px;padding:0 12px">Scan QR</button>
+    <span id="scan-today-date" class="text-sm text-secondary tnum">Sab, 14 Nov</span>
   </header>
 
   <main class="screen-scroll stack gap-3" style="padding:16px 16px 24px">
 
-    <!-- 1. TAMPILAN KAMERA LIVE -->
+    <!-- 1. KAMERA -->
     <section id="scan-camera-view" class="stack gap-3" hidden aria-label="Pemindai kamera QR satgas">
       <div class="scanner-stage" id="scanner-stage">
         <video id="scanner-video" class="scanner-video" playsinline muted autoplay></video>
@@ -41,6 +41,10 @@
         <div class="scanner-reticle" aria-hidden="true">
           <div class="scanner-box"></div>
         </div>
+        <button id="btn-torch" type="button" class="scanner-torch" hidden aria-pressed="false" aria-label="Nyalakan senter">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12l-2 7H8L6 2z"/><path d="M8 9h8v2a4 4 0 0 1-8 0V9z"/><path d="M12 15v7"/></svg>
+          <span>Senter</span>
+        </button>
         <span id="scanner-engine-caption" class="scanner-caption">Arahkan kamera ke QR identitas anggota</span>
       </div>
 
@@ -73,7 +77,7 @@
       </div>
     </section>
 
-    <!-- 2. TAMPILAN QR KEDALUWARSA / TIDAK DIKENALI -->
+    <!-- 2. QR KEDALUWARSA / TIDAK DIKENALI -->
     <section id="scan-error-view" class="card stack gap-3 items-center text-center" style="padding:24px 16px" hidden aria-live="polite">
       <img src="illustrations/tidak-ditemukan.webp" alt="Ilustrasi QR tidak valid" class="illus-md">
       <h2 id="scan-error-title" class="text-lg m-0 text-main">QR tidak dikenali</h2>
@@ -84,93 +88,119 @@
       </div>
     </section>
 
-    <!-- 3. TAMPILAN HASIL SCAN VALID -->
-    <section id="scan-result-view" class="stack gap-3" aria-label="Hasil pembacaan QR anggota">
-      <div class="scan-ok-strip" role="status">
-        <span class="scan-ok-icon" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <!-- 3. HASIL OTOMATIS (tanpa pilihan satgas) -->
+    <section id="scan-result-view" class="stack gap-3" hidden aria-label="Hasil pemeriksaan otomatis">
+      <section id="scan-result-hero" class="scan-result-hero tone-success" role="status" aria-live="assertive">
+        <img id="scan-result-illus" src="illustrations/cek-satgas.webp" alt="" class="scan-result-illus">
+        <span id="scan-result-icon" class="scan-result-icon" hidden aria-hidden="true">
+          <svg id="scan-result-icon-unpaid" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg id="scan-result-icon-noreport" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
         </span>
-        <span>QR berhasil dibaca</span>
-        <span id="scan-today-date" class="text-xs text-secondary tnum ml-auto">Sab, 14 Nov</span>
-      </div>
-
-      <section id="scan-member-card" class="hero-card" aria-label="Identitas anggota hasil scan">
-        <div class="row items-center gap-3">
-          <span id="scan-avatar" class="member-avatar-scan" aria-hidden="true">SA</span>
-          <div class="stack" style="gap:2px;min-width:0;flex:1">
-            <span id="scan-name" class="text-lg text-main">Siti Aminah</span>
-            <span id="scan-id-blok" class="text-sm text-secondary tnum">ID 0456 · Blok B-09</span>
-          </div>
-        </div>
-
-        <div class="scan-status-box">
-          <div class="stack" style="gap:2px">
-            <span class="text-xs text-secondary">Status bayar malam ini</span>
-            <span id="scan-status-note" class="text-xs text-secondary">Terbaca dari data sistem</span>
-          </div>
-          <span id="scan-status-pill" class="pill pill-danger">
-            <span id="scan-status-dot" class="status-dot dot-danger" aria-hidden="true"></span>
-            <span id="scan-status-text">Belum bayar</span>
-          </span>
-        </div>
-
-        <div class="divider-t" style="padding-top:12px">
-          <div class="row between gap-2">
-            <span class="text-sm text-secondary">Penjaga terdaftar</span>
-            <span id="scan-penjaga" class="text-sm fw-700 text-main">Jaga sendiri</span>
-          </div>
-        </div>
-
-        <button id="btn-recheck-payment" type="button" class="btn btn-secondary" style="height:44px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-          Cek Ulang Pembayaran
-        </button>
+        <span class="scan-result-kicker">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          QR berhasil dibaca
+        </span>
+        <h2 id="scan-result-title" class="scan-result-title m-0">Sudah bayar</h2>
+        <span id="scan-result-name" class="scan-result-name">Budi Santoso</span>
+        <span id="scan-result-meta" class="scan-result-meta tnum">ID 0123 · Blok C-14</span>
+        <span id="scan-result-time" class="scan-result-time tnum">Tercatat 22:45 WIB · Sesuai</span>
       </section>
 
-      <fieldset class="m-0 stack gap-2" style="border:none;padding:0">
-        <legend class="text-bold" style="padding:0;margin-bottom:8px">Catat hasil pemeriksaan</legend>
-        <label class="radio-card" data-result-option="sesuai">
-          <input type="radio" name="hasil" value="sesuai" data-label="Sesuai">
-          <span>Sesuai</span>
-        </label>
-        <label class="radio-card" data-danger data-result-option="jualan_tanpa_bayar">
-          <input type="radio" name="hasil" value="jualan_tanpa_bayar" data-label="Jualan tanpa bayar">
-          <span>Jualan tanpa bayar</span>
-        </label>
-        <label class="radio-card" data-result-option="penjaga_tidak_dikenal">
-          <input type="radio" name="hasil" value="penjaga_tidak_dikenal" data-label="Penjaga tidak dikenal">
-          <span>Penjaga tidak dikenal</span>
-        </label>
-        <label class="radio-card" data-result-option="bayar_di_tempat">
-          <input type="radio" name="hasil" value="bayar_di_tempat" data-label="Bayar di tempat, menunggu konfirmasi">
-          <span>Bayar di tempat, menunggu konfirmasi</span>
-        </label>
-      </fieldset>
+      <div id="scan-offline-note" role="status" class="banner banner-warning" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--apima-warning)" stroke-width="2" class="banner-icon" aria-hidden="true"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+        <span class="text-sm fw-700 text-warning">Tersimpan di HP. Terkirim otomatis saat sinyal kembali.</span>
+      </div>
+
+      <button id="btn-recheck-payment" type="button" class="btn btn-secondary" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Cek Ulang Pembayaran
+      </button>
+
+      <div class="card card-pad row between items-center gap-2">
+        <span class="text-sm text-secondary">Penjaga terdaftar</span>
+        <span id="scan-penjaga" class="text-sm fw-700 text-main">Jaga sendiri</span>
+      </div>
+
+      <p class="m-0 text-center" style="min-height:44px;display:flex;align-items:center;justify-content:center">
+        <button id="btn-report-issue" type="button" class="link-inline" data-sheet-open="sheet-lapor-masalah">Laporkan masalah</button>
+      </p>
     </section>
 
   </main>
 
-  <div id="scan-result-footer" class="screen-footer">
-    <button id="btn-save-inspection" type="button" class="btn btn-primary">Simpan Hasil Pemeriksaan</button>
+  <div id="scan-result-footer" class="screen-footer" hidden>
+    <button id="btn-scan-next" type="button" class="btn btn-primary">Scan Lapak Berikutnya</button>
+    <a href="SatgasDaftar.dc.html" class="btn btn-secondary no-underline">Kembali ke Daftar Lapak</a>
+  </div>
+
+  <!-- Pengecualian manual: tidak pernah mengubah status menjadi lunas -->
+  <div id="sheet-lapor-masalah" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-lapor-title">
+    <div class="sheet">
+      <div class="row between">
+        <h2 id="sheet-lapor-title" class="text-md m-0 fw-700">Laporkan masalah</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup laporan masalah">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <p id="sheet-lapor-member" class="text-sm text-secondary m-0">Budi Santoso · ID 0123 · Blok C-14</p>
+      <fieldset class="m-0 stack gap-2" style="border:none;padding:0">
+        <legend class="text-sm fw-700 text-main" style="padding:0;margin-bottom:8px">Apa masalahnya?</legend>
+        <label class="radio-card" data-issue-option>
+          <input type="radio" name="masalah" value="penjaga_tidak_dikenal" data-label="Penjaga tidak dikenal">
+          <span>Penjaga tidak dikenal</span>
+        </label>
+        <label class="radio-card" data-issue-option>
+          <input type="radio" name="masalah" value="bayar_di_tempat" data-label="Bayar di tempat, menunggu konfirmasi">
+          <span>Bayar di tempat, menunggu konfirmasi</span>
+        </label>
+      </fieldset>
+      <div class="stack gap-1">
+        <label for="issue-photo" class="btn btn-secondary" style="cursor:pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <span id="issue-photo-label">Ambil Foto Bukti</span>
+        </label>
+        <input id="issue-photo" type="file" accept="image/*" capture="environment" hidden>
+        <span id="issue-photo-name" class="text-xs text-secondary text-center">Belum ada foto</span>
+      </div>
+      <p class="text-xs text-secondary m-0">Laporan ini masuk ke daftar tinjauan pengurus dan tidak mengubah status bayar menjadi lunas.</p>
+      <button id="btn-send-issue" type="button" class="btn btn-primary">Kirim Laporan</button>
+    </div>
   </div>
 
 </div>
 </x-dc>
 <script>
 (function () {
-  var currentMemberId = '0456';
+  var currentMemberId = '';
+  var currentCheck = null;
   var scanMethod = 'Scan QR dinamis';
   var activeStream = null;
+  var activeTrack = null;
+  var torchOn = false;
   var scanTimer = null;
+  var hintTimer = null;
   var isScanning = false;
+  var SCAN_INTERVAL_MS = 150;
+  var SCAN_HINT_MS = 10000;
+  var SCAN_MIN_SHORT_SIDE = 640;
+
+  function vibrate(ms) {
+    if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+      try { navigator.vibrate(ms); } catch (e) {}
+    }
+  }
 
   function stopCamera() {
     isScanning = false;
-    if (scanTimer) {
-      cancelAnimationFrame(scanTimer);
-      clearTimeout(scanTimer);
-      scanTimer = null;
+    if (scanTimer) { clearTimeout(scanTimer); scanTimer = null; }
+    if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; }
+    if (activeTrack && torchOn) {
+      try { activeTrack.applyConstraints({ advanced: [{ torch: false }] }); } catch (e) {}
     }
+    torchOn = false;
+    activeTrack = null;
+    var torchBtn = document.getElementById('btn-torch');
+    if (torchBtn) { torchBtn.hidden = true; torchBtn.setAttribute('aria-pressed', 'false'); }
     if (activeStream) {
       activeStream.getTracks().forEach(function (t) {
         try { t.stop(); } catch (e) {}
@@ -189,36 +219,28 @@
     var resView = document.getElementById('scan-result-view');
     var footer = document.getElementById('scan-result-footer');
     var titleEl = document.getElementById('scan-header-title');
-    var topBtn = document.getElementById('btn-open-camera-top');
 
     if (camView) camView.hidden = (viewName !== 'camera');
     if (errView) errView.hidden = (viewName !== 'error');
     if (resView) resView.hidden = (viewName !== 'result');
     if (footer) footer.hidden = (viewName !== 'result');
-
     if (titleEl) {
-      titleEl.textContent = viewName === 'camera' ? 'Scan QR Anggota' : 'Hasil scan';
-    }
-    if (topBtn) {
-      topBtn.hidden = (viewName === 'camera');
+      titleEl.textContent = viewName === 'camera' ? 'Scan QR Anggota' : (viewName === 'result' ? 'Hasil pemeriksaan' : 'QR tidak valid');
     }
   }
 
-  function syncRadioCards() {
-    document.querySelectorAll('input[name="hasil"]').forEach(function (r) {
+  function syncIssueCards() {
+    document.querySelectorAll('input[name="masalah"]').forEach(function (r) {
       var card = r.closest('.radio-card');
-      if (!card) return;
-      var isDanger = card.dataset.danger !== undefined;
-      card.classList.remove('selected', 'selected-danger');
-      if (r.checked) {
-        card.classList.add(isDanger ? 'selected-danger' : 'selected');
-      }
+      if (card) card.classList.toggle('selected', r.checked);
     });
   }
 
-  function renderMemberResult(memberId, resetSelection) {
+  /* Tampilkan hasil otomatis. opts.record = catat pemeriksaan baru; opts.recheck = perbarui catatan terakhir */
+  function renderAutoResult(memberId, opts) {
     var store = window.APIMA_STORE;
     if (!store) return;
+    opts = opts || {};
     var st = store.reload();
     var m = store.getMember(memberId || currentMemberId);
     if (!m) return;
@@ -228,64 +250,68 @@
     var dateEl = document.getElementById('scan-today-date');
     if (dateEl) dateEl.textContent = dateInfo.short;
 
-    var avatarEl = document.getElementById('scan-avatar');
-    var nameEl = document.getElementById('scan-name');
-    var idBlokEl = document.getElementById('scan-id-blok');
+    var result = store.resultFromStatus(m.tonightStatus);
+    if (opts.record) {
+      currentCheck = store.saveSatgasInspection({
+        memberId: m.id,
+        resultKey: result.key,
+        resultLabel: result.label,
+        metode: scanMethod
+      });
+    } else if (opts.recheck && currentCheck && currentCheck.resultKey !== result.key) {
+      currentCheck = store.updateLastInspection(m.id, result.key, result.label) || currentCheck;
+    }
+
+    var hero = document.getElementById('scan-result-hero');
+    var illus = document.getElementById('scan-result-illus');
+    var iconWrap = document.getElementById('scan-result-icon');
+    var iconUnpaid = document.getElementById('scan-result-icon-unpaid');
+    var iconNoreport = document.getElementById('scan-result-icon-noreport');
+    var titleEl = document.getElementById('scan-result-title');
+    var nameEl = document.getElementById('scan-result-name');
+    var metaEl = document.getElementById('scan-result-meta');
+    var timeEl = document.getElementById('scan-result-time');
     var penjagaEl = document.getElementById('scan-penjaga');
-    var pillEl = document.getElementById('scan-status-pill');
-    var dotEl = document.getElementById('scan-status-dot');
-    var statusTextEl = document.getElementById('scan-status-text');
-    var statusNoteEl = document.getElementById('scan-status-note');
-    var cardEl = document.getElementById('scan-member-card');
+    var recheckBtn = document.getElementById('btn-recheck-payment');
+    var offlineNote = document.getElementById('scan-offline-note');
+    var sheetMember = document.getElementById('sheet-lapor-member');
 
-    if (avatarEl) avatarEl.textContent = m.initials || 'AP';
+    var tone = 'tone-success';
+    var title = 'Sudah bayar';
+    if (m.tonightStatus === 'belum_bayar') { tone = 'tone-danger'; title = 'Belum bayar'; }
+    else if (m.tonightStatus === 'belum_lapor') { tone = 'tone-warning'; title = 'Belum lapor jualan malam ini'; }
+
+    if (hero) {
+      hero.classList.remove('tone-success', 'tone-warning', 'tone-danger');
+      hero.classList.add(tone);
+    }
+    var isPaid = tone === 'tone-success';
+    if (illus) illus.hidden = !isPaid;
+    if (iconWrap) iconWrap.hidden = isPaid;
+    /* Elemen SVG tidak punya properti .hidden, jadi pakai atribut */
+    if (iconUnpaid) iconUnpaid.toggleAttribute('hidden', tone !== 'tone-danger');
+    if (iconNoreport) iconNoreport.toggleAttribute('hidden', tone !== 'tone-warning');
+    if (titleEl) titleEl.textContent = title;
     if (nameEl) nameEl.textContent = m.name;
-    if (idBlokEl) idBlokEl.textContent = 'ID ' + m.id + ' \u00b7 ' + m.blok;
+    if (metaEl) metaEl.textContent = 'ID ' + m.id + ' · ' + m.blok;
+    if (timeEl) timeEl.textContent = 'Tercatat ' + (currentCheck ? currentCheck.jam : store.nowTimeWib()) + ' · ' + result.label;
     if (penjagaEl) {
-      if (m.penjaga && m.penjaga !== 'Jaga sendiri') {
-        penjagaEl.textContent = m.penjaga + (m.penjagaActive ? '' : ' (Nonaktif)');
-      } else {
-        penjagaEl.textContent = 'Jaga sendiri';
-      }
+      penjagaEl.textContent = (m.penjaga && m.penjaga !== 'Jaga sendiri')
+        ? (m.penjaga + (m.penjagaActive ? '' : ' (Nonaktif)'))
+        : 'Jaga sendiri';
     }
+    if (recheckBtn) recheckBtn.hidden = isPaid;
+    if (offlineNote) offlineNote.hidden = !(currentCheck && currentCheck.offline);
+    if (sheetMember) sheetMember.textContent = m.name + ' · ID ' + m.id + ' · ' + m.blok;
 
-    var pillClass = 'pill-danger';
-    var dotClass = 'dot-danger';
-    var labelText = 'Belum bayar';
-    var toneClass = 'tone-danger';
-    var noteText = 'Belum ada pembayaran aktif untuk malam ini';
-
-    if (m.tonightStatus === 'sudah_bayar') {
-      pillClass = 'pill-success';
-      dotClass = 'dot-success';
-      labelText = 'Sudah bayar';
-      toneClass = 'tone-success';
-      noteText = m.note || 'Retribusi malam ini sudah terbayar';
-    } else if (m.tonightStatus === 'belum_lapor') {
-      pillClass = 'pill-warning';
-      dotClass = 'dot-warning';
-      labelText = 'Belum lapor';
-      toneClass = 'tone-warning';
-      noteText = 'Sudah dibayar untuk ' + m.paidNights + ' malam lagi, belum lapor malam ini';
-    }
-
-    if (pillEl) pillEl.className = 'pill ' + pillClass;
-    if (dotEl) dotEl.className = 'status-dot ' + dotClass;
-    if (statusTextEl) statusTextEl.textContent = labelText;
-    if (statusNoteEl) statusNoteEl.textContent = noteText;
-    if (cardEl) {
-      cardEl.classList.remove('tone-success', 'tone-warning', 'tone-danger');
-      cardEl.classList.add(toneClass);
-    }
-
-    if (resetSelection) {
-      var targetVal = (m.tonightStatus === 'sudah_bayar') ? 'sesuai' : 'jualan_tanpa_bayar';
-      var radio = document.querySelector('input[name="hasil"][value="' + targetVal + '"]');
-      if (radio) radio.checked = true;
-      syncRadioCards();
+    var reportBtn = document.getElementById('btn-report-issue');
+    if (reportBtn && opts.record) {
+      reportBtn.disabled = false;
+      reportBtn.textContent = 'Laporkan masalah';
     }
 
     showView('result');
+    if (opts.record) vibrate(80);
   }
 
   function showScanError(kind) {
@@ -307,18 +333,12 @@
     stopCamera();
     var parsed = store.parseIdentityQrPayload(rawText);
     if (parsed.status === 'valid') {
-      if (fromCamera && typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-        try { navigator.vibrate(80); } catch (e) {}
-      }
       scanMethod = fromCamera ? 'Scan kamera QR' : 'Scan QR dinamis';
-      renderMemberResult(parsed.memberId, true);
+      renderAutoResult(parsed.memberId, { record: true });
       return parsed;
     }
-    if (parsed.status === 'expired') {
-      showScanError('expired');
-      return parsed;
-    }
-    showScanError('unknown');
+    vibrate([40, 60, 40]);
+    showScanError(parsed.status === 'expired' ? 'expired' : 'unknown');
     return parsed;
   }
 
@@ -333,6 +353,28 @@
     if (reasonEl && reasonText) reasonEl.textContent = reasonText;
   }
 
+  function setupTorch(stream) {
+    var torchBtn = document.getElementById('btn-torch');
+    if (!torchBtn) return;
+    var track = stream.getVideoTracks()[0];
+    activeTrack = track || null;
+    var caps = null;
+    try { caps = track && typeof track.getCapabilities === 'function' ? track.getCapabilities() : null; } catch (e) { caps = null; }
+    if (!caps || !caps.torch) { torchBtn.hidden = true; return; }
+    torchBtn.hidden = false;
+    torchBtn.onclick = function () {
+      var next = !torchOn;
+      track.applyConstraints({ advanced: [{ torch: next }] }).then(function () {
+        torchOn = next;
+        torchBtn.setAttribute('aria-pressed', next ? 'true' : 'false');
+        torchBtn.setAttribute('aria-label', next ? 'Matikan senter' : 'Nyalakan senter');
+        torchBtn.classList.toggle('is-on', next);
+      }).catch(function () {
+        if (window.apimaToast) window.apimaToast('Senter tidak bisa dinyalakan di kamera ini.');
+      });
+    };
+  }
+
   function startCameraScanner() {
     stopCamera();
     showView('camera');
@@ -345,6 +387,7 @@
 
     if (stage) stage.hidden = false;
     if (denied) denied.hidden = true;
+    if (caption) caption.textContent = 'Arahkan kamera ke QR identitas anggota';
 
     if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
       showCameraDenied('Kamera tidak tersedia di browser ini. Pastikan halaman dibuka lewat https atau localhost, atau gunakan input manual nomor anggota di bawah.');
@@ -352,28 +395,28 @@
     }
 
     navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: 'environment' } },
+      video: {
+        facingMode: { ideal: 'environment' },
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
       audio: false
     }).then(function (stream) {
       activeStream = stream;
       video.srcObject = stream;
+      setupTorch(stream);
       return video.play();
     }).then(function () {
       isScanning = true;
       var detector = null;
       if (typeof window.BarcodeDetector === 'function') {
-        try {
-          detector = new window.BarcodeDetector({ formats: ['qr_code'] });
-          if (caption) caption.textContent = 'Arahkan kamera ke QR identitas anggota';
-        } catch (e) {
-          detector = null;
-        }
+        try { detector = new window.BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { detector = null; }
       }
-      if (!detector && caption) {
-        caption.textContent = 'Arahkan kamera ke QR identitas anggota';
-      }
-
       var ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+      hintTimer = setTimeout(function () {
+        if (isScanning && caption) caption.textContent = 'Naikkan kecerahan layar HP anggota dan dekatkan QR ke kamera';
+      }, SCAN_HINT_MS);
 
       function scanFrame() {
         if (!isScanning) return;
@@ -385,28 +428,31 @@
                 processScannedQr(codes[0].rawValue, true);
                 return;
               }
-              scanTimer = setTimeout(scanFrame, 180);
+              scanTimer = setTimeout(scanFrame, SCAN_INTERVAL_MS);
             }).catch(function () {
               detector = null;
-              scanTimer = setTimeout(scanFrame, 180);
+              scanTimer = setTimeout(scanFrame, SCAN_INTERVAL_MS);
             });
             return;
           }
           if (typeof window.jsQR === 'function') {
-            var w = Math.min(video.videoWidth, 640);
-            var h = Math.round(video.videoHeight * (w / video.videoWidth));
-            canvas.width = w;
-            canvas.height = h;
+            /* Proses gambar dengan sisi pendek minimal 640 px agar QR kecil tetap terbaca */
+            var vw = video.videoWidth, vh = video.videoHeight;
+            var shortSide = Math.min(vw, vh);
+            var target = Math.min(shortSide, Math.max(SCAN_MIN_SHORT_SIDE, 720));
+            var ratio = target / shortSide;
+            var w = Math.round(vw * ratio), h = Math.round(vh * ratio);
+            if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
             ctx.drawImage(video, 0, 0, w, h);
             var imgData = ctx.getImageData(0, 0, w, h);
-            var result = window.jsQR(imgData.data, w, h, { inversionAttempts: 'dontInvert' });
+            var result = window.jsQR(imgData.data, w, h, { inversionAttempts: 'attemptBoth' });
             if (result && result.data) {
               processScannedQr(result.data, true);
               return;
             }
           }
         }
-        scanTimer = setTimeout(scanFrame, 180);
+        scanTimer = setTimeout(scanFrame, SCAN_INTERVAL_MS);
       }
 
       scanFrame();
@@ -427,9 +473,9 @@
     var requestedId = params.get('id');
     var rawQrParam = params.get('qr');
 
-    document.getElementById('btn-open-camera-top').addEventListener('click', startCameraScanner);
     document.getElementById('btn-retry-camera').addEventListener('click', startCameraScanner);
     document.getElementById('btn-scan-again-err').addEventListener('click', startCameraScanner);
+    document.getElementById('btn-scan-next').addEventListener('click', startCameraScanner);
     document.getElementById('btn-manual-from-err').addEventListener('click', function () {
       stopCamera();
       showView('camera');
@@ -451,14 +497,13 @@
       var padded = raw.padStart(4, '0');
       var st = window.APIMA_STORE ? window.APIMA_STORE.reload() : null;
       var found = st && st.members.find(function (m) { return m.id === padded; });
+      stopCamera();
       if (!found) {
-        stopCamera();
         showScanError('unknown');
         return;
       }
-      stopCamera();
       scanMethod = 'Input manual ID';
-      renderMemberResult(found.id, true);
+      renderAutoResult(found.id, { record: true });
     }
 
     document.getElementById('btn-manual-lookup').addEventListener('click', runManualLookup);
@@ -470,46 +515,61 @@
     });
 
     document.getElementById('btn-recheck-payment').addEventListener('click', function () {
-      var store = window.APIMA_STORE;
-      if (!store) return;
-      var beforeText = document.getElementById('scan-status-text').textContent;
-      renderMemberResult(currentMemberId, false);
-      var afterText = document.getElementById('scan-status-text').textContent;
+      var before = document.getElementById('scan-result-title').textContent;
+      renderAutoResult(currentMemberId, { recheck: true });
+      var after = document.getElementById('scan-result-title').textContent;
       if (window.apimaToast) {
-        if (beforeText !== afterText) {
-          window.apimaToast('Status pembayaran diperbarui: ' + afterText + '.');
-        } else {
-          window.apimaToast('Status terbaru sudah dicek: ' + afterText + '.');
-        }
+        window.apimaToast(before !== after ? ('Status diperbarui: ' + after + '.') : ('Status terbaru sudah dicek: ' + after + '.'));
       }
     });
 
-    document.getElementById('btn-save-inspection').addEventListener('click', function () {
-      var store = window.APIMA_STORE;
-      if (!store) return;
-      var checked = document.querySelector('input[name="hasil"]:checked');
-      var resultKey = checked ? checked.value : 'sesuai';
-      var resultLabel = checked ? (checked.dataset.label || 'Sesuai') : 'Sesuai';
-      store.saveSatgasInspection({
-        memberId: currentMemberId,
-        resultKey: resultKey,
-        resultLabel: resultLabel,
-        metode: scanMethod
+    /* Laporan masalah manual (pengecualian, bukan langkah wajib) */
+    document.querySelectorAll('input[name="masalah"]').forEach(function (r) {
+      r.addEventListener('change', syncIssueCards);
+    });
+    var photoInput = document.getElementById('issue-photo');
+    var photoName = document.getElementById('issue-photo-name');
+    if (photoInput) {
+      photoInput.addEventListener('change', function () {
+        var f = photoInput.files && photoInput.files[0];
+        if (photoName) photoName.textContent = f ? ('Foto: ' + f.name) : 'Belum ada foto';
       });
-      window.location.href = 'SatgasBerhasil.dc.html';
+    }
+    document.getElementById('btn-send-issue').addEventListener('click', function () {
+      var store = window.APIMA_STORE;
+      var checked = document.querySelector('input[name="masalah"]:checked');
+      if (!checked) {
+        if (window.apimaToast) window.apimaToast('Pilih jenis masalah terlebih dulu.');
+        return;
+      }
+      if (store) {
+        store.addFinding({
+          memberId: currentMemberId,
+          temuan: checked.dataset.label || checked.value,
+          tone: 'warning',
+          metode: scanMethod + (photoInput && photoInput.files && photoInput.files.length ? ' + foto' : '')
+        });
+      }
+      var sheet = document.getElementById('sheet-lapor-masalah');
+      if (sheet) sheet.hidden = true;
+      var reportBtn = document.getElementById('btn-report-issue');
+      if (reportBtn) { reportBtn.textContent = 'Masalah sudah dilaporkan'; reportBtn.disabled = true; }
+      checked.checked = false;
+      syncIssueCards();
+      if (photoInput) photoInput.value = '';
+      if (photoName) photoName.textContent = 'Belum ada foto';
+      if (window.apimaToast) window.apimaToast('Laporan terkirim ke pengurus. Status bayar tidak berubah.');
     });
 
     if (rawQrParam) {
       processScannedQr(rawQrParam, false);
-    } else if (openCam) {
-      startCameraScanner();
     } else if (requestedId) {
       scanMethod = 'Scan QR dinamis';
-      renderMemberResult(requestedId, true);
+      renderAutoResult(requestedId, { record: true });
     } else {
-      scanMethod = 'Scan QR dinamis';
-      renderMemberResult('0456', true);
+      startCameraScanner();
     }
+    void openCam;
 
     window.addEventListener('beforeunload', stopCamera);
   }

@@ -2242,3 +2242,91 @@ a.info-cell:hover { background: var(--apima-bg-page); color: inherit; }
 :root[data-theme="dark"] .login-card,
 :root[data-theme="dark"] .demo-role-card { background: var(--apima-bg-card); }
 :root[data-theme="dark"] .login-input { background: var(--apima-bg-raised); }
+
+/* =====================================
+   Satgas: hasil pemeriksaan otomatis dan senter kamera
+   ===================================== */
+.scan-result-hero {
+  border-radius: var(--apima-radius-lg);
+  padding: 28px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  background: var(--apima-success);
+  color: var(--apima-on-success);
+}
+.scan-result-hero.tone-warning { background: var(--apima-warning); color: var(--apima-on-warning); }
+.scan-result-hero.tone-danger  { background: var(--apima-danger);  color: var(--apima-on-danger); }
+.scan-result-illus { height: 120px; width: auto; margin-bottom: 8px; }
+.scan-result-illus[hidden] { display: none; }
+.scan-result-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--apima-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.22);
+  margin-bottom: 8px;
+}
+:root[data-theme="dark"] .scan-result-icon { background: rgba(0, 0, 0, 0.14); }
+.scan-result-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--apima-text-xs);
+  line-height: var(--apima-lh-xs);
+  font-weight: 700;
+  opacity: 0.9;
+}
+.scan-result-title {
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.scan-result-name {
+  margin-top: 8px;
+  font-size: var(--apima-text-lg);
+  line-height: var(--apima-lh-lg);
+  font-weight: 700;
+}
+.scan-result-meta { font-size: var(--apima-text-sm); line-height: var(--apima-lh-sm); opacity: 0.92; }
+.scan-result-time {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: var(--apima-radius-pill);
+  background: rgba(255, 255, 255, 0.22);
+  font-size: var(--apima-text-xs);
+  line-height: var(--apima-lh-xs);
+  font-weight: 700;
+}
+:root[data-theme="dark"] .scan-result-time { background: rgba(0, 0, 0, 0.14); }
+.scanner-torch {
+  position: absolute;
+  right: 12px;
+  bottom: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: var(--apima-radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(15, 23, 42, 0.72);
+  color: #FFFFFF;
+  font-family: inherit;
+  font-size: var(--apima-text-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
+.scanner-torch.is-on { background: #FFFFFF; color: #0F172A; }
+
+/* Kartu QR tidak boleh menyusut di kolom scroll (AnggotaBerhasil) */
+.screen-scroll > .qr-id-card { flex-shrink: 0; }
+
+/* Badan QR selalu putih di kedua tema supaya terbaca kamera; teks di dalamnya warna tetap */
+.qr-id-countdown { color: #0F172A; }
+.qr-id-caption { color: #475569; }

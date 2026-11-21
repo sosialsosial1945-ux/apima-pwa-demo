@@ -593,19 +593,30 @@
     return 45 - sec;
   }
 
+  /* DEMO SAJA, HAPUS SEBELUM PRODUKSI:
+     status malam ini ikut dibawa di isi QR (PAID / UNPAID / NOREPORT) supaya HP satgas
+     yang datanya terpisah tetap tahu status pedagang. Di produksi status dibaca dari server. */
+  var QR_STATUS_CODE = { sudah_bayar: 'PAID', belum_bayar: 'UNPAID', belum_lapor: 'NOREPORT' };
+  var QR_STATUS_KEY = { PAID: 'sudah_bayar', UNPAID: 'belum_bayar', NOREPORT: 'belum_lapor' };
+
   function buildIdentityQrPayload(memberId, nowMs) {
     var cleanId = String(memberId || '0123').trim();
-    return 'APIMA:' + cleanId + ':' + getQrPeriod(nowMs);
+    var base = 'APIMA:' + cleanId + ':' + getQrPeriod(nowMs);
+    var member = getMember(cleanId);
+    var code = member ? QR_STATUS_CODE[member.tonightStatus] : null;
+    return code ? (base + ':' + code) : base;
   }
 
   function parseIdentityQrPayload(rawText, nowMs) {
     var text = String(rawText || '').trim();
-    var m = text.match(/^APIMA:([0-9]{4}):([0-9]+)$/i);
+    /* Format lama tanpa status tetap diterima */
+    var m = text.match(/^APIMA:([0-9]{4}):([0-9]+)(?::(PAID|UNPAID|NOREPORT))?$/i);
     if (!m) {
       return { status: 'unknown', raw: text };
     }
     var memberId = m[1];
     var period = parseInt(m[2], 10);
+    var qrStatus = m[3] ? m[3].toUpperCase() : null;
     var st = reload();
     var member = st.members.find(function (x) { return x.id === memberId; });
     if (!member) {
@@ -616,7 +627,58 @@
     if (isNaN(period) || (currentPeriod - period) > 2 || (period - currentPeriod) > 1) {
       return { status: 'expired', memberId: memberId, member: member, period: period };
     }
-    return { status: 'valid', memberId: memberId, member: member, period: period };
+    /* DEMO SAJA, HAPUS SEBELUM PRODUKSI: status dari QR disimpan ke data uji HP satgas */
+    if (qrStatus && QR_STATUS_KEY[qrStatus] && member.tonightStatus !== QR_STATUS_KEY[qrStatus]) {
+      var next = cloneState(st);
+      var target = next.members.find(function (x) { return x.id === memberId; });
+      if (target) {
+        target.tonightStatus = QR_STATUS_KEY[qrStatus];
+        target.note = qrStatus === 'PAID' ? 'Bayar (dibaca dari QR)' : (qrStatus === 'NOREPORT' ? 'Belum lapor malam ini' : 'Belum ada pembayaran aktif');
+        safeWrite(next);
+        member = target;
+      }
+    }
+    return { status: 'valid', memberId: memberId, member: member, period: period, qrStatus: qrStatus };
+  }
+
+  /* Gambar QR ke canvas: dipakai AnggotaQrIdentitas dan AnggotaBerhasil (butuh lib/qrcode.js) */
+  function drawQrToCanvas(canvas, text, targetPx) {
+    if (!canvas || typeof window.qrcode !== 'function') return false;
+    var qr = window.qrcode(0, 'M');
+    qr.addData(String(text || ''));
+    qr.make();
+    var count = qr.getModuleCount();
+    var quiet = 4;
+    var totalModules = count + quiet * 2;
+    var scale = Math.max(4, Math.floor((targetPx || 240) / totalModules));
+    var size = totalModules * scale;
+    canvas.width = size;
+    canvas.height = size;
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = '#0F172A';
+    for (var r = 0; r < count; r++) {
+      for (var c = 0; c < count; c++) {
+        if (qr.isDark(r, c)) {
+          ctx.fillRect((c + quiet) * scale, (r + quiet) * scale, scale, scale);
+        }
+      }
+    }
+    return true;
+  }
+
+  /* Hasil pemeriksaan otomatis dari status malam ini (tanpa pilihan satgas) */
+  function resultFromStatus(tonightStatus) {
+    if (tonightStatus === 'sudah_bayar') return { key: 'sesuai', label: 'Sesuai' };
+    if (tonightStatus === 'belum_lapor') return { key: 'belum_lapor', label: 'Belum lapor jualan' };
+    return { key: 'jualan_tanpa_bayar', label: 'Jualan tanpa bayar' };
+  }
+
+  function badgeForResult(resultKey) {
+    if (resultKey === 'jualan_tanpa_bayar') return 'badge-danger';
+    if (resultKey === 'sesuai') return 'badge-success';
+    return 'badge-warning';
   }
 
   function saveSatgasInspection(opts) {
@@ -636,10 +698,14 @@
     }
 
     var anggotaLabel = memberId ? (memberName + ' (' + memberId + ')') : memberName;
-    if (resultKey !== 'sesuai') {
+    var stamp = Date.now();
+    var findingId = null;
+    /* "Belum lapor" dan "Sesuai" hanya masuk log; temuan untuk pengurus dibuat saat jualan tanpa bayar atau laporan manual */
+    if (resultKey === 'jualan_tanpa_bayar' || resultKey === 'penjaga_tidak_dikenal' || resultKey === 'bayar_di_tempat') {
       var tone = resultKey === 'jualan_tanpa_bayar' ? 'danger' : 'warning';
+      findingId = 'f-' + stamp;
       var finding = {
-        id: 'f-' + Date.now(),
+        id: findingId,
         temuan: resultLabel,
         anggota: anggotaLabel,
         memberId: memberId,
@@ -654,8 +720,10 @@
       st.findings.unshift(finding);
     }
 
+    var logId = 'log-' + stamp;
     st.satgasLogs = st.satgasLogs || [];
     st.satgasLogs.unshift({
+      id: logId,
       jam: timeWib.replace(' WIB', ''),
       satgas: 'Ahmad Fauzi (S-01)',
       satgasCode: 'S-01',
@@ -663,7 +731,7 @@
       metode: opts.metode || 'Scan QR dinamis',
       zona: memberBlok + ' · 6.1071 S, 106.7742 E',
       hasil: resultLabel,
-      badge: resultKey === 'jualan_tanpa_bayar' ? 'badge-danger' : (resultKey === 'sesuai' ? 'badge-success' : 'badge-warning')
+      badge: badgeForResult(resultKey)
     });
 
     st.lastSatgasCheck = {
@@ -673,12 +741,35 @@
       resultKey: resultKey,
       resultLabel: resultLabel,
       jam: timeWib,
-      offline: isOffline
+      offline: isOffline,
+      findingId: findingId,
+      logId: logId
     };
 
     /* PENTING: pemeriksaan satgas TIDAK PERNAH mengubah status pembayaran menjadi lunas */
     safeWrite(st);
     return st.lastSatgasCheck;
+  }
+
+  /* Cek ulang: hasil pemeriksaan terakhir diperbarui mengikuti status terbaru (mis. UNPAID menjadi PAID) */
+  function updateLastInspection(memberId, resultKey, resultLabel) {
+    var st = cloneState(safeRead());
+    var last = st.lastSatgasCheck;
+    if (!last || last.memberId !== String(memberId || '')) return null;
+    if (last.findingId) {
+      st.findings = (st.findings || []).filter(function (f) { return f.id !== last.findingId; });
+      last.findingId = null;
+    }
+    var log = (st.satgasLogs || []).find(function (l) { return l.id === last.logId; });
+    if (log) {
+      log.hasil = resultLabel;
+      log.badge = badgeForResult(resultKey);
+    }
+    last.resultKey = resultKey;
+    last.resultLabel = resultLabel;
+    last.jam = nowTimeWib();
+    safeWrite(st);
+    return last;
   }
 
   /* =====================================================================
@@ -863,7 +954,10 @@
     getQrSecondsRemaining: getQrSecondsRemaining,
     buildIdentityQrPayload: buildIdentityQrPayload,
     parseIdentityQrPayload: parseIdentityQrPayload,
-    saveSatgasInspection: saveSatgasInspection
+    drawQrToCanvas: drawQrToCanvas,
+    resultFromStatus: resultFromStatus,
+    saveSatgasInspection: saveSatgasInspection,
+    updateLastInspection: updateLastInspection
   };
 
   function bootTestUi() {
