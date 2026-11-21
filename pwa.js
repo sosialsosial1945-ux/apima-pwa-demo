@@ -31,9 +31,11 @@
   function detectPlatform() {
     var ua = navigator.userAgent || '';
     var isIos = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    var isCriOS = /CriOS/i.test(ua);
     var isSafari = /^((?!chrome|android).)*safari/i.test(ua);
     var isInApp = /FBAN|FBAV|Instagram|Line|WhatsApp/i.test(ua);
     if (isInApp) return 'inapp';
+    if (isIos && isCriOS) return 'ios-chrome';
     if (isIos) return 'ios';
     if (isSafari) return 'mac-safari';
     return 'chromium';
@@ -44,11 +46,17 @@
     var stepsEl = document.getElementById('install-guide-steps');
     var subEl = document.getElementById('install-guide-sub');
     if (!sheet || !stepsEl) {
-      if (window.apimaToast) window.apimaToast('Pilih menu browser lalu Tambah ke Layar Utama (Add to Home Screen).');
+      if (window.apimaToast) window.apimaToast('Ketuk ikon Bagikan lalu pilih Tambah ke Layar Utama (Add to Home Screen).');
       return;
     }
     var platform = detectPlatform();
-    if (platform === 'ios') {
+    if (platform === 'ios-chrome') {
+      subEl.textContent = 'Di Chrome iPhone, pemasangan ada di ikon Bagikan (pojok kanan atas kolom alamat):';
+      stepsEl.innerHTML =
+        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Ketuk ikon <strong>Bagikan (kotak panah ke atas)</strong> di kanan atas kolom alamat (sebelah URL).</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>2.</strong> Geser ke bawah lalu pilih <strong>Add to Home Screen</strong> (Tambah ke Layar Utama).</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Ketuk <strong>Add</strong> di pojok kanan atas. Ikon APIMA langsung terpasang.</span></li>';
+    } else if (platform === 'ios') {
       subEl.textContent = 'Safari di iPhone/iPad mewajibkan pemasangan lewat menu Bagikan:';
       stepsEl.innerHTML =
         '<li class="open-row"><span class="text-sm"><strong>1.</strong> Ketuk ikon <strong>Bagikan (kotak panah atas)</strong> di bagian bawah Safari.</span></li>' +
