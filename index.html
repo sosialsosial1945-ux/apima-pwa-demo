@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="APIMA">
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-<script src="./pwa.js" defer></script>
+<script src="./pwa.js"></script>
 </head>
 <body>
 <x-dc>
@@ -89,6 +89,20 @@
       <img src="illustrations/pusat-bantuan.webp" alt="Ilustrasi pusat bantuan pengurus APIMA" class="illus-sm">
       <p class="text-sm text-secondary m-0">Cek ID Anggota, Jika kartu hilang atau nomor WhatsApp diganti, segera temui pengurus di sekretariat pasar atau hubungi satgas, ya.</p>
       <button type="button" class="btn btn-secondary" data-sheet-close>Oke, Mengerti</button>
+    </div>
+  </div>
+
+  <div id="sheet-install-pwa" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-install-title">
+    <div class="sheet">
+      <div class="row between">
+        <h2 id="sheet-install-title" class="text-md m-0 fw-700">Download aplikasi APIMA</h2>
+        <button type="button" class="btn-icon" data-sheet-close aria-label="Tutup panduan download">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <p id="install-guide-sub" class="text-sm text-secondary m-0">Ikuti 3 langkah singkat berikut agar APIMA langsung terpasang di layar utama:</p>
+      <ul id="install-guide-steps" class="open-list"></ul>
+      <button type="button" class="btn btn-primary" data-sheet-close>Oke, Mengerti</button>
     </div>
   </div>
 

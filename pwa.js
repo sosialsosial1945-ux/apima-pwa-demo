@@ -1,6 +1,26 @@
-/* APIMA PWA Demo Runtime: Service Worker, Install Prompt, dan Masuk Cepat Presentasi */
+/* APIMA PWA Demo Runtime: Early Install Prompt Capture, Service Worker, dan Masuk Cepat Presentasi */
 (function () {
   'use strict';
+
+  var deferredPrompt = window.__apimaDeferredPrompt || null;
+
+  /* Tangkap event beforeinstallprompt seawal mungkin sebelum DOM selesai */
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    window.__apimaDeferredPrompt = e;
+    syncInstallBtn();
+  });
+
+  window.addEventListener('appinstalled', function () {
+    deferredPrompt = null;
+    window.__apimaDeferredPrompt = null;
+    var btn = document.getElementById('pwa-install-btn');
+    if (btn) btn.hidden = true;
+    var sheet = document.getElementById('sheet-install-pwa');
+    if (sheet) sheet.hidden = true;
+    if (window.apimaToast) window.apimaToast('Aplikasi APIMA berhasil dipasang di perangkat.');
+  });
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
@@ -8,7 +28,53 @@
     });
   }
 
-  var deferredPrompt = null;
+  function detectPlatform() {
+    var ua = navigator.userAgent || '';
+    var isIos = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    var isSafari = /^((?!chrome|android).)*safari/i.test(ua);
+    var isInApp = /FBAN|FBAV|Instagram|Line|WhatsApp/i.test(ua);
+    if (isInApp) return 'inapp';
+    if (isIos) return 'ios';
+    if (isSafari) return 'mac-safari';
+    return 'chromium';
+  }
+
+  function openInstallGuide() {
+    var sheet = document.getElementById('sheet-install-pwa');
+    var stepsEl = document.getElementById('install-guide-steps');
+    var subEl = document.getElementById('install-guide-sub');
+    if (!sheet || !stepsEl) {
+      if (window.apimaToast) window.apimaToast('Pilih menu browser lalu Tambah ke Layar Utama (Add to Home Screen).');
+      return;
+    }
+    var platform = detectPlatform();
+    if (platform === 'ios') {
+      subEl.textContent = 'Safari di iPhone/iPad mewajibkan pemasangan lewat menu Bagikan:';
+      stepsEl.innerHTML =
+        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Ketuk ikon <strong>Bagikan (kotak panah atas)</strong> di bagian bawah Safari.</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>2.</strong> Geser ke bawah lalu pilih <strong>Tambah ke Layar Utama</strong>.</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Ketuk <strong>Tambah</strong> di pojok kanan atas. Ikon APIMA langsung terpasang.</span></li>';
+    } else if (platform === 'inapp') {
+      subEl.textContent = 'Anda membuka tautan dari dalam browser WhatsApp/aplikasi lain:';
+      stepsEl.innerHTML =
+        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Ketuk menu <strong>titik tiga</strong> di pojok kanan atas.</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>2.</strong> Pilih <strong>Buka di Chrome</strong> (Android) atau <strong>Buka di Safari</strong> (iPhone).</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Ketuk lagi tombol <strong>Download APIMA</strong> untuk langsung memasang aplikasi.</span></li>';
+    } else if (platform === 'mac-safari') {
+      subEl.textContent = 'Safari di Mac memasang aplikasi lewat menu Bagikan atau File:';
+      stepsEl.innerHTML =
+        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Klik menu <strong>File</strong> di bilah atas Mac (atau ikon Bagikan).</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>2.</strong> Pilih <strong>Add to Dock</strong> (Tambahkan ke Dock).</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Klik <strong>Add</strong> agar APIMA muncul seperti aplikasi native di Mac.</span></li>';
+    } else {
+      subEl.textContent = 'Jika jendela pemasangan otomatis belum muncul di Chrome/Edge:';
+      stepsEl.innerHTML =
+        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Klik ikon <strong>Instal (layar dengan panah bawah)</strong> di sisi kanan kolom alamat browser, atau menu titik tiga.</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>2.</strong> Pilih <strong>Instal APIMA</strong> / <strong>Tambahkan ke layar utama</strong>.</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Aplikasi APIMA langsung terpasang dan bisa dibuka tanpa browser.</span></li>';
+    }
+    sheet.hidden = false;
+  }
 
   function syncInstallBtn() {
     var btn = document.getElementById('pwa-install-btn');
@@ -21,19 +87,6 @@
     btn.hidden = false;
   }
 
-  window.addEventListener('beforeinstallprompt', function (e) {
-    e.preventDefault();
-    deferredPrompt = e;
-    syncInstallBtn();
-  });
-
-  window.addEventListener('appinstalled', function () {
-    deferredPrompt = null;
-    var btn = document.getElementById('pwa-install-btn');
-    if (btn) btn.hidden = true;
-    if (window.apimaToast) window.apimaToast('Aplikasi APIMA berhasil dipasang di perangkat.');
-  });
-
   function bindPwaControls() {
     syncInstallBtn();
 
@@ -41,11 +94,20 @@
     if (installBtn && !installBtn.dataset.pwaBound) {
       installBtn.dataset.pwaBound = '1';
       installBtn.addEventListener('click', function () {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.finally(function () { deferredPrompt = null; });
-        } else if (window.apimaToast) {
-          window.apimaToast('Buka menu browser lalu pilih Tambah ke Layar Utama (Add to Home Screen).');
+        var promptEvt = deferredPrompt || window.__apimaDeferredPrompt;
+        if (promptEvt) {
+          promptEvt.prompt();
+          promptEvt.userChoice.then(function (choice) {
+            if (choice && choice.outcome === 'accepted' && window.apimaToast) {
+              window.apimaToast('Mengunduh dan memasang aplikasi APIMA.');
+            }
+            deferredPrompt = null;
+            window.__apimaDeferredPrompt = null;
+          }).catch(function () {
+            openInstallGuide();
+          });
+        } else {
+          openInstallGuide();
         }
       });
     }
