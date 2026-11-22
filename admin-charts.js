@@ -305,7 +305,7 @@
         '<span class="adm-nav-label" id="adm-ng-role">Portal Peran</span>' +
         '<a href="Main.dc.html" class="adm-role-link">' + icon('store', 18) + '<span>Portal Penjual</span></a>' +
         '<a href="SatgasDaftar.dc.html" class="adm-role-link">' + icon('shield', 18) + '<span>Portal Satgas</span></a>' +
-        '<a href="MasukId.dc.html" class="adm-role-link is-plain">' + icon('logout', 18) + '<span>Keluar Akun</span></a>' +
+        '<a href="MasukId.dc.html" class="adm-role-link is-plain">' + icon('logout', 18) + '<span>Logout</span></a>' +
       '</div>' +
       '<!-- HAPUS SEBELUM PRODUKSI: kartu bantuan membuka ringkasan audit UI demo -->' +
       '<div class="adm-help">' +
