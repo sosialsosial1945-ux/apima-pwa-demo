@@ -834,20 +834,24 @@
      // HAPUS SEBELUM PRODUKSI
      Panel kecil "Mode uji" yang bisa disembunyikan untuk penguji prototype
      ===================================================================== */
+  var testPanelMounted = false;
   function mountTestPanel() {
     var path = (window.location.pathname || '').split('/').pop() || '';
     var params = new URLSearchParams(window.location.search || '');
     var isPenjagaView = params.get('mode') === 'penjaga';
     if (
+      testPanelMounted ||
       !path ||
       path === 'index.html' ||
       path === 'feedback.html' ||
       path === 'MasukId.dc.html' ||
       isPenjagaView ||
-      document.getElementById('apima-test-fab')
+      document.getElementById('apima-test-fab') ||
+      document.getElementById('apima-test-panel')
     ) {
       return;
     }
+    testPanelMounted = true;
 
     var fab = document.createElement('button');
     fab.type = 'button';
@@ -974,12 +978,12 @@
       if (anchor && anchor.parentNode) {
         anchor.parentNode.insertBefore(fab, anchor);
         placed = true;
-      } else if (tries < 10) {
-        setTimeout(function () { placeFab(tries + 1); }, 120);
-        return;
       } else if (header) {
         header.appendChild(fab);
         placed = true;
+      } else if (tries < 10) {
+        setTimeout(function () { placeFab(tries + 1); }, 120);
+        return;
       } else {
         fab.style.cssText += 'position:fixed;top:4px;right:4px;z-index:60;';
         document.body.appendChild(fab);
