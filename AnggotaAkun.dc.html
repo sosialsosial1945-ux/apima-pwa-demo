@@ -61,6 +61,7 @@
         <div class="v5-row"><span class="v5-row-label" id="akun-malam-label">Status retribusi</span><span class="v5-row-value" id="akun-malam">Malam ini belum bayar</span></div>
       </div>
       <a href="AnggotaPilihHari.dc.html" class="btn btn-primary">Bayar Retribusi</a>
+      <a href="AnggotaPenjaga.dc.html?from=akun" class="btn btn-secondary" id="akun-penjaga-btn">Tambah Penjaga Lapak</a>
       <a href="MasukId.dc.html" class="ag-link-danger" id="akun-keluar">Logout</a>
     </section>
 
@@ -77,12 +78,13 @@
     var store = window.APIMA_STORE;
     if (!store) return;
     var m = store.getActiveMember();
-    var penjaga = (m.penjaga && m.penjaga !== 'Jaga sendiri') ? m.penjaga : 'Jaga sendiri';
+    var pj = store.penjagaInfo(m);
     document.getElementById('akun-sub').textContent = 'Status Terverifikasi · ' + m.blok;
     document.getElementById('akun-nama').textContent = m.name;
     document.getElementById('akun-id').textContent = m.id;
     document.getElementById('akun-lapak').textContent = m.blok;
-    document.getElementById('akun-penjaga').textContent = penjaga === 'Jaga sendiri' ? penjaga : penjaga + ' (' + (m.penjagaActive ? 'Aktif' : 'Nonaktif') + ')';
+    document.getElementById('akun-penjaga').textContent = pj.has ? pj.name + ' (' + pj.status + ')' : pj.name;
+    document.getElementById('akun-penjaga-btn').textContent = pj.has ? 'Ubah Penjaga Lapak' : 'Tambah Penjaga Lapak';
     var labelEl = document.getElementById('akun-malam-label');
     if (labelEl) labelEl.textContent = m.lunas ? 'Lunas sampai' : 'Status retribusi';
     var malamEl = document.getElementById('akun-malam');
@@ -94,6 +96,16 @@
     if (booted) return;
     booted = true;
     render();
+    var saved = new URLSearchParams(window.location.search || '').get('saved');
+    if (saved) {
+      var msg = saved === 'jaga-sendiri' ? 'Penjaga lapak dihapus. Anda tercatat jaga sendiri.' : 'Penjaga lapak disimpan. Bagikan QR dari menu QR Saya.';
+      var tries = 0;
+      (function toast() {
+        /* interactions.js dimuat defer; tunggu sampai toast tersedia */
+        if (window.apimaToast) { window.apimaToast(msg); return; }
+        if (++tries < 25) setTimeout(toast, 80);
+      })();
+    }
     window.addEventListener('apima:state-change', render);
   }
   window.addEventListener('apima:ready', boot);

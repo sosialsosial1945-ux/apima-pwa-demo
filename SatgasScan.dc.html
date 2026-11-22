@@ -352,9 +352,8 @@
     if (timeEl) timeEl.textContent = 'Tercatat ' + (currentCheck ? currentCheck.jam : store.nowTimeWib()) + ' · ' + result.label;
     if (qrNote) qrNote.hidden = !shownFromQr;
     if (penjagaEl) {
-      penjagaEl.textContent = (m.penjaga && m.penjaga !== 'Jaga sendiri')
-        ? (m.penjaga + (m.penjagaActive ? '' : ' (Nonaktif)'))
-        : 'Jaga sendiri';
+      var pj = store.penjagaInfo(m);
+      penjagaEl.textContent = pj.has ? (pj.name + (m.penjagaActive ? '' : ' (' + pj.status + ')')) : 'Jaga sendiri';
     }
     if (recheckBtn) recheckBtn.hidden = isPaid;
     if (offlineNote) offlineNote.hidden = !(currentCheck && currentCheck.offline);

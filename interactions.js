@@ -393,7 +393,7 @@
           penjaga: 'Rahmat',
           penjagaPhone: '6281298765432'
         };
-        var penjagaName = (member.penjaga && member.penjaga !== 'Jaga sendiri') ? member.penjaga : 'Rahmat';
+        var penjagaName = (member.penjaga && member.penjaga !== 'Jaga sendiri') ? member.penjaga : 'penjaga lapak';
         // GANTI DENGAN TAUTAN ASLI SEBELUM PRODUKSI
         /* Token baru setiap kali dibagikan; tautan dengan token lama ditolak di HP ini */
         var shareToken = window.APIMA_STORE && window.APIMA_STORE.issuePenjagaToken ? window.APIMA_STORE.issuePenjagaToken(member.id) : '';
@@ -451,7 +451,7 @@
         var statusEl = document.getElementById('qr-penjaga-status');
         if (statusEl) {
           var mem = window.APIMA_STORE ? window.APIMA_STORE.getActiveMember() : null;
-          var pName = (mem && mem.penjaga && mem.penjaga !== 'Jaga sendiri') ? mem.penjaga : 'Rahmat';
+          var pName = (mem && mem.penjaga && mem.penjaga !== 'Jaga sendiri') ? mem.penjaga : 'penjaga lapak';
           statusEl.textContent = pName + ' · Nonaktif';
         }
         showToast('Penjaga lapak dinonaktifkan di HP ini.');

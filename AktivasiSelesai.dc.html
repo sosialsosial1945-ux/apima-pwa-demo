@@ -53,31 +53,31 @@
       </ol>
     </section>
 
+    <section class="v5-card ag-card" aria-labelledby="penjaga-title">
+      <div class="stack" style="gap:6px">
+        <h2 class="ag-card-title" id="penjaga-title">Siapa yang menjaga lapak?</h2>
+        <p class="ag-small" style="font-size:14px">Kalau ada penjaga, satgas bisa mengenalinya lewat QR identitas lapak Anda. Bisa diubah kapan saja di menu Akun.</p>
+      </div>
+    </section>
+
   </main>
 
   <div class="screen-footer ag-footer">
-    <a href="Main.dc.html" class="btn btn-primary">Ke Beranda</a>
-    <button type="button" class="btn btn-secondary" data-sheet-open="sheet-penjaga" aria-haspopup="dialog">Tambah Penjaga Lapak</button>
+    <a href="AnggotaPenjaga.dc.html?from=aktivasi" class="btn btn-primary">Ada Penjaga Lapak</a>
+    <button type="button" class="btn btn-secondary" data-jaga-sendiri>Saya Jaga Sendiri</button>
   </div>
 
-  <div id="sheet-penjaga" class="sheet-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-penjaga-title">
-    <div class="sheet">
-      <div class="ag-sheet-head">
-        <h2 id="sheet-penjaga-title">Tambah penjaga lapak</h2>
-        <button type="button" class="v5-icon-btn" data-sheet-close aria-label="Tutup panduan penjaga lapak">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <p class="ag-sheet-text">Penjaga lapak bisa didaftarkan kapan saja lewat menu <strong>QR Saya</strong> setelah masuk ke beranda, agar satgas mengenali wakil lapak Anda.</p>
-      <a href="AnggotaQrIdentitas.dc.html" class="btn btn-primary">Buka Menu QR Saya</a>
-      <button type="button" class="btn btn-secondary" data-sheet-close>Nanti Saja</button>
-    </div>
-  </div>
 
 </div>
 </x-dc>
 <script>
 (function () {
+  /* Jaga sendiri: catat tanpa penjaga lalu ke Beranda */
+  var btn = document.querySelector('[data-jaga-sendiri]');
+  if (btn) btn.addEventListener('click', function () {
+    if (window.APIMA_STORE) window.APIMA_STORE.setJagaSendiri();
+    window.location.href = 'Main.dc.html';
+  });
   var shown = false;
   function toastOnce() {
     if (shown) return;

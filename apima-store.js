@@ -600,6 +600,7 @@
     var m = st.members.find(function (x) { return x.id === id; });
     if (m) {
       m.penjagaActive = !!active;
+      if (active) m.penjagaShared = true;
       safeWrite(st);
     }
     return m;
@@ -624,6 +625,68 @@
     m.penjagaToken = token;
     safeWrite(st);
     return token;
+  }
+
+  /* Nomor WhatsApp Indonesia ke bentuk 62xxxxxxxxxx. Null bila bukan nomor HP yang wajar. */
+  function normalizeWaPhone(raw) {
+    var digits = String(raw || '').replace(/[^0-9]/g, '');
+    if (digits.indexOf('62') === 0) digits = digits.slice(2);
+    else if (digits.indexOf('0') === 0) digits = digits.slice(1);
+    if (!/^8[0-9]{8,12}$/.test(digits)) return null;
+    return '62' + digits;
+  }
+
+  /* 62812xxxxxxx -> 0812-xxxx-xxxx untuk ditampilkan */
+  function formatWaPhone(phone) {
+    var d = String(phone || '').replace(/[^0-9]/g, '');
+    if (d.indexOf('62') === 0) d = '0' + d.slice(2);
+    if (d.length < 8) return d;
+    return d.slice(0, 4) + '-' + d.slice(4, 8) + '-' + d.slice(8);
+  }
+
+  /* Simpan penjaga lapak. Penjaga baru belum menerima QR, dan tautan penjaga lama
+     tidak berlaku lagi di HP ini (token diganti nilai yang tidak dimiliki tautan mana pun). */
+  function setPenjaga(memberId, name, phone) {
+    var cleanName = String(name || '').replace(/\s+/g, ' ').trim();
+    var cleanPhone = normalizeWaPhone(phone);
+    if (cleanName.length < 2 || !cleanPhone) return null;
+    var st = cloneState(safeRead());
+    var id = String(memberId || st.activeMemberId || '0123');
+    var m = st.members.find(function (x) { return x.id === id; });
+    if (!m) return null;
+    var changed = m.penjaga !== cleanName || m.penjagaPhone !== cleanPhone;
+    m.penjaga = cleanName.slice(0, 40);
+    m.penjagaPhone = cleanPhone;
+    if (changed) {
+      m.penjagaActive = false;
+      m.penjagaShared = false;
+      if (m.penjagaToken) m.penjagaToken = 'ganti-' + Date.now();
+    }
+    safeWrite(st);
+    return m;
+  }
+
+  function setJagaSendiri(memberId) {
+    var st = cloneState(safeRead());
+    var id = String(memberId || st.activeMemberId || '0123');
+    var m = st.members.find(function (x) { return x.id === id; });
+    if (!m) return null;
+    m.penjaga = 'Jaga sendiri';
+    m.penjagaPhone = '';
+    m.penjagaActive = false;
+    m.penjagaShared = false;
+    if (m.penjagaToken) m.penjagaToken = 'ganti-' + Date.now();
+    safeWrite(st);
+    return m;
+  }
+
+  /* Satu sumber label penjaga untuk Beranda, Akun, QR Saya dan hasil scan */
+  function penjagaInfo(m) {
+    var has = !!(m && m.penjaga && m.penjaga !== 'Jaga sendiri');
+    if (!has) return { has: false, name: 'Jaga sendiri', status: 'Tanpa penjaga', tone: 'st-muted' };
+    if (m.penjagaActive) return { has: true, name: m.penjaga, status: 'Aktif', tone: 'st-success' };
+    if (m.penjagaShared === false) return { has: true, name: m.penjaga, status: 'QR belum dibagikan', tone: 'st-muted' };
+    return { has: true, name: m.penjaga, status: 'Nonaktif', tone: 'st-muted' };
   }
 
   /* 'ok' = boleh tampil, 'revoked' = HP ini tahu tautan sudah tidak berlaku,
@@ -1074,6 +1137,11 @@
     findMember: findMember,
     issuePenjagaToken: issuePenjagaToken,
     checkPenjagaLink: checkPenjagaLink,
+    normalizeWaPhone: normalizeWaPhone,
+    formatWaPhone: formatWaPhone,
+    setPenjaga: setPenjaga,
+    setJagaSendiri: setJagaSendiri,
+    penjagaInfo: penjagaInfo,
     getActiveMember: getActiveMember,
     getStatusMeta: getStatusMeta,
     getHistoryTotal: getHistoryTotal,

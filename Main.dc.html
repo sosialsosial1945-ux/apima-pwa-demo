@@ -107,8 +107,12 @@
 
   /* Ubin ringkas: status retribusi / tanggal lunas + penjaga lapak */
   function tiles(m, linked) {
-    var penjagaName = (m.penjaga && m.penjaga !== 'Jaga sendiri') ? m.penjaga : 'Jaga sendiri';
-    var activeTxt = m.penjagaActive ? 'Aktif' : 'Nonaktif';
+    var pj = window.APIMA_STORE.penjagaInfo(m);
+    var penjagaName = pj.name;
+    var activeTxt = pj.status;
+    /* Belum ada penjaga: ubin membuka halaman isi penjaga, bukan QR Saya */
+    var penjagaHref = pj.has ? 'AnggotaQrIdentitas.dc.html' : 'AnggotaPenjaga.dc.html?from=beranda';
+    var penjagaAction = pj.has ? 'Buka QR identitas' : 'Tambah penjaga lapak';
     var retHead = m.lunas ? 'Lunas sampai' : 'Status retribusi';
     var lunasTxt = m.lunas ? m.paidUntilLabel : 'Belum bayar';
     var retSub = m.lunas ? 'Sudah bayar' : 'Malam ini';
@@ -120,16 +124,16 @@
         '<div class="v5-tile ag-tile"><span class="ag-tile-head">' + retHead + '</span>' + lunasVal + '</div>' +
         '<div class="v5-tile ag-tile"><span class="ag-tile-head">Penjaga lapak</span>' +
           '<span class="stack" style="gap:2px"><span class="ag-tile-value" id="main-penjaga-status">' + esc(penjagaName) + '</span>' +
-          '<span class="ag-tile-sub ' + (m.penjagaActive ? 'st-success' : 'st-muted') + '">' + activeTxt + '</span></span></div>' +
+          '<span class="ag-tile-sub ' + pj.tone + '">' + activeTxt + '</span></span></div>' +
       '</div>';
     }
     return '<div class="ag-tiles">' +
       '<a href="AnggotaPilihHari.dc.html" class="v5-tile ag-tile" aria-label="' + (m.lunas ? 'Lunas sampai ' + esc(lunasTxt) + '. Perpanjang' : 'Status retribusi belum bayar malam ini. Bayar retribusi') + '">' +
         '<span class="ag-tile-head">' + retHead + ICON_CHEVRON + '</span>' + lunasVal + '</a>' +
-      '<a href="AnggotaQrIdentitas.dc.html" class="v5-tile ag-tile" aria-label="Penjaga lapak ' + esc(penjagaName) + ', ' + activeTxt + '. Buka QR identitas">' +
+      '<a href="' + penjagaHref + '" class="v5-tile ag-tile" aria-label="Penjaga lapak ' + esc(penjagaName) + ', ' + activeTxt + '. ' + penjagaAction + '">' +
         '<span class="ag-tile-head">Penjaga lapak' + ICON_CHEVRON + '</span>' +
         '<span class="stack" style="gap:2px"><span class="ag-tile-value" id="main-penjaga-status">' + esc(penjagaName) + '</span>' +
-        '<span class="ag-tile-sub ' + (m.penjagaActive ? 'st-success' : 'st-muted') + '">' + activeTxt + '</span></span></a>' +
+        '<span class="ag-tile-sub ' + pj.tone + '">' + activeTxt + '</span></span></a>' +
     '</div>';
   }
 

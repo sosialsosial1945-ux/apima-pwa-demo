@@ -70,6 +70,7 @@
           <span id="qr-share-label">Bagikan QR ke Penjaga</span>
         </button>
         <button type="button" class="ag-link-danger" data-sheet-open="sheet-cabut" aria-haspopup="dialog">Nonaktifkan Akses Penjaga</button>
+        <a href="AnggotaPenjaga.dc.html?from=qr" class="btn btn-secondary" id="qr-add-penjaga" hidden>Tambah Penjaga Lapak</a>
       </div>
     </section>
 
@@ -149,7 +150,13 @@
     function paintMember() {
       var member = store.getMember(memberId);
       var st = store.getState();
-      var penjagaName = (member.penjaga && member.penjaga !== 'Jaga sendiri') ? member.penjaga : 'Rahmat';
+      var pj = store.penjagaInfo(member);
+      var penjagaName = pj.has ? pj.name : 'penjaga lapak';
+      /* Tanpa penjaga: tidak ada yang bisa dibagikan, tawarkan isi penjaga */
+      var shareBtn = document.querySelector('[data-share-wa]');
+      if (shareBtn) shareBtn.hidden = !pj.has;
+      var addBtn = document.getElementById('qr-add-penjaga');
+      if (addBtn) addBtn.hidden = pj.has;
       document.getElementById('qr-member-name').textContent = isPenjagaMode ? 'QR Identitas Lapak' : member.name;
       document.getElementById('qr-member-meta').textContent = member.blok + ' · ID ' + member.id + ' · ' + store.formatDateInfo(st.dayOffset).short;
       document.getElementById('qr-member-sub').textContent = member.name + ' · ' + member.blok;
@@ -158,7 +165,7 @@
       statusEl.className = 'ag-status ' + (STATUS_CLASS[member.tonightStatus] || 'st-danger');
       document.getElementById('qr-share-label').textContent = 'Bagikan QR ke Penjaga (' + penjagaName + ')';
       document.getElementById('sheet-cabut-text').textContent = penjagaName + ' tidak lagi tercatat sebagai penjaga lapak Anda. Tautan yang sudah terkirim masih bisa dibuka di HP-nya.';
-      if (revokeBtn) revokeBtn.hidden = !member.penjagaActive;
+      if (revokeBtn) revokeBtn.hidden = !(pj.has && member.penjagaActive);
     }
 
     /* Tampilan khusus tautan penjaga: tanpa menu anggota, tanpa tombol bagikan/cabut */

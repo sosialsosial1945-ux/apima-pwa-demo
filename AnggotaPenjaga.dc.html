@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APIMA · Penjaga lapak</title>
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./theme-v5.css">
+<link rel="stylesheet" href="./ui-anggota.css">
+<script src="./support.js"></script>
+<script src="./apima-store.js"></script>
+<script src="./interactions.js" defer></script>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#0B4F8A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="APIMA">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<script src="./pwa.js" defer></script>
+</head>
+<body>
+<x-dc>
+<div class="screen">
+
+  <header class="ag-topbar">
+    <a href="AnggotaAkun.dc.html" class="ag-back-link" id="pj-back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Kembali
+    </a>
+    <div class="ag-topbar-right">
+      <button type="button" class="v5-icon-btn boxed theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Ganti ke mode gelap">
+        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="screen-scroll ag-main ag-wide">
+
+    <div class="ag-step-head">
+      <span class="ag-eyebrow">Penjaga lapak</span>
+      <h1 class="ag-step-title" id="pj-title">Isi data penjaga lapak</h1>
+      <p class="ag-step-desc">Penjaga bisa menunjukkan QR identitas lapak Anda ke satgas saat Anda tidak di lapak.</p>
+    </div>
+
+    <form id="pj-form" class="v5-card ag-card ag-form" novalidate aria-labelledby="pj-title">
+      <!-- Pengganti sementara: ganti dengan ilustrasi penjaga lapak bila sudah ada -->
+      <span class="v5-illus ag-done-illus"><img src="illustrations/input-data.webp" width="360" height="347" alt=""></span>
+
+      <div class="ag-field">
+        <label for="pj-nama" class="ag-label">Nama penjaga</label>
+        <input id="pj-nama" name="nama" type="text" maxlength="40" autocomplete="off" autocapitalize="words" placeholder="Contoh: Rahmat" class="v5-input ag-input" aria-describedby="pj-nama-help pj-nama-err">
+        <p class="ag-help" id="pj-nama-help">Satgas melihat nama ini saat scan QR Anda.</p>
+        <p class="v5-error" id="pj-nama-err" role="alert" hidden></p>
+      </div>
+
+      <div class="ag-field">
+        <label for="pj-wa" class="ag-label">Nomor WhatsApp penjaga</label>
+        <input id="pj-wa" name="wa" type="tel" inputmode="tel" autocomplete="off" placeholder="Contoh: 0812-3456-7890" class="v5-input ag-input ag-input-mono" aria-describedby="pj-wa-help pj-wa-err">
+        <p class="ag-help" id="pj-wa-help">QR identitas lapak dikirim ke nomor ini lewat WhatsApp.</p>
+        <p class="v5-error" id="pj-wa-err" role="alert" hidden></p>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="pj-save">Simpan Penjaga</button>
+      <button type="button" class="ag-link-danger" id="pj-remove" hidden>Hapus Penjaga, Saya Jaga Sendiri</button>
+    </form>
+
+  </main>
+
+</div>
+</x-dc>
+<script>
+(function () {
+  'use strict';
+  var started = false;
+
+  function init() {
+    if (started) return;
+    started = true;
+    var store = window.APIMA_STORE;
+    if (!store) return;
+
+    /* Asal halaman menentukan tujuan setelah simpan: aktivasi -> Beranda, QR Saya -> QR Saya, lainnya -> Akun */
+    var from = new URLSearchParams(window.location.search || '').get('from');
+    var ROUTES = {
+      aktivasi: { back: 'AktivasiSelesai.dc.html', done: 'Main.dc.html' },
+      qr: { back: 'AnggotaQrIdentitas.dc.html', done: 'AnggotaQrIdentitas.dc.html' },
+      beranda: { back: 'Main.dc.html', done: 'Main.dc.html' },
+      akun: { back: 'AnggotaAkun.dc.html', done: 'AnggotaAkun.dc.html?saved=penjaga' }
+    };
+    var route = ROUTES[from] || ROUTES.akun;
+    document.getElementById('pj-back').setAttribute('href', route.back);
+
+    var form = document.getElementById('pj-form');
+    var nama = document.getElementById('pj-nama');
+    var wa = document.getElementById('pj-wa');
+    var namaErr = document.getElementById('pj-nama-err');
+    var waErr = document.getElementById('pj-wa-err');
+    var removeBtn = document.getElementById('pj-remove');
+
+    var m = store.getActiveMember();
+    var info = store.penjagaInfo(m);
+    if (info.has) {
+      nama.value = m.penjaga;
+      wa.value = m.penjagaPhone ? store.formatWaPhone(m.penjagaPhone) : '';
+      document.getElementById('pj-title').textContent = 'Ubah data penjaga lapak';
+      removeBtn.hidden = from === 'aktivasi';
+    }
+
+    function setError(input, errEl, msg) {
+      errEl.textContent = msg || '';
+      errEl.hidden = !msg;
+      if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+    }
+    function checkNama() {
+      var v = nama.value.replace(/\s+/g, ' ').trim();
+      setError(nama, namaErr, v.length < 2 ? 'Tulis nama penjaga lapak, minimal 2 huruf.' : '');
+      return v.length >= 2;
+    }
+    function checkWa() {
+      var raw = wa.value.trim();
+      var msg = '';
+      if (!raw) msg = 'Tulis nomor WhatsApp penjaga lapak.';
+      else if (!store.normalizeWaPhone(raw)) msg = 'Nomor belum benar. Pakai nomor HP yang diawali 08 atau +62, contoh 0812-3456-7890.';
+      setError(wa, waErr, msg);
+      return !msg;
+    }
+
+    /* Error tampil setelah isian ditinggalkan, bukan saat masih mengetik */
+    nama.addEventListener('blur', function () { if (nama.value) checkNama(); });
+    wa.addEventListener('blur', function () { if (wa.value) checkWa(); });
+    nama.addEventListener('input', function () { if (!namaErr.hidden) checkNama(); });
+    wa.addEventListener('input', function () { if (!waErr.hidden) checkWa(); });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var okNama = checkNama();
+      var okWa = checkWa();
+      if (!okNama) { nama.focus(); return; }
+      if (!okWa) { wa.focus(); return; }
+      var saved = store.setPenjaga(m.id, nama.value, wa.value);
+      if (!saved) {
+        setError(wa, waErr, 'Data penjaga belum tersimpan. Coba simpan lagi.');
+        return;
+      }
+      window.location.href = route.done;
+    });
+
+    removeBtn.addEventListener('click', function () {
+      store.setJagaSendiri(m.id);
+      window.location.href = route.done.replace('saved=penjaga', 'saved=jaga-sendiri');
+    });
+  }
+
+  window.addEventListener('apima:ready', init);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 40); });
+  } else {
+    setTimeout(init, 40);
+  }
+})();
+</script>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic { renderVals() { return {}; } }
+</script>
+</body>
+</html>
