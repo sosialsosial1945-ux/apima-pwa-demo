@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'apima-proto-state-v2'; /* v2: model "lunas sampai tanggal" (22 Nov 2026) */
+  var STORAGE_KEY = 'apima-proto-state-v3'; /* v3: alur awal belum bayar -> buka lapak -> bayar -> sedang jualan */
   var TARIFF = 3000;
   var DAY_NAMES = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
   var MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
@@ -238,7 +238,7 @@
     ];
 
     return {
-      version: 2,
+      version: 3,
       preset: mode,
       dayOffset: 0,
       activeMemberId: '0123',
@@ -260,7 +260,7 @@
       var raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         var parsed = JSON.parse(raw);
-        if (parsed && parsed.version === 2 && Array.isArray(parsed.members)) {
+        if (parsed && parsed.version === 3 && Array.isArray(parsed.members)) {
           memoryFallback = applyDerived(parsed);
           return memoryFallback;
         }
@@ -269,7 +269,7 @@
       /* fallback ke memori */
     }
     if (!memoryFallback) {
-      memoryFallback = applyDerived(createInitialState('lama'));
+      memoryFallback = applyDerived(createInitialState('baru'));
       safeWrite(memoryFallback);
     }
     return memoryFallback;
@@ -299,7 +299,7 @@
       var raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         var parsed = JSON.parse(raw);
-        if (parsed && parsed.version === 2 && Array.isArray(parsed.members)) {
+        if (parsed && parsed.version === 3 && Array.isArray(parsed.members)) {
           memoryFallback = applyDerived(parsed);
         }
       }
@@ -445,6 +445,7 @@
 
     var y = Math.max(1, Math.min(30, parseInt(nights, 10) || getPendingOrder().nights || 1));
     var day = parseInt(st.dayOffset, 10) || 0;
+    var wasLunasTonight = isLunasAt(m, day);
     var start = (m.paidUntil !== null && m.paidUntil !== undefined && m.paidUntil >= day) ? m.paidUntil + 1 : day;
     var until = start + y - 1;
     var amount = y * TARIFF;
@@ -453,6 +454,11 @@
     var ref = 'QRIS-' + dateInfo.refStamp + '-' + String(Math.floor(1000 + Math.random() * 9000));
 
     m.paidUntil = until;
+    var autoOpenedTonight = !wasLunasTonight;
+    if (autoOpenedTonight) {
+      m.reportedTonight = true;
+      if (m.id === '0123') st.budiReportedTonight = true;
+    }
     m.noteFixed = false;
     m.history = m.history || [];
     m.history.unshift({
@@ -504,7 +510,8 @@
       dateFull: dateInfo.full,
       time: timeWib,
       ref: ref,
-      tonightStatus: m.tonightStatus
+      tonightStatus: m.tonightStatus,
+      autoOpenedTonight: autoOpenedTonight
     };
     st.pendingOrder = { nights: y, amount: amount, fromBeranda: false };
 
@@ -948,10 +955,10 @@
       });
 
       panel.querySelector('[data-test-reset]').addEventListener('click', function () {
-        resetState('lama');
+        resetState('baru');
         renderPanelBody();
         if (window.apimaToast) {
-          window.apimaToast('Data uji dikembalikan ke awal.');
+          window.apimaToast('Data uji dikembalikan ke awal (Lapak belum buka).');
         }
         window.location.reload();
       });

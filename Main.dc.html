@@ -200,33 +200,33 @@
       if (m.lunas && m.reportedTonight) {
         hero = heroCard({
           tone: 'lunas',
-          status: 'Sudah Lapor Malam Ini', statusClass: 'st-success', right: 'Rp3.000/mlm',
+          status: 'Sedang Jualan · Sudah Bayar', statusClass: 'st-success', right: 'Rp3.000/mlm',
           illus: 'cek-satgas.webp', illusH: 304,
-          title: 'Lunas sampai ' + esc(m.paidUntilLabel),
-          desc: 'Lapak tercatat buka malam ini. Siapkan QR saat satgas keliling.',
+          title: 'Sedang jualan malam ini',
+          desc: 'Retribusi Anda lunas sampai <strong>' + esc(m.paidUntilLabel) + '</strong>. Tunjukkan QR identitas saat satgas keliling.',
           actions: '<a href="AnggotaQrIdentitas.dc.html" class="btn ag-btn-tonal">Tunjukkan QR ke Satgas</a>' +
             '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Perpanjang</a>'
         });
       } else if (m.lunas) {
         hero = heroCard({
           tone: 'lunas',
-          status: 'Belum Lapor Malam Ini', statusClass: 'st-warning', right: 'Rp3.000/mlm',
+          status: 'Lapak Belum Buka', statusClass: 'st-warning', right: 'Rp3.000/mlm',
           illus: 'pasang-hp.webp', illusH: 343,
           title: 'Lunas sampai ' + esc(m.paidUntilLabel),
-          desc: 'Buka lapak malam ini? Lapor jualan hanya mencatat kehadiran dan tidak mengubah tanggal lunas.',
+          desc: 'Retribusi malam ini sudah terbayar. Ketuk Buka Lapak Malam Ini agar tercatat sedang berjualan.',
           actions: (view === 'normal'
-            ? '<button type="button" id="btn-lapor-jualan" class="btn btn-primary">Lapor Jualan Malam Ini</button>'
+            ? '<button type="button" id="btn-lapor-jualan" class="btn btn-primary">Buka Lapak Malam Ini</button>'
             : '') +
             '<a href="AnggotaPilihHari.dc.html" class="btn btn-secondary">Perpanjang</a>'
         });
       } else {
         hero = heroCard({
           tone: 'belum',
-          status: 'Belum Bayar', statusClass: 'st-warning', right: 'Rp3.000/mlm',
-          illus: 'bayar-sukses.webp', illusH: 255,
-          title: 'Malam ini belum bayar',
-          desc: (m.paidUntilLabel ? 'Lunas terakhir sampai ' + esc(m.paidUntilLabel) + '. ' : '') + 'Bayar retribusi lewat QRIS supaya lapak Anda lunas malam ini.',
-          actions: '<a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary">Bayar Retribusi</a>'
+          status: 'Lapak Belum Buka', statusClass: 'st-warning', right: 'Rp3.000/mlm',
+          illus: 'tutup-offline.webp', illusH: 324,
+          title: 'Lapak belum dibuka malam ini',
+          desc: (m.paidUntilLabel ? 'Terakhir bayar sampai ' + esc(m.paidUntilLabel) + '. ' : '') + 'Malam ini belum bayar. Ketuk Buka Lapak untuk bayar retribusi lewat QRIS dan mulai berjualan.',
+          actions: '<a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary">Buka Lapak Malam Ini</a>'
         });
       }
       html = hero + tiles(m, true) + historySection(m, store, todayShort);

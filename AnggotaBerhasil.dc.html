@@ -111,8 +111,15 @@
     document.getElementById('berhasil-total').textContent = priceStr;
     document.getElementById('berhasil-until').textContent = untilLabel;
 
+    var stTextEl = document.getElementById('berhasil-status-text');
     var sumEl = document.getElementById('berhasil-summary');
-    sumEl.textContent = 'Dibayar ' + nights + ' malam · Lunas sampai ' + untilLabel + '.';
+    if (lp && lp.autoOpenedTonight) {
+      if (stTextEl) stTextEl.textContent = 'Sedang Jualan · Lunas';
+      sumEl.textContent = 'Lapak tercatat buka malam ini. Dibayar ' + nights + ' malam · Lunas sampai ' + untilLabel + '.';
+    } else {
+      if (stTextEl) stTextEl.textContent = 'Retribusi Lunas';
+      sumEl.textContent = 'Dibayar ' + nights + ' malam · Lunas sampai ' + untilLabel + '.';
+    }
 
     startIdentityQr(member);
 
