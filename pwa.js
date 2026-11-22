@@ -60,28 +60,28 @@
     var stepsEl = document.getElementById('install-guide-steps');
     var subEl = document.getElementById('install-guide-sub');
     if (!sheet || !stepsEl) {
-      if (window.apimaToast) window.apimaToast('Ketuk ikon Bagikan lalu pilih Tambah ke Layar Utama (Add to Home Screen).');
+      if (window.apimaToast) window.apimaToast('Klik ikon Bagikan lalu pilih Tambah ke Layar Utama (Add to Home Screen).');
       return;
     }
     var platform = detectPlatform();
     if (platform === 'ios-chrome') {
       subEl.textContent = 'Di Chrome iPhone, pemasangan ada di ikon Bagikan (pojok kanan atas kolom alamat):';
       stepsEl.innerHTML =
-        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Ketuk ikon <strong>Bagikan (kotak panah ke atas)</strong> di kanan atas kolom alamat (sebelah URL).</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Klik ikon <strong>Bagikan (kotak panah ke atas)</strong> di kanan atas kolom alamat (sebelah URL).</span></li>' +
         '<li class="open-row"><span class="text-sm"><strong>2.</strong> Geser ke bawah lalu pilih <strong>Add to Home Screen</strong> (Tambah ke Layar Utama).</span></li>' +
-        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Ketuk <strong>Add</strong> di pojok kanan atas. Ikon APIMA langsung terpasang.</span></li>';
+        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Klik <strong>Add</strong> di pojok kanan atas. Ikon APIMA langsung terpasang.</span></li>';
     } else if (platform === 'ios') {
       subEl.textContent = 'Safari di iPhone/iPad mewajibkan pemasangan lewat menu Bagikan:';
       stepsEl.innerHTML =
-        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Ketuk ikon <strong>Bagikan (kotak panah atas)</strong> di bagian bawah Safari.</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Klik ikon <strong>Bagikan (kotak panah atas)</strong> di bagian bawah Safari.</span></li>' +
         '<li class="open-row"><span class="text-sm"><strong>2.</strong> Geser ke bawah lalu pilih <strong>Tambah ke Layar Utama</strong>.</span></li>' +
-        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Ketuk <strong>Tambah</strong> di pojok kanan atas. Ikon APIMA langsung terpasang.</span></li>';
+        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Klik <strong>Tambah</strong> di pojok kanan atas. Ikon APIMA langsung terpasang.</span></li>';
     } else if (platform === 'inapp') {
       subEl.textContent = 'Anda membuka tautan dari dalam browser WhatsApp/aplikasi lain:';
       stepsEl.innerHTML =
-        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Ketuk menu <strong>titik tiga</strong> di pojok kanan atas.</span></li>' +
+        '<li class="open-row"><span class="text-sm"><strong>1.</strong> Klik menu <strong>titik tiga</strong> di pojok kanan atas.</span></li>' +
         '<li class="open-row"><span class="text-sm"><strong>2.</strong> Pilih <strong>Buka di Chrome</strong> (Android) atau <strong>Buka di Safari</strong> (iPhone).</span></li>' +
-        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Ketuk lagi tombol <strong>Download APIMA</strong> untuk langsung memasang aplikasi.</span></li>';
+        '<li class="open-row"><span class="text-sm"><strong>3.</strong> Klik lagi tombol <strong>Download APIMA</strong> untuk langsung memasang aplikasi.</span></li>';
     } else if (platform === 'mac-safari') {
       subEl.textContent = 'Safari di Mac memasang aplikasi lewat menu Bagikan atau File:';
       stepsEl.innerHTML =

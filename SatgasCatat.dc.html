@@ -32,8 +32,8 @@
       <span class="v5-app-meta"><span id="ct-date">Sab, 14 Nov</span> · Shift Malam</span>
     </div>
     <div class="v5-app-actions">
-      <!-- HAPUS SEBELUM PRODUKSI: ketuk penanda koneksi untuk simulasi offline -->
-      <button id="ct-net" type="button" class="sg-net online" aria-pressed="false" aria-label="Status koneksi: online. Ketuk untuk simulasi offline">
+      <!-- HAPUS SEBELUM PRODUKSI: klik penanda koneksi untuk simulasi offline -->
+      <button id="ct-net" type="button" class="sg-net online" aria-pressed="false" aria-label="Status koneksi: online. Klik untuk simulasi offline">
         <svg class="ct-net-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
         <svg class="ct-net-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><line x1="2" y1="2" x2="22" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.17-2.39M19 13a10 10 0 0 0-2.17-1.4M2 8.82a15 15 0 0 1 4.17-2.65M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
         <span id="ct-net-label">Online</span>
@@ -138,8 +138,8 @@
     pill.classList.toggle('offline', off);
     pill.setAttribute('aria-pressed', simulatedOffline ? 'true' : 'false');
     pill.setAttribute('aria-label', off
-      ? 'Status koneksi: offline. Ketuk untuk kembali online (simulasi)'
-      : 'Status koneksi: online. Ketuk untuk simulasi offline');
+      ? 'Status koneksi: offline. Klik untuk kembali online (simulasi)'
+      : 'Status koneksi: online. Klik untuk simulasi offline');
     document.getElementById('ct-net-label').textContent = off ? 'Offline' : 'Online';
     pill.querySelector('.ct-net-on').toggleAttribute('hidden', off);
     pill.querySelector('.ct-net-off').toggleAttribute('hidden', !off);
@@ -162,7 +162,7 @@
   function renderPhoto() {
     var done = hasPhoto();
     document.getElementById('ct-foto-btn').classList.toggle('is-done', done);
-    document.getElementById('ct-foto-label').textContent = done ? 'Foto Lapak Terambil (Ketuk untuk ulang)' : 'Ambil Foto Lapak';
+    document.getElementById('ct-foto-label').textContent = done ? 'Foto Lapak Terambil (Klik untuk ulang)' : 'Ambil Foto Lapak';
     document.getElementById('ct-simpan').disabled = !done;
     document.getElementById('ct-hint').hidden = done;
   }

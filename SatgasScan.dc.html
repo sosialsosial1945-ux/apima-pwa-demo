@@ -89,8 +89,8 @@
           <strong>Cara mengizinkan kamera:</strong>
           <ol>
             <li>Pastikan halaman dibuka lewat alamat https atau localhost.</li>
-            <li>Ketuk ikon gembok atau pengaturan situs di bilah alamat browser.</li>
-            <li>Ubah izin Kamera menjadi Izinkan, lalu ketuk Coba Buka Kamera Lagi.</li>
+            <li>Klik ikon gembok atau pengaturan situs di bilah alamat browser.</li>
+            <li>Ubah izin Kamera menjadi Izinkan, lalu klik Coba Buka Kamera Lagi.</li>
           </ol>
         </div>
         <button id="btn-retry-camera" type="button" class="btn btn-primary sg-btn">Coba Buka Kamera Lagi</button>
@@ -635,7 +635,7 @@
       photoInput.addEventListener('change', function () {
         var has = !!(photoInput.files && photoInput.files.length);
         if (photoBtn) photoBtn.classList.toggle('is-done', has);
-        if (photoLabel) photoLabel.textContent = has ? 'Foto Bukti Terambil (Ketuk untuk ulang)' : 'Ambil Foto Bukti';
+        if (photoLabel) photoLabel.textContent = has ? 'Foto Bukti Terambil (Klik untuk ulang)' : 'Ambil Foto Bukti';
       });
     }
     document.getElementById('btn-send-issue').addEventListener('click', function () {
