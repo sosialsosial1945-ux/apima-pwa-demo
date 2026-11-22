@@ -104,18 +104,19 @@
 .ag-step-count { color: var(--apima-accent-text); font-weight: 700; font-size: 14px; letter-spacing: 0.1em; }
 
 /* ---------- Masuk ---------- */
-.ag-login-top { padding: 6px 20px 0; }
+.ag-login-top { padding: 12px 20px 0; }
 .ag-download {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border-radius: 14px;
   background: var(--apima-bg-card); border: 1px solid var(--apima-line); color: var(--ag-ink); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
 }
 :root[data-theme="dark"] .ag-download { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); color: var(--apima-accent-text); }
 .ag-download:hover { border-color: var(--apima-primary-ring); }
-.ag-login-main { padding: 2px 24px 24px; display: flex; flex-direction: column; gap: 20px; }
-.ag-login-brand { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.ag-login-main { padding: 28px 24px 40px; display: flex; flex-direction: column; gap: 24px; }
+.ag-login-brand { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; margin-top: auto; }
 .ag-login-brand .brand-wordmark img { width: 152px; height: auto; }
 .ag-login-tagline { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--ag-tagline); font-family: var(--apima-font); }
 .ag-form { gap: 18px; padding: 20px 20px 12px; border-radius: 22px; }
+.ag-login-main > .ag-form { margin-bottom: auto; }
 .ag-field { display: flex; flex-direction: column; gap: 8px; }
 .ag-field .ag-help { margin-top: -2px; }
 .ag-label { font-size: 14px; font-weight: 700; color: var(--ag-ink); }

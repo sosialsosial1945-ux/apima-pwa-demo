@@ -1,4 +1,4 @@
-const CACHE_NAME = 'apima-pwa-demo-v20';
+const CACHE_NAME = 'apima-pwa-demo-v21';
 const CORE_ASSETS = [
   './',
   './index.html',
