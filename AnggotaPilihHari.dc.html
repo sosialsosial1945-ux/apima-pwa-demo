@@ -81,7 +81,7 @@
           <span class="ag-sum-after ag-sum-date" id="pilih-after">Sabtu, 14 Nov</span>
         </div>
       </div>
-      <p class="ag-note" id="night-auto-note">Pembayaran via QRIS. Pastikan saldo dompet digital atau m-banking mencukupi sebelum lanjut.</p>
+      <p class="ag-note" id="night-auto-note">Pembayaran lewat QRIS. Pastikan saldo Anda cukup sebelum lanjut, ya.</p>
       <a href="AnggotaQris.dc.html?nights=1" id="btn-lanjut-qris" class="btn btn-primary">Lanjut Bayar Rp3.000</a>
     </section>
 
@@ -133,7 +133,7 @@
       plusBtn.disabled = selected >= 30;
       totalEl.textContent = rp(total);
       afterEl.textContent = preview ? preview.untilLabel : '';
-      noteEl.textContent = 'Pembayaran via QRIS. Pastikan saldo dompet digital atau m-banking mencukupi sebelum lanjut.';
+      noteEl.textContent = 'Pembayaran lewat QRIS. Pastikan saldo Anda cukup sebelum lanjut, ya.';
       ctaLink.textContent = 'Lanjut Bayar ' + rp(total);
       ctaLink.setAttribute('href', 'AnggotaQris.dc.html?nights=' + selected);
       picks.forEach(function (b) {
