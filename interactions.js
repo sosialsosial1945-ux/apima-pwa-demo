@@ -395,7 +395,9 @@
         };
         var penjagaName = (member.penjaga && member.penjaga !== 'Jaga sendiri') ? member.penjaga : 'Rahmat';
         // GANTI DENGAN TAUTAN ASLI SEBELUM PRODUKSI
-        var shareUrl = new URL('AnggotaQrIdentitas.dc.html?mode=penjaga&id=' + encodeURIComponent(member.id), window.location.href).href;
+        /* Token baru setiap kali dibagikan; tautan dengan token lama ditolak di HP ini */
+        var shareToken = window.APIMA_STORE && window.APIMA_STORE.issuePenjagaToken ? window.APIMA_STORE.issuePenjagaToken(member.id) : '';
+        var shareUrl = new URL('AnggotaQrIdentitas.dc.html?mode=penjaga&id=' + encodeURIComponent(member.id) + (shareToken ? '&t=' + encodeURIComponent(shareToken) : ''), window.location.href).href;
         var message = 'Halo ' + penjagaName + ', ini QR identitas lapak ' + member.name + ' (' + member.blok + ') untuk ditunjukkan ke satgas APIMA malam ini: ' + shareUrl + '. QR berganti otomatis, jadi buka tautannya, jangan kirim tangkapan layar.';
         var cleanPhone = String(member.penjagaPhone || '').replace(/[^0-9]/g, '');
         var waUrl = cleanPhone
@@ -452,7 +454,7 @@
           var pName = (mem && mem.penjaga && mem.penjaga !== 'Jaga sendiri') ? mem.penjaga : 'Rahmat';
           statusEl.textContent = pName + ' · Nonaktif';
         }
-        showToast('Akses QR penjaga lapak dinonaktifkan.');
+        showToast('Penjaga lapak dinonaktifkan di HP ini.');
       });
     }
 

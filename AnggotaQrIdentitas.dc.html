@@ -87,7 +87,7 @@
       </div>
       <div class="ag-sheet-row">
         <img src="illustrations/akun-nonaktif.webp" width="360" height="305" alt="" loading="lazy">
-        <p class="ag-sheet-text" id="sheet-cabut-text">Penjaga lapak tidak dapat membuka QR Anda sampai Anda membagikannya kembali.</p>
+        <p class="ag-sheet-text" id="sheet-cabut-text">Penjaga tidak lagi tercatat sebagai penjaga lapak Anda. Tautan yang sudah terkirim masih bisa dibuka di HP-nya.</p>
       </div>
       <button type="button" class="btn ag-btn-danger" data-revoke-confirm>Ya, Nonaktifkan</button>
       <button type="button" class="btn btn-secondary" data-sheet-close>Batal</button>
@@ -103,6 +103,24 @@
   var STATUS_LABEL = { sudah_bayar: 'Lunas · Sudah Lapor', belum_lapor: 'Lunas · Belum Lapor', belum_bayar: 'Belum Bayar' };
   var started = false;
 
+  /* Tautan penjaga yang tidak berlaku: QR tidak digambar sama sekali */
+  function showLinkInvalid(kind) {
+    var revoked = kind === 'revoked';
+    document.getElementById('qr-page-title').textContent = 'QR Identitas Lapak';
+    document.getElementById('qr-member-name').textContent = 'QR Identitas Lapak';
+    document.getElementById('qr-member-meta').textContent = revoked ? 'Tautan sudah dinonaktifkan' : 'Tautan tidak dikenali';
+    var statusEl = document.getElementById('qr-status');
+    statusEl.textContent = 'Tidak berlaku';
+    statusEl.className = 'ag-status st-danger';
+    document.getElementById('qr-id-stage').hidden = true;
+    document.getElementById('qr-member-footer').hidden = true;
+    document.getElementById('qr-logout').hidden = true;
+    document.getElementById('qr-nav').hidden = true;
+    document.getElementById('qr-help').textContent = revoked
+      ? 'Pemilik lapak sudah menonaktifkan tautan ini. Minta tautan baru ke pemilik lapak.'
+      : 'Nomor lapak di tautan ini tidak dikenali. Minta tautan baru ke pemilik lapak.';
+  }
+
   function initQrIdentitas() {
     if (started) return;
     started = true;
@@ -111,7 +129,16 @@
     var requestedId = params.get('id');
     var store = window.APIMA_STORE;
     if (!store) return;
-    var memberId = store.getMember(requestedId || '0123').id;
+    /* Halaman anggota selalu memakai akun yang masuk; ID dari URL hanya dipakai di mode penjaga */
+    var memberId = store.getActiveMember().id;
+    if (isPenjagaMode) {
+      var linkState = store.checkPenjagaLink(requestedId, params.get('t'));
+      if (linkState !== 'ok') {
+        showLinkInvalid(linkState);
+        return;
+      }
+      memberId = store.findMember(requestedId).id;
+    }
 
     var canvas = document.getElementById('qr-id-canvas');
     var stage = document.getElementById('qr-id-stage');
@@ -130,7 +157,7 @@
       statusEl.textContent = STATUS_LABEL[member.tonightStatus] || 'Belum Bayar';
       statusEl.className = 'ag-status ' + (STATUS_CLASS[member.tonightStatus] || 'st-danger');
       document.getElementById('qr-share-label').textContent = 'Bagikan QR ke Penjaga (' + penjagaName + ')';
-      document.getElementById('sheet-cabut-text').textContent = 'Penjaga lapak (' + penjagaName + ') tidak dapat membuka QR Anda sampai Anda membagikannya kembali.';
+      document.getElementById('sheet-cabut-text').textContent = penjagaName + ' tidak lagi tercatat sebagai penjaga lapak Anda. Tautan yang sudah terkirim masih bisa dibuka di HP-nya.';
       if (revokeBtn) revokeBtn.hidden = !member.penjagaActive;
     }
 

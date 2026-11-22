@@ -316,6 +316,18 @@
     return st.members[0];
   }
 
+  /* Pencarian ketat untuk input dari luar (URL, QR): ID tak dikenal mengembalikan null,
+     tidak jatuh ke anggota pertama seperti getMember */
+  function findMember(id) {
+    var targetId = String(id || '').trim();
+    if (!targetId) return null;
+    var st = safeRead();
+    for (var i = 0; i < st.members.length; i++) {
+      if (st.members[i].id === targetId) return st.members[i];
+    }
+    return null;
+  }
+
   function getActiveMember() {
     var st = safeRead();
     return getMember(st.activeMemberId || '0123');
@@ -593,6 +605,36 @@
     return m;
   }
 
+  /* Token acak per tautan penjaga. Setiap kali dibagikan, token baru menggantikan yang lama.
+     Tanpa server, token hanya bisa diperiksa di HP yang membuatnya; HP penjaga tidak bisa
+     memeriksanya. Di produksi token disimpan dan dicabut di server. */
+  function issuePenjagaToken(memberId) {
+    var st = cloneState(safeRead());
+    var id = String(memberId || st.activeMemberId || '0123');
+    var m = st.members.find(function (x) { return x.id === id; });
+    if (!m) return null;
+    var token = '';
+    try {
+      var bytes = new Uint8Array(12);
+      window.crypto.getRandomValues(bytes);
+      for (var i = 0; i < bytes.length; i++) token += ('0' + bytes[i].toString(16)).slice(-2);
+    } catch (e) {
+      token = Date.now().toString(16) + Math.random().toString(16).slice(2, 10);
+    }
+    m.penjagaToken = token;
+    safeWrite(st);
+    return token;
+  }
+
+  /* 'ok' = boleh tampil, 'revoked' = HP ini tahu tautan sudah tidak berlaku,
+     'unknown' = ID tidak dikenal. Tanpa token tercatat di HP ini, tautan dianggap berlaku. */
+  function checkPenjagaLink(memberId, token) {
+    var m = findMember(memberId);
+    if (!m) return 'unknown';
+    if (m.penjagaToken && (!m.penjagaActive || String(token || '') !== m.penjagaToken)) return 'revoked';
+    return 'ok';
+  }
+
   function resetState(preset) {
     var targetPreset = preset || safeRead().preset || 'lama';
     var next = createInitialState(targetPreset);
@@ -658,7 +700,7 @@
   function buildIdentityQrPayload(memberId, nowMs) {
     var cleanId = String(memberId || '0123').trim();
     var base = 'APIMA:' + cleanId + ':' + getQrPeriod(nowMs);
-    var member = getMember(cleanId);
+    var member = findMember(cleanId);
     if (!member) return base;
     return base + ':' + (isLunasAt(member, safeRead().dayOffset) ? 'PAID' : 'UNPAID');
   }
@@ -683,20 +725,10 @@
     if (isNaN(period) || (currentPeriod - period) > 2 || (period - currentPeriod) > 1) {
       return { status: 'expired', memberId: memberId, member: member, period: period };
     }
-    /* DEMO SAJA, HAPUS SEBELUM PRODUKSI: status dari QR disimpan ke data uji HP satgas */
+    /* Isi QR tidak ditandatangani, jadi siapa pun bisa membuatnya. Statusnya hanya dikembalikan
+       untuk ditampilkan dan TIDAK PERNAH disimpan ke data pembayaran HP ini (paidUntil tetap). */
     var qrLunas = qrStatus === 'PAID' || qrStatus === 'NOREPORT';
-    if (qrStatus && qrLunas !== isLunasAt(member, st.dayOffset)) {
-      var next = cloneState(st);
-      var target = next.members.find(function (x) { return x.id === memberId; });
-      if (target) {
-        var day = parseInt(next.dayOffset, 10) || 0;
-        target.paidUntil = qrLunas ? Math.max(day, target.paidUntil === null || target.paidUntil === undefined ? day : target.paidUntil) : day - 1;
-        target.noteFixed = false;
-        safeWrite(next);
-        member = target;
-      }
-    }
-    return { status: 'valid', memberId: memberId, member: member, period: period, qrStatus: qrStatus };
+    return { status: 'valid', memberId: memberId, member: member, period: period, qrStatus: qrStatus, qrLunas: qrStatus ? qrLunas : null };
   }
 
   /* Gambar QR ke canvas: dipakai AnggotaQrIdentitas dan AnggotaBerhasil (butuh lib/qrcode.js) */
@@ -1039,6 +1071,9 @@
     getState: getState,
     reload: reload,
     getMember: getMember,
+    findMember: findMember,
+    issuePenjagaToken: issuePenjagaToken,
+    checkPenjagaLink: checkPenjagaLink,
     getActiveMember: getActiveMember,
     getStatusMeta: getStatusMeta,
     getHistoryTotal: getHistoryTotal,

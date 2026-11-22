@@ -134,6 +134,11 @@
         <span id="scan-result-time" class="sg-result-time">Tercatat 22:45 WIB · Sesuai</span>
       </section>
 
+      <div id="scan-qr-note" role="status" class="sg-offline-note" hidden>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span class="sg-offline-text"><strong class="sg-offline-title">Status bayar dari QR anggota.</strong> Belum ada catatan pembayaran di HP ini.</span>
+      </div>
+
       <div id="scan-offline-note" role="status" class="sg-offline-note" hidden>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="2" y1="2" x2="22" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.17-2.39M19 13a10 10 0 0 0-2.17-1.4M2 8.82a15 15 0 0 1 4.17-2.65M10.66 5c4.01-.36 8.14.9 11.34 3.76M12 20h.01"/></svg>
         <span class="sg-offline-text"><strong class="sg-offline-title">Tersimpan di HP.</strong> Terkirim otomatis saat sinyal kembali.</span>
@@ -280,14 +285,20 @@
     var dateEl = document.getElementById('scan-today-date');
     if (dateEl) dateEl.textContent = dateInfo.short;
 
-    var result = store.resultFromStatus(m.tonightStatus);
+    /* QR tidak ditandatangani: status PAID dari QR hanya ditampilkan bila HP ini belum mencatat
+       pembayaran, dan tidak pernah mengubah data pembayaran. Status UNPAID dari QR diabaikan,
+       jadi QR palsu tidak bisa menghapus prabayar atau membuat temuan atas nama orang lain. */
+    var fromQr = !!opts.record && opts.qrLunas === true && !m.lunas;
+    var result = fromQr ? { key: 'sesuai', label: 'Sesuai' } : store.resultFromStatus(m.tonightStatus);
+    var logLabel = fromQr ? 'Sesuai (status dari QR anggota)' : result.label;
     if (opts.record) {
       currentCheck = store.saveSatgasInspection({
         memberId: m.id,
         resultKey: result.key,
-        resultLabel: result.label,
+        resultLabel: logLabel,
         metode: scanMethod
       });
+      if (currentCheck) currentCheck.fromQr = fromQr;
       /* Jualan tanpa bayar juga masuk "Temuan saya" */
       if (currentCheck && currentCheck.findingId && store.addSatgasOwnFinding) {
         store.addSatgasOwnFinding({
@@ -315,12 +326,14 @@
     var penjagaEl = document.getElementById('scan-penjaga');
     var recheckBtn = document.getElementById('btn-recheck-payment');
     var offlineNote = document.getElementById('scan-offline-note');
+    var qrNote = document.getElementById('scan-qr-note');
     var sheetMember = document.getElementById('sheet-lapor-member');
+    var shownFromQr = !!(currentCheck && currentCheck.fromQr && currentCheck.memberId === m.id && !m.lunas && result.key === 'sesuai');
 
     var tone = 'tone-success';
     var title = 'Sudah bayar';
-    /* v2: hasil hanya dari tanggal lunas */
-    if (!m.lunas) { tone = 'tone-danger'; title = 'Belum bayar'; }
+    /* v2: hasil dari tanggal lunas di HP ini, atau dari status QR yang ditandai belum tercatat */
+    if (!m.lunas && !shownFromQr) { tone = 'tone-danger'; title = 'Belum bayar'; }
 
     if (hero) {
       hero.classList.remove('tone-success', 'tone-warning', 'tone-danger');
@@ -337,6 +350,7 @@
     if (nameEl) nameEl.textContent = m.name;
     if (metaEl) metaEl.textContent = 'ID ' + m.id + ' · ' + m.blok;
     if (timeEl) timeEl.textContent = 'Tercatat ' + (currentCheck ? currentCheck.jam : store.nowTimeWib()) + ' · ' + result.label;
+    if (qrNote) qrNote.hidden = !shownFromQr;
     if (penjagaEl) {
       penjagaEl.textContent = (m.penjaga && m.penjaga !== 'Jaga sendiri')
         ? (m.penjaga + (m.penjagaActive ? '' : ' (Nonaktif)'))
@@ -362,11 +376,18 @@
     if (kind === 'expired') {
       if (titleEl) titleEl.textContent = 'QR sudah tidak berlaku';
       if (msgEl) msgEl.textContent = 'QR sudah tidak berlaku. Minta anggota membuka ulang QR di HP-nya.';
+    } else if (kind === 'unknown-id') {
+      if (titleEl) titleEl.textContent = 'Nomor anggota tidak ditemukan';
+      if (msgEl) msgEl.textContent = 'Nomor anggota di tautan ini tidak ada di daftar. Scan QR anggota atau masukkan nomornya secara manual.';
     } else {
       if (titleEl) titleEl.textContent = 'QR tidak dikenali';
       if (msgEl) msgEl.textContent = 'QR tidak dikenali.';
     }
     showView('error');
+    if (kind === 'unknown-id') {
+      var headerTitle = document.getElementById('scan-header-title');
+      if (headerTitle) headerTitle.textContent = 'Tidak ditemukan';
+    }
   }
 
   function processScannedQr(rawText, fromCamera) {
@@ -376,7 +397,7 @@
     var parsed = store.parseIdentityQrPayload(rawText);
     if (parsed.status === 'valid') {
       scanMethod = fromCamera ? 'Scan kamera QR' : 'Scan QR dinamis';
-      renderAutoResult(parsed.memberId, { record: true });
+      renderAutoResult(parsed.memberId, { record: true, qrLunas: parsed.qrLunas });
       return parsed;
     }
     vibrate([40, 60, 40]);
@@ -648,8 +669,14 @@
     if (rawQrParam) {
       processScannedQr(rawQrParam, false);
     } else if (requestedId) {
-      scanMethod = 'Scan QR dinamis';
-      renderAutoResult(requestedId, { record: true });
+      /* Dibuka dari Daftar Lapak: bukan scan QR, dan ID yang tidak ada ditolak */
+      var listed = window.APIMA_STORE ? window.APIMA_STORE.findMember(requestedId) : null;
+      if (!listed) {
+        showScanError('unknown-id');
+      } else {
+        scanMethod = 'Pilih dari daftar';
+        renderAutoResult(listed.id, { record: true });
+      }
     } else {
       startCameraScanner();
     }
