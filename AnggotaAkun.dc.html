@@ -84,7 +84,7 @@
     document.getElementById('akun-lapak').textContent = m.blok;
     document.getElementById('akun-penjaga').textContent = penjaga === 'Jaga sendiri' ? penjaga : penjaga + ' (' + (m.penjagaActive ? 'Aktif' : 'Nonaktif') + ')';
     var malamEl = document.getElementById('akun-malam');
-    malamEl.textContent = m.lunas ? m.paidUntilLabel : 'Malam ini belum lunas';
+    malamEl.textContent = m.lunas ? m.paidUntilLabel : 'Malam ini belum bayar';
     malamEl.classList.toggle('st-warning', !m.lunas);
   }
   var booted = false;

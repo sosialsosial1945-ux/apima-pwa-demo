@@ -71,7 +71,7 @@
     m.paidUntilLabel = (m.paidUntil !== null && m.paidUntil !== undefined) ? formatDayLong(m.paidUntil) : '';
     m.tonightStatus = !lunas ? 'belum_bayar' : (m.reportedTonight ? 'sudah_bayar' : 'belum_lapor');
     if (!m.noteFixed) {
-      m.note = lunas ? ('Lunas sampai ' + m.paidUntilLabel) : 'Malam ini belum lunas';
+      m.note = lunas ? ('Lunas sampai ' + m.paidUntilLabel) : 'Malam ini belum bayar';
     }
     delete m.paidNights;
     return m;
@@ -865,7 +865,7 @@
       var st = safeRead();
       var budi = getActiveMember();
       var dInfo = formatDateInfo(st.dayOffset);
-      var statusLabel = budi.lunas ? ('Lunas sampai ' + budi.paidUntilLabel) : 'Malam ini belum lunas';
+      var statusLabel = budi.lunas ? ('Lunas sampai ' + budi.paidUntilLabel) : 'Malam ini belum bayar';
       panel.innerHTML =
         '<div class="row between items-center gap-2">' +
           '<div class="stack">' +

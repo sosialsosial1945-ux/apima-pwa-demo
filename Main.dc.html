@@ -50,7 +50,7 @@
     <div class="v5-seg v5-demo-seg ag-seg" role="group" aria-label="Pilih keadaan beranda untuk demo">
       <button type="button" data-ag-view="normal" aria-pressed="true">Normal</button>
       <button type="button" data-ag-view="tutup" aria-pressed="false">Tutup</button>
-      <button type="button" data-ag-view="kuota0" aria-pressed="false">Belum Lunas</button>
+      <button type="button" data-ag-view="kuota0" aria-pressed="false">Belum Bayar</button>
       <button type="button" data-ag-view="memuat" aria-pressed="false">Memuat</button>
       <button type="button" data-ag-view="nonaktif" aria-pressed="false">Nonaktif</button>
     </div>
@@ -119,7 +119,7 @@
   function tiles(m, linked) {
     var penjagaName = (m.penjaga && m.penjaga !== 'Jaga sendiri') ? m.penjaga : 'Jaga sendiri';
     var activeTxt = m.penjagaActive ? 'Aktif' : 'Nonaktif';
-    var lunasTxt = m.lunas ? m.paidUntilLabel : 'Belum lunas';
+    var lunasTxt = m.lunas ? m.paidUntilLabel : 'Belum bayar';
     var lunasVal = '<span class="ag-tile-value' + (m.lunas ? '' : ' is-zero') + '" id="main-paid-until">' + esc(lunasTxt) + '</span>';
     if (!linked) {
       return '<div class="ag-tiles">' +
@@ -128,7 +128,7 @@
       '</div>';
     }
     return '<div class="ag-tiles">' +
-      '<a href="AnggotaPilihHari.dc.html" class="v5-tile ag-tile" aria-label="' + (m.lunas ? 'Lunas sampai ' + esc(lunasTxt) : 'Malam ini belum lunas') + '. Perpanjang">' +
+      '<a href="AnggotaPilihHari.dc.html" class="v5-tile ag-tile" aria-label="' + (m.lunas ? 'Lunas sampai ' + esc(lunasTxt) : 'Malam ini belum bayar') + '. Perpanjang">' +
         '<span class="ag-tile-head">Lunas sampai' + ICON_CHEVRON + '</span>' + lunasVal + '</a>' +
       '<a href="AnggotaQrIdentitas.dc.html" class="v5-tile ag-tile" aria-label="Penjaga lapak ' + esc(penjagaName) + ', ' + activeTxt + '. Buka QR identitas">' +
         '<span class="ag-tile-head">Penjaga lapak' + ICON_CHEVRON + '</span>' +
@@ -171,17 +171,20 @@
     if (view === 'memuat') {
       html =
         '<section class="v5-card ag-card" aria-label="Memuat status malam ini" aria-busy="true">' +
-          '<div class="ag-row-between"><span class="v5-skel ag-skel-line" style="width:128px"></span><span class="v5-skel ag-skel-line" style="width:80px"></span></div>' +
-          '<span class="v5-skel" style="height:24px;width:62%"></span>' +
-          '<span class="v5-skel ag-skel-line" style="width:100%"></span>' +
-          '<span class="v5-skel ag-skel-line" style="width:66%;margin-top:-6px"></span>' +
-          '<span class="v5-skel ag-skel-block"></span>' +
+          '<div class="ag-hero-body">' +
+            '<img src="illustrations/memuat-data.webp" width="360" height="386" alt="">' +
+            '<div><h2 class="ag-hero-title">Memuat data malam ini</h2><p class="ag-hero-desc" role="status">Sedang memuat, tunggu sebentar, ya.</p></div>' +
+          '</div>' +
+          '<div class="stack" style="gap:10px" aria-hidden="true">' +
+            '<span class="v5-skel ag-skel-line" style="width:100%"></span>' +
+            '<span class="v5-skel ag-skel-line" style="width:66%"></span>' +
+            '<span class="v5-skel ag-skel-block"></span>' +
+          '</div>' +
         '</section>' +
         '<div class="ag-tiles" aria-hidden="true">' +
           '<div class="v5-tile ag-tile"><span class="v5-skel ag-skel-line" style="width:80px"></span><span class="v5-skel" style="height:20px;width:64px"></span></div>' +
           '<div class="v5-tile ag-tile"><span class="v5-skel ag-skel-line" style="width:96px"></span><span class="v5-skel" style="height:20px;width:80px"></span></div>' +
-        '</div>' +
-        '<p class="ag-loading-note" role="status">Memuat data malam ini…</p>';
+        '</div>';
     } else if (view === 'nonaktif') {
       html =
         '<section class="v5-card ag-card" aria-label="Status akun tidak aktif">' +
@@ -229,9 +232,9 @@
       } else {
         hero = heroCard({
           tone: 'belum',
-          status: 'Belum Lunas', statusClass: 'st-warning', right: 'Rp3.000/mlm',
+          status: 'Belum Bayar', statusClass: 'st-warning', right: 'Rp3.000/mlm',
           illus: 'bayar-sukses.webp', illusH: 255,
-          title: 'Malam ini belum lunas',
+          title: 'Malam ini belum bayar',
           desc: (m.paidUntilLabel ? 'Lunas terakhir sampai ' + esc(m.paidUntilLabel) + '. ' : '') + 'Bayar retribusi lewat QRIS supaya lapak Anda lunas malam ini.',
           actions: '<a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary">Bayar Retribusi</a>'
         });

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'apima-pwa-demo-v16';
+const CACHE_NAME = 'apima-pwa-demo-v17';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -47,7 +47,8 @@ const CORE_ASSETS = [
   './pwa.js',
   './manifest.webmanifest',
   './icons/icon-192.png',
-  './icons/icon-512.png'
+  './icons/icon-512.png',
+  './illustrations/memuat-data.webp'
 ];
 
 self.addEventListener('install', (event) => {
