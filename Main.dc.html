@@ -96,11 +96,14 @@
 
   function heroCard(o) {
     return '<section class="v5-card ag-card' + (o.tone ? ' ag-card-' + o.tone : '') + '" aria-label="Status malam ini">' +
-      '<div class="ag-hero-top"><span class="ag-status ' + o.statusClass + '">' + o.status + '</span>' +
+      /* Tanpa judul: label status jadi judul kartu, sedikit lebih besar */
+      '<div class="ag-hero-top">' + (o.title
+        ? '<span class="ag-status ' + o.statusClass + '">' + o.status + '</span>'
+        : '<h2 class="ag-status ag-status-lg ' + o.statusClass + '">' + o.status + '</h2>') +
         '<span class="ag-rate mono">' + o.right + '</span></div>' +
       '<div class="ag-hero-body">' +
         '<img src="illustrations/' + o.illus + '" width="360" height="' + o.illusH + '" alt="">' +
-        '<div><h2 class="ag-hero-title">' + o.title + '</h2><p class="ag-hero-desc">' + o.desc + '</p></div>' +
+        '<div>' + (o.title ? '<h2 class="ag-hero-title">' + o.title + '</h2>' : '') + '<p class="ag-hero-desc">' + o.desc + '</p></div>' +
       '</div>' +
       (o.actions ? '<div class="ag-btn-stack">' + o.actions + '</div>' : '') +
     '</section>';
@@ -235,7 +238,6 @@
           tone: 'belum',
           status: 'Lapak Belum Buka', statusClass: 'st-warning', right: 'Rp3.000/mlm',
           illus: 'tutup-offline.webp', illusH: 324,
-          title: 'Lapak belum dibuka',
           desc: (m.paidUntilLabel ? 'Terakhir bayar sampai ' + esc(m.paidUntilLabel) + '. ' : '') + 'Klik Buka Lapak untuk bayar retribusi lewat QRIS dan mulai berjualan, ya.',
           actions: '<a href="AnggotaPilihHari.dc.html?from=beranda" class="btn btn-primary">Buka Lapak</a>'
         });
