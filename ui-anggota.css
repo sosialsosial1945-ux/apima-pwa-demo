@@ -116,7 +116,41 @@
 .ag-login-brand .brand-wordmark img { width: 152px; height: auto; }
 .ag-login-tagline { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.02em; color: var(--ag-tagline); font-family: var(--apima-font); }
 .ag-form { gap: 18px; padding: 20px 20px 12px; border-radius: 22px; }
-.ag-login-main > .ag-form { margin-bottom: auto; }
+/* Aksen tepi gradasi warna ikan APIMA khusus kartu form login (terang: #3C909C/#183054, gelap: #54B4B4/#3C789C) */
+.ag-login-main > .ag-form {
+  margin-bottom: auto;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--apima-bg-card), var(--apima-bg-card)) padding-box,
+    linear-gradient(135deg, rgba(60, 144, 156, 0.62) 0%, rgba(48, 120, 156, 0.30) 52%, rgba(24, 48, 84, 0.46) 100%) border-box;
+  box-shadow:
+    0 0 0 1px rgba(60, 144, 156, 0.14),
+    0 12px 28px -6px rgba(48, 120, 156, 0.22),
+    0 2px 10px rgba(24, 48, 84, 0.08);
+  transition: box-shadow 180ms ease;
+}
+.ag-login-main > .ag-form:focus-within {
+  box-shadow:
+    0 0 0 1.5px rgba(60, 144, 156, 0.28),
+    0 14px 32px -6px rgba(48, 120, 156, 0.30),
+    0 4px 12px rgba(24, 48, 84, 0.10);
+}
+:root[data-theme="dark"] .ag-login-main > .ag-form {
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--apima-bg-card), var(--apima-bg-card)) padding-box,
+    linear-gradient(135deg, rgba(84, 180, 180, 0.68) 0%, rgba(60, 120, 156, 0.34) 52%, rgba(84, 180, 168, 0.56) 100%) border-box;
+  box-shadow:
+    0 0 0 1px rgba(84, 180, 180, 0.18),
+    0 0 26px -4px rgba(84, 180, 180, 0.30),
+    0 14px 32px -10px rgba(60, 120, 156, 0.36);
+}
+:root[data-theme="dark"] .ag-login-main > .ag-form:focus-within {
+  box-shadow:
+    0 0 0 1.5px rgba(84, 180, 180, 0.32),
+    0 0 32px -2px rgba(84, 180, 180, 0.40),
+    0 16px 36px -10px rgba(60, 120, 156, 0.42);
+}
 .ag-field { display: flex; flex-direction: column; gap: 8px; }
 .ag-field .ag-help { margin-top: -2px; }
 .ag-label { font-size: 14px; font-weight: 700; color: var(--ag-ink); }

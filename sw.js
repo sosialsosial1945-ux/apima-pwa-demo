@@ -1,4 +1,4 @@
-const CACHE_NAME = 'apima-pwa-demo-v22';
+const CACHE_NAME = 'apima-pwa-demo-v23';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -76,7 +76,7 @@ self.addEventListener('fetch', (event) => {
       .then((res) => {
         if (res && res.status === 200 && isSameOrigin) {
           const copy = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => { });
         }
         return res;
       })
