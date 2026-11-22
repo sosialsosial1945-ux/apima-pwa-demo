@@ -272,3 +272,22 @@ body:not(:has(.screen)):not(:has(.admin-shell)) { background: var(--v5-canvas); 
 
 /* ---------- Tab demo (HAPUS SEBELUM PRODUKSI) ---------- */
 .v5-demo-seg { margin: 0; }
+
+/* ---------- Area status bar HP (aplikasi terpasang di layar utama) ----------
+   viewport-fit=cover membuat halaman digambar sampai ke bawah jam/sinyal/baterai.
+   Konten diturunkan setinggi area itu; di browser biasa nilainya 0. */
+:root { --safe-top: env(safe-area-inset-top, 0px); }
+.screen { padding-top: var(--safe-top); }
+/* Header berlatar: area di belakang status bar ikut berwarna header supaya menyatu */
+.screen:has(> .v5-app-header:first-child) {
+  background:
+    linear-gradient(var(--apima-bg-card), var(--apima-bg-card)) top / 100% var(--safe-top) no-repeat,
+    var(--v5-canvas);
+}
+:root[data-theme="dark"] .screen:has(> .v5-app-header:first-child) {
+  background:
+    linear-gradient(#0F1B2F, #0F1B2F) top / 100% var(--safe-top) no-repeat,
+    var(--v5-canvas);
+}
+/* Halaman admin dan masukan tidak memakai .screen: jarak di body */
+body.adm-body, body:not(:has(.screen)) { padding-top: var(--safe-top); }
