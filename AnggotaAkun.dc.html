@@ -58,7 +58,7 @@
         <div class="v5-row"><span class="v5-row-label">Nomor anggota</span><span class="v5-row-value mono" id="akun-id">0123</span></div>
         <div class="v5-row"><span class="v5-row-label">Lapak</span><span class="v5-row-value" id="akun-lapak">Blok C-14</span></div>
         <div class="v5-row"><span class="v5-row-label">Penjaga lapak</span><span class="v5-row-value" id="akun-penjaga">Rahmat (Aktif)</span></div>
-        <div class="v5-row"><span class="v5-row-label">Lunas sampai</span><span class="v5-row-value" id="akun-malam">Senin, 16 Nov</span></div>
+        <div class="v5-row"><span class="v5-row-label" id="akun-malam-label">Status retribusi</span><span class="v5-row-value" id="akun-malam">Malam ini belum bayar</span></div>
       </div>
       <a href="AnggotaPilihHari.dc.html" class="btn btn-primary">Bayar Retribusi</a>
       <a href="MasukId.dc.html" class="ag-link-danger" id="akun-keluar">Keluar Akun</a>
@@ -83,6 +83,8 @@
     document.getElementById('akun-id').textContent = m.id;
     document.getElementById('akun-lapak').textContent = m.blok;
     document.getElementById('akun-penjaga').textContent = penjaga === 'Jaga sendiri' ? penjaga : penjaga + ' (' + (m.penjagaActive ? 'Aktif' : 'Nonaktif') + ')';
+    var labelEl = document.getElementById('akun-malam-label');
+    if (labelEl) labelEl.textContent = m.lunas ? 'Lunas sampai' : 'Status retribusi';
     var malamEl = document.getElementById('akun-malam');
     malamEl.textContent = m.lunas ? m.paidUntilLabel : 'Malam ini belum bayar';
     malamEl.classList.toggle('st-warning', !m.lunas);
