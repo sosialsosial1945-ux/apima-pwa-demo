@@ -46,16 +46,6 @@
 
   <main class="screen-scroll ag-main">
 
-    <!-- HAPUS SEBELUM PRODUKSI: tab keadaan demo (tidak mengubah data uji) -->
-    <div class="v5-seg v5-demo-seg ag-seg" role="group" aria-label="Pilih keadaan beranda untuk demo">
-      <button type="button" data-ag-view="normal" aria-pressed="true">Normal</button>
-      <button type="button" data-ag-view="tutup" aria-pressed="false">Tutup</button>
-      <button type="button" data-ag-view="kuota0" aria-pressed="false">Belum Bayar</button>
-      <button type="button" data-ag-view="memuat" aria-pressed="false">Memuat</button>
-      <button type="button" data-ag-view="nonaktif" aria-pressed="false">Nonaktif</button>
-    </div>
-    <!-- /HAPUS SEBELUM PRODUKSI -->
-
     <div id="ag-beranda" class="ag-main" style="padding:0" aria-live="polite"></div>
 
   </main>
@@ -269,29 +259,23 @@
     }
   }
 
-  function syncSeg() {
-    document.querySelectorAll('[data-ag-view]').forEach(function (b) {
-      b.setAttribute('aria-pressed', b.dataset.agView === view ? 'true' : 'false');
-    });
+  /* HAPUS SEBELUM PRODUKSI: simulasi keadaan Beranda lewat panel Mode uji atau ?state=... */
+  function setBerandaView(next) {
+    view = VIEWS.indexOf(next) !== -1 ? next : 'normal';
+    try {
+      var url = new URL(window.location.href);
+      if (view === 'normal') url.searchParams.delete('state'); else url.searchParams.set('state', view);
+      history.replaceState(null, '', url.pathname + url.search);
+    } catch (e) {}
+    render();
   }
+  window.__apimaSetBerandaView = setBerandaView;
+  window.__apimaGetBerandaView = function () { return view; };
 
   var booted = false;
   function boot() {
     if (booted) return;
     booted = true;
-    document.querySelectorAll('[data-ag-view]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        view = b.dataset.agView;
-        syncSeg();
-        try {
-          var url = new URL(window.location.href);
-          if (view === 'normal') url.searchParams.delete('state'); else url.searchParams.set('state', view);
-          history.replaceState(null, '', url.pathname + url.search);
-        } catch (e) {}
-        render();
-      });
-    });
-    syncSeg();
     render();
     window.addEventListener('apima:state-change', render);
   }

@@ -866,6 +866,27 @@
       var budi = getActiveMember();
       var dInfo = formatDateInfo(st.dayOffset);
       var statusLabel = budi.lunas ? ('Lunas sampai ' + budi.paidUntilLabel) : 'Malam ini belum bayar';
+      var berandaViewHtml = '';
+      if (typeof window.__apimaSetBerandaView === 'function') {
+        var curView = typeof window.__apimaGetBerandaView === 'function' ? window.__apimaGetBerandaView() : 'normal';
+        var viewOpts = [
+          { id: 'normal', label: 'Normal' },
+          { id: 'tutup', label: 'Tutup' },
+          { id: 'kuota0', label: 'Belum Bayar' },
+          { id: 'memuat', label: 'Memuat' },
+          { id: 'nonaktif', label: 'Nonaktif' }
+        ];
+        berandaViewHtml =
+          '<div class="stack gap-1">' +
+            '<span class="text-xs fw-700 text-secondary">Simulasi tampilan Beranda</span>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:6px">' +
+              viewOpts.map(function (o) {
+                var active = curView === o.id;
+                return '<button type="button" class="btn-chip' + (active ? ' test-chip-active' : '') + '" data-test-view="' + o.id + '" aria-pressed="' + (active ? 'true' : 'false') + '">' + o.label + '</button>';
+              }).join('') +
+            '</div>' +
+          '</div>';
+      }
       panel.innerHTML =
         '<div class="row between items-center gap-2">' +
           '<div class="stack">' +
@@ -876,6 +897,7 @@
             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
           '</button>' +
         '</div>' +
+        berandaViewHtml +
         '<div class="stack gap-1">' +
           '<span class="text-xs fw-700 text-secondary">Keadaan awal</span>' +
           '<div class="grid-2">' +
@@ -887,6 +909,16 @@
           '<button type="button" class="btn btn-secondary" style="height:44px" data-test-next-night>Ganti ke Malam Berikutnya</button>' +
           '<button type="button" class="btn btn-secondary" style="height:44px" data-test-reset>Reset Data Uji</button>' +
         '</div>';
+
+      panel.querySelectorAll('[data-test-view]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (typeof window.__apimaSetBerandaView === 'function') {
+            window.__apimaSetBerandaView(btn.dataset.testView);
+          }
+          panel.hidden = true;
+          fab.setAttribute('aria-expanded', 'false');
+        });
+      });
 
       panel.querySelector('[data-test-close]').addEventListener('click', function () {
         panel.hidden = true;
