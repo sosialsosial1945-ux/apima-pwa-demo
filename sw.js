@@ -1,4 +1,4 @@
-const CACHE_NAME = 'apima-pwa-demo-v34';
+const CACHE_NAME = 'apima-pwa-demo-v35';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -49,7 +49,18 @@ const CORE_ASSETS = [
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './illustrations/memuat-data.webp'
+  './illustrations/memuat-data.webp',
+  './illustrations/kartu-anggota-digital.webp',
+  './illustrations/konfirmasi-kehadiran.webp',
+  './illustrations/hubungi-pengurus.webp',
+  './illustrations/selamat-datang-kembali.webp',
+  './illustrations/laporan-belum-dikirim.webp',
+  './illustrations/lapor-kendala-lapak.webp',
+  './illustrations/error-gagal.webp',
+  './illustrations/otp-wa.webp',
+  './illustrations/syarat-ketentuan.webp',
+  './illustrations/konfirmasi-pin.webp',
+  './illustrations/cadangkan-data.webp'
 ];
 
 self.addEventListener('install', (event) => {

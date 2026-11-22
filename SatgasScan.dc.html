@@ -77,9 +77,7 @@
 
       <div id="scan-camera-denied" class="v5-card sg-denied-card" hidden>
         <div class="sg-head-row">
-          <span class="sg-tile-icon sm warning" aria-hidden="true">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="3.5"/></svg>
-          </span>
+          <img src="illustrations/error-gagal.webp" width="360" height="340" alt="" class="sg-offline-illus" loading="lazy">
           <div>
             <h2 class="sg-card-title">Kamera belum dapat digunakan</h2>
             <p id="scan-camera-reason" class="sg-card-text">Izin kamera belum diberikan atau perangkat tidak memiliki kamera belakang.</p>
@@ -120,7 +118,7 @@
     <!-- 3. HASIL OTOMATIS (tanpa pilihan satgas) -->
     <section id="scan-result-view" class="sg-main" style="padding:0" hidden aria-label="Hasil pemeriksaan otomatis">
       <section id="scan-result-hero" class="sg-result tone-success" role="status" aria-live="assertive">
-        <span id="scan-result-illus" class="v5-illus sg-result-illus"><img src="illustrations/cek-satgas.webp" width="96" height="80" alt=""></span>
+        <span id="scan-result-illus" class="v5-illus sg-result-illus"><img src="illustrations/konfirmasi-kehadiran.webp" width="360" height="315" alt=""></span>
         <span id="scan-result-icon" class="sg-tile-icon danger" hidden aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </span>
@@ -177,6 +175,7 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
+      <span class="v5-illus sg-sheet-illus"><img src="illustrations/lapor-kendala-lapak.webp" width="360" height="337" alt="" loading="lazy"></span>
       <p id="sheet-lapor-member" class="sg-help member">Budi Santoso · ID 0123 · Blok C-14</p>
       <fieldset class="sg-fieldset">
         <legend class="sg-legend">Apa masalahnya?</legend>
@@ -340,12 +339,16 @@
       hero.classList.add(tone);
     }
     var isPaid = tone === 'tone-success';
-    if (illus) illus.hidden = !isPaid;
-    if (iconWrap) {
-      iconWrap.hidden = isPaid;
-      iconWrap.classList.toggle('danger', tone === 'tone-danger');
-      iconWrap.classList.toggle('warning', tone === 'tone-warning');
+    if (illus) {
+      illus.hidden = false;
+      var illusImg = illus.querySelector('img');
+      if (illusImg) {
+        illusImg.src = isPaid ? 'illustrations/konfirmasi-kehadiran.webp' : 'illustrations/laporan-belum-dikirim.webp';
+        illusImg.width = 360;
+        illusImg.height = isPaid ? 315 : 336;
+      }
     }
+    if (iconWrap) iconWrap.hidden = true;
     if (titleEl) titleEl.textContent = title;
     if (nameEl) nameEl.textContent = m.name;
     if (metaEl) metaEl.textContent = 'ID ' + m.id + ' · ' + m.blok;

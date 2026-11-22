@@ -378,6 +378,13 @@ button.adm-htile.is-active { border-color: #4C9BFF; background: linear-gradient(
   background: radial-gradient(320px 220px at 15% 100%, rgba(108, 92, 255, 0.55), rgba(108, 92, 255, 0) 70%), linear-gradient(160deg, #2454E8 0%, #1C3FBF 55%, #172E8C 100%);
   border: 1px solid rgba(140, 170, 255, 0.35); display: flex; flex-direction: column; gap: 10px;
 }
+.pf-welcome-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; flex: 1; }
+.pf-welcome-art {
+  width: 112px; height: 98px; border-radius: 16px; padding: 6px; box-sizing: border-box; flex-shrink: 0;
+  background: rgba(12, 24, 62, 0.34); border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex; align-items: center; justify-content: center;
+}
+.pf-welcome-art img { width: 100%; height: auto; display: block; }
 .pf-welcome h2 { font-size: 24px; font-weight: 800; line-height: 1.25; color: var(--a-on-dark); }
 .pf-welcome p { font-size: 15px; color: #DCE5FB; line-height: 1.5; }
 .pf-welcome .rk-hero-link { margin-top: auto; }
@@ -433,7 +440,7 @@ button.adm-htile.is-active { border-color: #4C9BFF; background: linear-gradient(
   .rk-row2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .rk-row2 > .adm-hero { grid-column: 1 / -1; }
   .pf-row1 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .pf-row1 > .pf-welcome { grid-column: 1 / -1; min-height: 200px; }
+  .pf-row1 > .pf-welcome { grid-column: 1 / -1; min-height: 180px; flex-direction: row-reverse; align-items: center; justify-content: space-between; gap: 20px; }
 }
 @media (max-width: 1023.98px) {
   .rk-row3, .rk-row4, .lp-row, .pf-row2 { grid-template-columns: minmax(0, 1fr); }
@@ -467,6 +474,7 @@ button.adm-htile.is-active { border-color: #4C9BFF; background: linear-gradient(
   .adm-table { min-width: 720px; }
   .adm-table.is-narrow { min-width: 480px; }
   .pf-status { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .pf-row1 > .pf-welcome { flex-direction: column; align-items: flex-start; }
   .pf-minis { width: 100%; }
   .pf-head { flex-direction: column; align-items: stretch; }
   .adm-modal-tiles { grid-template-columns: 1fr; }

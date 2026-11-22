@@ -290,10 +290,11 @@
 .sg-kv-value { font-size: 14px; font-weight: 700; color: var(--apima-text); text-align: right; }
 
 .sg-offline-note {
-  display: flex; align-items: flex-start; gap: 10px; padding: 16px; border-radius: 16px;
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px;
   background: var(--sg-res-warning-bg); border: 1px solid var(--sg-res-warning-line); color: var(--apima-text);
 }
 .sg-offline-note svg { color: var(--apima-warning); flex-shrink: 0; margin-top: 1px; width: 16px; height: 16px; }
+.sg-offline-illus { width: 52px; height: auto; flex-shrink: 0; display: block; }
 .sg-offline-title { font-weight: 700; font-size: 12px; color: var(--sg-warning-ink); }
 .sg-offline-text { font-size: 12px; line-height: 19px; color: var(--sg-warning-ink); }
 
@@ -301,6 +302,7 @@
 
 /* ---------- Sheet laporan / foto ---------- */
 .sg-sheet { gap: 16px; }
+.sg-sheet-illus { width: 108px; height: 96px; align-self: center; padding: 6px; }
 .sg-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .sg-sheet-head h2 { margin: 0; }
 .sg-sheet-head .v5-icon-btn { width: 44px; height: 44px; margin-right: -10px; }
